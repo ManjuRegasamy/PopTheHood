@@ -25,7 +25,7 @@ namespace PopTheHood.Data
         }
 
 
-        public static async Task<string> Mail(string from, string to, string subject, string FilePath, string ImagePath) //List<Attachments> attachments, string body, string cc,
+        public static async Task<string> Mail(string from, string to, string subject, string UserName, string BodyContent, string FilePath) //List<Attachments> attachments, string body, string cc,
         {
 
             //var owners = System.IO.File.ReadAllLines(@"..\wwwroot\EmailTemplate\ErrorMessageNotification.html");
@@ -40,20 +40,25 @@ namespace PopTheHood.Data
                 Body = sr.ReadToEnd();
             }
             //Body = Body.Replace("{{name}}", string.Join(" / ", to));
-            Body = Body.Replace("{{LogoImage}}", ImagePath);
+            //Body = Body.Replace("{{LogoImage}}", ImagePath);
             Body = Body.Replace("{{CompanyName}}", "PopTheHood");
             Body = Body.Replace("{{From}}",from);
             Body = Body.Replace("{{To}}", to);
+            Body = Body.Replace("{{UserName}}", UserName);
+            Body = Body.Replace("{{BodyContent}}", BodyContent); 
 
             mail.HtmlContent = Body;
             #endregion
 
             mail.From = new EmailAddress(from);
+           // mail.SetFrom(new EmailAddress("murukeshs@apptomate.co", "No Reply"));
+            
             if (to != null)
             {
                 //foreach (string to1 in to)
                 //{
-                    mail.AddTo(to);
+                 mail.AddTo(to);
+                //mail.AddTo(new EmailAddress(to));
                 //}
             }
             //if (cc != null)
