@@ -246,7 +246,7 @@ namespace PopTheHood.Controllers
                     + Path.DirectorySeparatorChar.ToString()
                     + "PopTheHood_Logo.jpg";
 
-                      res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", "manjur@apptomate.co", "User Registration", userlogin.Name, "Registration completed successfully.", FilePath).Result; // "chitrasubburaj30@gmail.com",
+                      res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", userlogin.Email, "User Registration", userlogin.Name, "Registration completed successfully.", FilePath).Result; // "chitrasubburaj30@gmail.com",
                     //res = EmailSendGrid.Mail("manjurengasamy77@gmail.com", userlogin.Email, "User Registration", FilePath, ImagePath).Result;
                     var result = "";
                     if(res == "Accepted")
