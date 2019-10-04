@@ -21,9 +21,11 @@ namespace PopTheHood.Data
                 //    new SqlParameter("@Email", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 10, 0, "Email", DataRowVersion.Proposed, userlogin.Email),
                 //    new SqlParameter("@Password", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 10, 0, "Password", DataRowVersion.Proposed, userlogin.Password)
                 //};
+                var encryptPassword = Common.EncryptData(userlogin.Password);
+
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@Email", userlogin.Email));
-                parameters.Add(new SqlParameter("@Password", userlogin.Password));
+                parameters.Add(new SqlParameter("@Password", encryptPassword));
 
                 DataTable dt = new DataTable();
                 using (dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spLoginUser", parameters.ToArray()).Tables[0])
@@ -158,12 +160,14 @@ namespace PopTheHood.Data
             {
                 string ConnectionString = Common.GetConnectionString();
 
+                var encryptPassword = Common.EncryptData(userlogin.Password);
+
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@UserId", userlogin.UserId));
                 parameters.Add(new SqlParameter("@Name", userlogin.Name));
                 parameters.Add(new SqlParameter("@PhoneNumber", userlogin.PhoneNumber));
                 parameters.Add(new SqlParameter("@Email", userlogin.Email));
-                parameters.Add(new SqlParameter("@Password", userlogin.Password));
+                parameters.Add(new SqlParameter("@Password", encryptPassword));
                 parameters.Add(new SqlParameter("@SourceofReg", userlogin.SourceofReg));
                 parameters.Add(new SqlParameter("@IsEmailVerified", userlogin.IsEmailVerified));
                 parameters.Add(new SqlParameter("@IsPhoneNumVerified", userlogin.IsPhoneNumVerified));

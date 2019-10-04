@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using PopTheHood.Models;
 using System.Data;
 using System.Net;
+using PopTheHood.Data;
 
 namespace PopTheHood.Controllers
 {
@@ -87,8 +88,9 @@ namespace PopTheHood.Controllers
                     userList.Add(user);
 
                     var tokenstr = GenerateJSONWebToken();
-
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = userList, TokenString = tokenstr, Status = "Success" });
+                    var encrypt = Common.EncryptData(tokenstr);
+                    //var decrypt = ss.DecryptData(encrypt);    , DecryptedText = decrypt
+                    return StatusCode((int)HttpStatusCode.OK, new { Data = userList, TokenString = tokenstr, EncryptedTokenString = encrypt, Status = "Success" });
                 }
                 else
                 {

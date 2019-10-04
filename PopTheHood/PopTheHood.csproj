@@ -18,6 +18,7 @@
     <PackageReference Include="AzureFunctions.Extensions.Swashbuckle" Version="1.4.0" />
     <PackageReference Include="Microsoft.ApplicationBlocks.Data" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
@@ -25,6 +26,8 @@
     <PackageReference Include="Sendgrid" Version="9.12.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>
