@@ -145,16 +145,16 @@ namespace PopTheHood.Controllers
             }
         }
         #endregion
-        
-        #region UpdatePhoneEmailStatus
-        [HttpPut, Route("UpdatePhoneEmailStatus/{UserId}/{UpdateStatus}/{Status}")]
-        public IActionResult UpdatePhoneEmailStatus(int UserId, bool Status, string UpdateStatus)
+
+        #region UpdateVerificationStatus
+        [HttpPut, Route("UpdateVerificationStatus/{UserId}/{Source}/{Status}")]
+        public IActionResult UpdateVerificationStatus(int UserId, bool Status, IEnumerable<Common.Source> Source)
         {
             //string connectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
             UsersLogin users = new UsersLogin();
             try
             {
-                int row = Data.Users.UpdatePhoneEmailStatus(UserId, Status, UpdateStatus);
+                int row = Data.Users.UpdateVerificationStatus(UserId, Status, Source);
 
                 if (row > 0)
                 {

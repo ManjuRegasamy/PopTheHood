@@ -91,7 +91,7 @@ namespace PopTheHood.Data
             {
                 string ConnectionString = Common.GetConnectionString();
                 List<SqlParameter> parameters = new List<SqlParameter>();
-                parameters.Add(new SqlParameter("@ServicePlanID", serviceDetails.ServicePlanID));
+               // parameters.Add(new SqlParameter("@ServicePlanID", serviceDetails.ServicePlanID));
                 parameters.Add(new SqlParameter("@ServicePriceChartId", serviceDetails.ServicePriceChartId));
                 parameters.Add(new SqlParameter("@VehicleId", serviceDetails.VehicleId));
                 parameters.Add(new SqlParameter("@RemainderMinutes", serviceDetails.RemainderMinutes));

@@ -52,6 +52,7 @@ namespace PopTheHood.Models
         public string Color { get; set; }
         public string LicensePlate { get; set; }
         public string SpecialNotes { get; set; }
+        //public string VehicleCreatedDate { get; set; }
     }
 
 
@@ -62,7 +63,7 @@ namespace PopTheHood.Models
         public decimal LocationLatitude { get; set; }
         public decimal LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }
-        //public string Action { get; set; }
+        public string LandMark { get; set; }
     }
 }
 

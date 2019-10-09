@@ -62,7 +62,7 @@ namespace PopTheHood
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "PopTheHood", Description = "Swagger Core API", Version = "v1" });
-
+                c.DescribeAllEnumsAsStrings();
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
                     Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",

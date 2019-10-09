@@ -22,7 +22,7 @@ namespace PopTheHood.Data
             //};
 
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@ServicePlanID", ServicesModel.ServicePlanID));
+            parameters.Add(new SqlParameter("@ServicePlanID", ServicesModel.AvailableServiceID));
             parameters.Add(new SqlParameter("@ServiceName", ServicesModel.ServiceName));
             parameters.Add(new SqlParameter("@Description", ServicesModel.Description));
             parameters.Add(new SqlParameter("@Action", Action));
@@ -57,13 +57,13 @@ namespace PopTheHood.Data
             }
         }
 
-        public static DataTable GetAvailableServiceById(int ServicePlanID)
+        public static DataTable GetAvailableServiceById(int AvailableServiceID)
         {
             try
             {
                 string ConnectionString = Common.GetConnectionString();
                 List<SqlParameter> parameters = new List<SqlParameter>();
-                parameters.Add(new SqlParameter("@ServicePlanID", ServicePlanID));
+                parameters.Add(new SqlParameter("@ServicePlanID", AvailableServiceID));
 
                 //Execute the query
                 using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetAvailableServiceById", parameters.ToArray()).Tables[0])

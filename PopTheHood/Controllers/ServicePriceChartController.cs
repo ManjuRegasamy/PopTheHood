@@ -103,8 +103,9 @@ namespace PopTheHood.Controllers
                     {
                         ServicePriceChartModel services = new ServicePriceChartModel();
                         services.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
-                        services.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
-                        services.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
+                        services.AvailableServiceID = (dt.Rows[i]["AvailableServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["AvailableServiceID"]);
+                        // services.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
+                        services.ServicePlanID = (dt.Rows[i]["servicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["servicePlanID"]);
                         services.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         services.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
                         //services.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
@@ -146,8 +147,8 @@ namespace PopTheHood.Controllers
                     {
                         ServicePriceChartModel service = new ServicePriceChartModel();
                         service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
+                        service.AvailableServiceID = (dt.Rows[i]["AvailableServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["AvailableServiceID"]);
                         service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
-                        service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
                         service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
                         //service.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);

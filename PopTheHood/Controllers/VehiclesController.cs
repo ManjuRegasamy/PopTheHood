@@ -25,40 +25,104 @@ namespace PopTheHood.Controllers
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
             List<UserVehicleDetails> vechileList = new List<UserVehicleDetails>();
+            List<UsersLogin> userdata = new List<UsersLogin>();
+            List<VehiclesDetails> UservechileList = new List<VehiclesDetails>();
+            
             try
             {
                
-                DataTable dt = Data.Vehicles.GetUserVehicleDetails(UserId == null ? 0 : UserId, Search == null ? "" : Search); 
-
+                DataTable dt = Data.Vehicles.GetUserVehicleDetails(UserId == null ? 0 : UserId, Search == null ? "" : Search);
                 if (dt.Rows.Count > 0)
                 {
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        if((dt.Rows[i]["VehicleId"]) != null)
+                    //if (UserId > 0)
+                    //{
+                    //    UsersLogin users = new UsersLogin();
+                    //    users.Email = (dt.Rows[0]["Email"] == DBNull.Value ? "" : dt.Rows[0]["Email"].ToString());
+                    //    users.Name = (dt.Rows[0]["Name"] == DBNull.Value ? "" : dt.Rows[0]["Name"].ToString());
+                    //    users.PhoneNumber = (dt.Rows[0]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[0]["PhoneNumber"].ToString());
+                    //    //users.UserCreatedDate = (dt.Rows[0]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[0]["UserCreatedDate"].ToString());
+                    //    users.IsPromoCodeApplicable = (dt.Rows[0]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPromoCodeApplicable"]);
+                    //    users.IsPhoneNumVerified = (dt.Rows[0]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPhoneNumVerified"]);
+                    //    users.IsPromoCodeApplicable = (dt.Rows[0]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPromoCodeApplicable"]);
+                    //    users.SourceofReg = (dt.Rows[0]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[0]["SourceofReg"].ToString());
+
+                    //    userdata.Add(users);
+
+                    //    for (int i = 0; i < dt.Rows.Count; i++)
+                    //    {
+                    //        if ((dt.Rows[i]["VehicleId"]) != null)
+                    //        {
+                    //            VehiclesDetails vechiles = new VehiclesDetails();
+                    //            //vechile.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
+                    //            //vechile.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
+                    //            //vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
+                    //            vechiles.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
+                    //            vechiles.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
+                    //            vechiles.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
+                    //            vechiles.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
+                    //            vechiles.Year = (dt.Rows[i]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["Year"]);
+                    //            vechiles.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
+                    //            vechiles.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
+                    //            vechiles.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
+                    //            //vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
+                    //            //vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());
+                    //            //vechile.VehicleCreatedDate = (dt.Rows[i]["VehicleCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["VehicleCreatedDate"].ToString());
+                    //            //vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
+                    //            //vechile.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
+                    //            //vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
+                    //            //vechile.SourceofReg = (dt.Rows[i]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[i]["SourceofReg"].ToString());
+                    //            UservechileList.Add(vechiles);
+                    //        }
+                    //    }
+                    //   // return StatusCode((int)HttpStatusCode.OK, new { UserData = userdata, Data = UservechileList, Status = "Success" });
+                    //}
+
+                    //else {
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
                         {
-                            UserVehicleDetails vechile = new UserVehicleDetails();
-                            vechile.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
-                            vechile.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
-                            vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
-                            vechile.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
-                            vechile.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
-                            vechile.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
-                            vechile.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
-                            vechile.Year = (dt.Rows[i]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["Year"]);
-                            vechile.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
-                            vechile.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
-                            vechile.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
-                            vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
-                            vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());
-                            vechile.VehicleCreatedDate = (dt.Rows[i]["VehicleCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["VehicleCreatedDate"].ToString());
-                            vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
-                            vechile.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
-                            vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
-                            vechile.SourceofReg = (dt.Rows[i]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[i]["SourceofReg"].ToString()); 
-                            vechileList.Add(vechile);
+                            if ((dt.Rows[i]["UserId"]) != null)
+                            {
+                                VehiclesDetails vechiles = new VehiclesDetails();
+                                vechiles.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
+                                vechiles.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
+                                vechiles.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
+                                vechiles.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
+                                vechiles.Year = (dt.Rows[i]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["Year"]);
+                                vechiles.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
+                                vechiles.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
+                                vechiles.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
+                                UservechileList.Add(vechiles);
+                            }
+
+                            if ((dt.Rows[i]["VehicleId"]) != null)
+                            {
+                                UserVehicleDetails vechile = new UserVehicleDetails();
+                                vechile.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
+                                vechile.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
+                                vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
+                                vechile.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
+                                vechile.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
+                                //vechile.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
+                                //vechile.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
+                                //vechile.Year = (dt.Rows[i]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["Year"]);
+                                //vechile.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
+                                //vechile.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
+                                //vechile.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
+                                //vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
+                                //vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());
+                                //vechile.VehicleCreatedDate = (dt.Rows[i]["VehicleCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["VehicleCreatedDate"].ToString());
+                                vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
+                                vechile.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
+                                vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
+                                vechile.SourceofReg = (dt.Rows[i]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[i]["SourceofReg"].ToString());
+                                vechileList.Add(vechile);
+                            }
                         }
-                    }
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, new { UserData = userdata, Data = UservechileList, Status = "Success" });
+                        //return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    //}
+                    //return StatusCode((int)HttpStatusCode.OK, new {UserData = userdata, Data = vechileList, Status = "Success" });
                 }
 
                 else
@@ -88,22 +152,22 @@ namespace PopTheHood.Controllers
 
                 if (dt.Rows.Count > 0)
                 {
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
+                    //for (int i = 0; i < dt.Rows.Count; i++)
+                    //{
                         VehiclesModel vechile = new VehiclesModel();
-                        vechile.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
-                        vechile.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
-                        vechile.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
-                        vechile.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
-                        vechile.Year = (dt.Rows[i]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["Year"]);
-                        vechile.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
-                        vechile.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
-                        vechile.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
-                        vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
+                        vechile.VehicleId = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]);
+                        vechile.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
+                        vechile.Make = (dt.Rows[0]["Make"] == DBNull.Value ? "" : dt.Rows[0]["Make"].ToString());
+                        vechile.Model = (dt.Rows[0]["Model"] == DBNull.Value ? "" : dt.Rows[0]["Model"].ToString());
+                        vechile.Year = (dt.Rows[0]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[0]["Year"]);
+                        vechile.Color = (dt.Rows[0]["Color"] == DBNull.Value ? "" : dt.Rows[0]["Color"].ToString());
+                        vechile.LicensePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
+                        vechile.SpecialNotes = (dt.Rows[0]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[0]["SpecialNotes"].ToString());
+                        vechile.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                         vechile.CreatedDate = (dt.Rows[0]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[0]["CreatedDate"].ToString());
                         vechile.ModifiedDate = (dt.Rows[0]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[0]["ModifiedDate"].ToString());
                         vechileList.Add(vechile);
-                    }
+                    //}
                     return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
                 }
 
@@ -159,6 +223,14 @@ namespace PopTheHood.Controllers
             
             try
             {
+                if(vehiclemodel.LicensePlate == "")
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Please enter LicensePlate", Status = "Error" });
+                }
+                else if (vehiclemodel.UserId <= 0)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Please enter UserId", Status = "Error" });
+                }
                 int row = Data.Vehicles.SaveVehicle(vehiclemodel, Action == null ? "" : Action);
 
                 if (row > 0)

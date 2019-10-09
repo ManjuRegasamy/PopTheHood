@@ -147,5 +147,12 @@ namespace PopTheHood.Data
         }
         #endregion
 
+
+        public enum Source
+        {
+            Phone = 1,
+            Email = 2
+        }
+
     }
 }

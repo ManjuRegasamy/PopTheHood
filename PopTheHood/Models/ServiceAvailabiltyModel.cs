@@ -37,7 +37,7 @@ namespace PopTheHood.Models
 
     public class ServicesModel
     {
-        public int ServicePlanID { get; set; }
+        public int AvailableServiceID { get; set; }
         public string ServiceName { get; set; }
         public string Description { get; set; }
         public bool IsDeleted { get; set; }

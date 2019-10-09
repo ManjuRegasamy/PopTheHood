@@ -10,7 +10,7 @@ namespace PopTheHood.Models
     public class ServiceDetails : ServicePriceChartModel
     {
         public int ServiceID { get; set; }
-        public int ServicePlanID { get; set; }
+       // public int ServicePlanID { get; set; }
         public int VehicleId { get; set; }
         public int UserId { get; set; }
         public int RemainderMinutes { get; set; }
@@ -32,7 +32,7 @@ namespace PopTheHood.Models
     public class ServiceLocation
     {
         public int UserId { get; set; }
-        public int ServicePlanID { get; set; }
+       // public int ServicePlanID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
@@ -66,7 +66,7 @@ namespace PopTheHood.Models
 
     public class ServiceRequest
     {
-        public int ServicePlanID { get; set; }
+        //public int ServicePlanID { get; set; }
         public int ServicePriceChartId { get; set; }
         public int VehicleId { get; set; }
         public int RemainderMinutes { get; set; }

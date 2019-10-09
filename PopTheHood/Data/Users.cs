@@ -109,7 +109,7 @@ namespace PopTheHood.Data
             }
         }
 
-        public static int UpdatePhoneEmailStatus(int UserId, bool Status, string UpdateStatus)
+        public static int UpdateVerificationStatus(int UserId, bool Status, IEnumerable<Common.Source> Source)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace PopTheHood.Data
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@UserId", UserId));
                 parameters.Add(new SqlParameter("@Status", Status));
-                parameters.Add(new SqlParameter("@UpdateStatus", UpdateStatus));
+                parameters.Add(new SqlParameter("@UpdateStatus", Source));
                             
                 int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spUpdatePhoneEmailStatus", parameters.ToArray());
                 return rowsAffected;

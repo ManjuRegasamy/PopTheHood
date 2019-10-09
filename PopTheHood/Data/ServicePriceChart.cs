@@ -60,8 +60,8 @@ namespace PopTheHood.Data
                 string ConnectionString = Common.GetConnectionString();
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@ServicePriceChartId", servicePriceChart.ServicePriceChartId));
-                parameters.Add(new SqlParameter("@ServicePlanID", servicePriceChart.ServicePlanID));
-                parameters.Add(new SqlParameter("@PlanType", servicePriceChart.PlanType));
+                parameters.Add(new SqlParameter("@AvailableServiceID", servicePriceChart.AvailableServiceID));
+               parameters.Add(new SqlParameter("@ServicePlanID", servicePriceChart.ServicePlanID));
                 parameters.Add(new SqlParameter("@IsAvailable", servicePriceChart.IsAvailable));
                 parameters.Add(new SqlParameter("@Price", servicePriceChart.Price));
                 parameters.Add(new SqlParameter("@Action", Action));

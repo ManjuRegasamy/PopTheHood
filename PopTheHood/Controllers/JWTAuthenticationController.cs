@@ -46,7 +46,7 @@ namespace PopTheHood.Controllers
             var token = new JwtSecurityToken(JwtIssuer,
             JwtIssuer,
             null,
-            expires: DateTime.Now.AddMinutes(2),
+            expires: DateTime.Now.AddMinutes(120),
             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

@@ -147,6 +147,7 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@LocationLatitude", vehiclelocation.LocationLatitude));
                 parameters.Add(new SqlParameter("@LocationLongitude", vehiclelocation.LocationLongitude));
                 parameters.Add(new SqlParameter("@LocationFullAddress", vehiclelocation.LocationFullAddress));
+                parameters.Add(new SqlParameter("@LandMark", vehiclelocation.LandMark)); 
                 parameters.Add(new SqlParameter("@Action", Action));
 
                 int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveLocation", parameters.ToArray());

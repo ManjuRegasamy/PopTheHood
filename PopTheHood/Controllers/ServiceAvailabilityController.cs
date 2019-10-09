@@ -73,7 +73,7 @@ namespace PopTheHood.Controllers
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         ServicesModel service = new ServicesModel();
-                        service.ServicePlanID = (int)dt.Rows[i]["ServicePlanID"];
+                        service.AvailableServiceID = (int)dt.Rows[i]["AvailableServiceID"];
                         service.ServiceName = dt.Rows[i]["ServiceName"].ToString();
                         service.Description = dt.Rows[i]["Description"].ToString();
 
@@ -98,22 +98,22 @@ namespace PopTheHood.Controllers
         #endregion
 
         #region GetAvailableServiceById
-        [HttpGet, Route("GetAvailableServiceById/{ServicePlanID}")]
-        public IActionResult GetAvailableServiceById(int ServicePlanID)
+        [HttpGet, Route("GetAvailableServiceById/{AvailableServiceID}")]
+        public IActionResult GetAvailableServiceById(int AvailableServiceID)
         {
             //string GetConnectionString = ServiceAvailabilityController.GetConnectionString();
             //string GetConnectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
             List<ServicesModel> serviceList = new List<ServicesModel>();
             try
             {
-                DataTable dt = Data.ServiceAvailability.GetAvailableServiceById(ServicePlanID);
+                DataTable dt = Data.ServiceAvailability.GetAvailableServiceById(AvailableServiceID);
 
                 if (dt.Rows.Count > 0)
                 {
                     //for (int i = 0; i < dt.Rows.Count; i++)
                     //{
                     ServicesModel service = new ServicesModel();
-                    service.ServicePlanID = (int)dt.Rows[0]["ServicePlanID"];
+                    service.AvailableServiceID = (int)dt.Rows[0]["AvailableServiceID"];
                     service.ServiceName = dt.Rows[0]["ServiceName"].ToString();
                     service.Description = dt.Rows[0]["Description"].ToString();
 
