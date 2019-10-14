@@ -18,6 +18,8 @@ namespace PopTheHood.Models
         public string CreatedDate { get; set; }
         public string ModifiedDate { get; set; }
         public bool? IsDeleted { get; set; }
+        public byte[] VehicleImage { get; set; }
+        public string ImageType { get; set; }
     }
 
    public class UserVehicleDetails
@@ -40,6 +42,8 @@ namespace PopTheHood.Models
         public string SpecialNotes { get; set; }
         public string VehicleCreatedDate { get; set; }
         public bool IsDeleted { get; set; }
+        public byte[] VehicleImage { get; set; }
+        public string ImageType { get; set; }
     }
 
     public class VehiclesDetails
@@ -52,6 +56,8 @@ namespace PopTheHood.Models
         public string Color { get; set; }
         public string LicensePlate { get; set; }
         public string SpecialNotes { get; set; }
+        public byte[] VehicleImage { get; set; }
+        public string ImageType { get; set; }
         //public string VehicleCreatedDate { get; set; }
     }
 

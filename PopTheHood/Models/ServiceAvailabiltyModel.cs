@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,6 +33,8 @@ namespace PopTheHood.Models
         public bool IsDeleted { get; set; }
         public int ServicePriceChartId { get; set; }
         public int ScheduleID { get; set; }
+        public byte[] VehicleImage { get; set; }
+        public string ImageType { get; set; }
     }
 
 
@@ -40,6 +43,16 @@ namespace PopTheHood.Models
         public int AvailableServiceID { get; set; }
         public string ServiceName { get; set; }
         public string Description { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsUserCheckApplicable { get; set; }
+        public string BusinessCondition { get; set; }
+        //[DefaultValue(false)]
+        //public bool? IsDeleted { get; set; }
+    }
+
+    public class ServicePlan
+    {
+        public int ServicePlanID { get; set; }
+        public string PlanType { get; set; }
+        public bool IsOfferPlan { get; set; }
     }
 }

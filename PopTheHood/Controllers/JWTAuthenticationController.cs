@@ -83,6 +83,7 @@ namespace PopTheHood.Controllers
                     user.IsEmailVerified = (dt.Rows[0]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsEmailVerified"]);
                     user.IsPhoneNumVerified = (dt.Rows[0]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPhoneNumVerified"]);
                     user.CreatedDate = (dt.Rows[0]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[0]["CreatedDate"].ToString());
+                    user.Role = (dt.Rows[0]["Role"] == DBNull.Value ? "" : dt.Rows[0]["Role"].ToString());
                     //user.ModifiedDate = (dt.Rows[0]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[0]["ModifiedDate"].ToString());
                     //user.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                     userList.Add(user);

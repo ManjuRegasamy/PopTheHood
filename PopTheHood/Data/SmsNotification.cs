@@ -1,0 +1,89 @@
+﻿using Microsoft.Extensions.Configuration;
+using Nexmo.Api;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+
+namespace PopTheHood.Data
+{
+    public class SmsNotification
+    {
+        //public static string MessageApikey()
+        //{
+        //    IConfigurationBuilder builder = new ConfigurationBuilder();
+        //    builder.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));
+
+        //    IConfigurationRoot configuration = builder.Build();
+        //    var EmailKey = configuration.GetSection("SMSAPIKey").GetSection("Key").Value;
+
+        //    return EmailKey;
+        //}
+
+        //public static string SendMessage(string PhoneOrEmail, string OTP)
+        //{
+        //    IConfigurationBuilder builder = new ConfigurationBuilder();
+        //    builder.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));
+        //    IConfigurationRoot configuration = builder.Build();
+        //    var SMSKey = configuration.GetSection("SMSAPIKey").GetSection("Key").Value;
+        //    var SMSVal = configuration.GetSection("SMSAPIKey").GetSection("Value").Value;
+
+        //    var client = new Client(SMSVal, SMSKey);
+
+        //    var link = client.SendMessage(OTP, PhoneOrEmail);
+        //    var result = "";
+        //    if (link.Success)
+        //    {
+        //        result = "Message has been successfully sent";
+        //    }
+        //    else
+        //    {
+        //        result = link.ClientException.Message;
+        //    }
+        //    return result;
+        //}
+
+
+        //public static string SendMessage(string to, string text)
+        //{
+        //    var results = SMS.Send(new SMS.SMSRequest
+        //    {
+        //        from = Configuration.Instance.Settings["appsettings:NEXMO_FROM_NUMBER"],
+        //        to = to,
+        //        text = text
+        //    });
+
+        //    return results.ToString();
+        //}
+
+       
+        public static async Task<string> SendMessage(string to, string text) //List<Attachments> attachments, string body, string cc,
+        {
+            IConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));
+
+            IConfigurationRoot configuration = builder.Build();
+            var SMSKey = configuration.GetSection("appSettings").GetSection("Nexmo.api_key").Value;
+            var SMSValue = configuration.GetSection("appSettings").GetSection("Nexmo.api_secret").Value;
+
+            var client = new Client(creds: new Nexmo.Api.Request.Credentials
+            {
+                ApiKey = SMSKey,
+                ApiSecret = SMSValue
+            });
+
+            var results = client.SMS.Send(new SMS.SMSRequest
+            {
+                from = Configuration.Instance.Settings["appsettings:NEXMO_FROM_NUMBER"],
+                to = to,
+                text = text
+            });
+           
+            return results.messages.ToString();
+
+        }
+
+    }
+}

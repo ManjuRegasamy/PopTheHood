@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Nexmo.Api;
 using NLog;
 using PopTheHood.Data;
 using PopTheHood.Models;
@@ -95,6 +96,7 @@ namespace PopTheHood.Controllers
                         user.IsEmailVerified = (dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
                         user.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
                         user.CreatedDate = (dt.Rows[i]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["CreatedDate"].ToString());
+                        user.Role = (dt.Rows[i]["Role"] == DBNull.Value ? "" : dt.Rows[i]["Role"].ToString());
                         //user.ModifiedDate = (dt.Rows[i]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[i]["ModifiedDate"].ToString());
                         //user.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                         userList.Add(user);
@@ -199,7 +201,7 @@ namespace PopTheHood.Controllers
                         user.IsEmailVerified = (dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
                         user.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
                         user.CreatedDate = (dt.Rows[i]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["CreatedDate"].ToString());
-                        //user.ModifiedDate = (dt.Rows[i]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[i]["ModifiedDate"].ToString());
+                        user.Role = (dt.Rows[i]["Role"] == DBNull.Value ? "" : dt.Rows[i]["Role"].ToString());
                         //user.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
                         userList.Add(user);
                     }
@@ -233,9 +235,12 @@ namespace PopTheHood.Controllers
             {
                 string row = Data.Users.SaveUser(userlogin , Action == null ? "" : Action);
                 string res = "";
+                string smsres = "";
+
                 if (row == "Success")
                 {
 
+                   
                     var FilePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
                     + "EmailView"
                     + Path.DirectorySeparatorChar.ToString()
@@ -246,18 +251,49 @@ namespace PopTheHood.Controllers
                     + Path.DirectorySeparatorChar.ToString()
                     + "PopTheHood_Logo.jpg";
 
-                      res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", userlogin.Email, "User Registration", userlogin.Name, "Registration completed successfully.", FilePath).Result; // "chitrasubburaj30@gmail.com",
-                    //res = EmailSendGrid.Mail("manjurengasamy77@gmail.com", userlogin.Email, "User Registration", FilePath, ImagePath).Result;
+                    string OTPValue = Common.GenerateOTP();
+
+                    res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", "murukeshs@apptomate.co", "User Registration", userlogin.Name, "Hi " + userlogin.Name + " , your OTP is " + OTPValue + " and it's expiry time is 5 minutes.", FilePath).Result; // "chitrasubburaj30@gmail.com",
+
+
+                    var results = "";
+                    //results = SmsNotification.SendMessage("7010214439", "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").ToString();
+                    results = SmsNotification.SendMessage(userlogin.PhoneNumber, "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").Status.ToString();
+
+                    //var client = new Client(creds: new Nexmo.Api.Request.Credentials
+                    //{
+                    //    ApiKey = "5d5eb59f",
+                    //    ApiSecret = "xFT1BuHaxN6wzA8M"
+                    //});
+                    //var results = client.SMS.Send(new SMS.SMSRequest
+                    //{
+                    //    from = "7708178085",
+                    //    to = "7010214439",
+                    //    text = "Hi User, your OTP is" + OTPValue
+                    //});
+                    
+                    var SmsStatus = "";
+                    if (results == "RanToCompletion")
+                    {
+                        string SaveOtpValue = Data.Common.SaveOTP("4560123045", OTPValue, "Phone");
+                        SmsStatus = "Message sent successfully.";
+                    }
+                    else
+                    {
+                        SmsStatus = "Message not sent..";
+                    }
+
                     var result = "";
                     if(res == "Accepted")
                     {
-                        result = "Mail send successfully.";
+                        string SaveOtpValue = Data.Common.SaveOTP("murukeshs@apptomate.co", OTPValue, "Email");
+                        result = "Mail sent successfully.";
                     }
                     else
                     {
                         result = "Bad Request";
                     }
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Mailing = result, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Mailing = result, SMS = results, SMSSTATUS = SmsStatus, OTP = OTPValue, Status = "Success" });
                 }
                 else
                 {

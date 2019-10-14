@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,13 +11,14 @@ namespace PopTheHood.Models
     public class ServiceDetails : ServicePriceChartModel
     {
         public int ServiceID { get; set; }
-       // public int ServicePlanID { get; set; }
+        public int ServicePlanID { get; set; }
         public int VehicleId { get; set; }
         public int UserId { get; set; }
         public int RemainderMinutes { get; set; }
         public int LocationID { get; set; }
         public bool IsTeamsandConditionsAccepted { get; set; }
-        public bool PromoCodeApplied { get; set; }
+        [DefaultValue(false)]
+        public bool? PromoCodeApplied { get; set; }
         public int ScheduleID { get; set; }
         public string Status { get; set; }
         public string RequestedServiceDate { get; set; }
@@ -66,13 +68,14 @@ namespace PopTheHood.Models
 
     public class ServiceRequest
     {
-        //public int ServicePlanID { get; set; }
-        public int ServicePriceChartId { get; set; }
+        public int ServicePlanID { get; set; }
+        public int AvailableServiceID { get; set; }
         public int VehicleId { get; set; }
         public int RemainderMinutes { get; set; }
         public int LocationID { get; set; }
         public bool IsTeamsandConditionsAccepted { get; set; }
-        public bool PromoCodeApplied { get; set; }
-        public string PlanType { get; set; }
+        [DefaultValue(false)]
+        public bool? PromoCodeApplied { get; set; }
+       // public string PlanType { get; set; }
     }
 }

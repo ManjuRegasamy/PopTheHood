@@ -59,7 +59,7 @@ namespace PopTheHood.Data
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@FunctionName", FunctionName));
                 parameters.Add(new SqlParameter("@ErrorMessage", ErrorMessage));
-                
+
                 string rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveErrorLog", parameters.ToArray()).ToString();
                 return rowsAffected;
             }
@@ -147,11 +147,40 @@ namespace PopTheHood.Data
         }
         #endregion
 
-
         public enum Source
         {
             Phone = 1,
             Email = 2
+        }
+
+
+        #region GenerateOTP
+        public static string GenerateOTP()
+        {
+            Random generator = new Random();
+            string OTPValue = generator.Next(0, 999999).ToString("D6");
+            return OTPValue;
+        }
+        #endregion
+
+
+        public static string SaveOTP(string PhoneNumber, string OTPValue, string Type)
+        {
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("@PhoneOrEmail", PhoneNumber));
+                parameters.Add(new SqlParameter("@OTPValue", OTPValue));
+                parameters.Add(new SqlParameter("@Type", Type));
+
+                string rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveOTP", parameters.ToArray()).ToString();
+                return rowsAffected;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
     }

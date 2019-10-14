@@ -172,6 +172,7 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@IsEmailVerified", userlogin.IsEmailVerified));
                 parameters.Add(new SqlParameter("@IsPhoneNumVerified", userlogin.IsPhoneNumVerified));
                 parameters.Add(new SqlParameter("@IsPromoCodeApplicable", userlogin.IsPromoCodeApplicable));
+                parameters.Add(new SqlParameter("@Role", userlogin.Role));
                 parameters.Add(new SqlParameter("@Action", Action));
 
                 string rowsAffected = SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, "spSaveUser", parameters.ToArray()).ToString();

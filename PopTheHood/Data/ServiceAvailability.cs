@@ -25,6 +25,8 @@ namespace PopTheHood.Data
             parameters.Add(new SqlParameter("@ServicePlanID", ServicesModel.AvailableServiceID));
             parameters.Add(new SqlParameter("@ServiceName", ServicesModel.ServiceName));
             parameters.Add(new SqlParameter("@Description", ServicesModel.Description));
+            parameters.Add(new SqlParameter("@IsUserCheckApplicable", ServicesModel.IsUserCheckApplicable));
+            parameters.Add(new SqlParameter("@BusinessCondition", ServicesModel.BusinessCondition));
             parameters.Add(new SqlParameter("@Action", Action));
 
             try
@@ -100,5 +102,46 @@ namespace PopTheHood.Data
             }
         }
 
+        public static DataTable GetServicePlan()
+        {
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+                //Execute the query
+                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetServicePlan").Tables[0])
+                {
+                    return dt;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public static DataTable GetServicePriceByID(int ServicePlanID)
+        {
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+                //SqlParameter[] parameters =
+                //{
+                //    new SqlParameter("@ServicePriceChartId", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 10, 0, "ServicePriceChartId", DataRowVersion.Proposed, ServicePriceChartId)
+                //};
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("@ServicePlanID", ServicePlanID));
+                
+                //Execute the query
+                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetServicePriceByID", parameters.ToArray()).Tables[0])
+                {
+                    return dt;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        
     }
 }

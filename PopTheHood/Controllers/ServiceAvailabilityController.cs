@@ -76,6 +76,8 @@ namespace PopTheHood.Controllers
                         service.AvailableServiceID = (int)dt.Rows[i]["AvailableServiceID"];
                         service.ServiceName = dt.Rows[i]["ServiceName"].ToString();
                         service.Description = dt.Rows[i]["Description"].ToString();
+                        service.IsUserCheckApplicable = (dt.Rows[i]["IsUserCheckApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsUserCheckApplicable"]);
+                        service.BusinessCondition = dt.Rows[i]["BusinessCondition"].ToString();
 
                         serviceList.Add(service);
                     }
@@ -116,6 +118,8 @@ namespace PopTheHood.Controllers
                     service.AvailableServiceID = (int)dt.Rows[0]["AvailableServiceID"];
                     service.ServiceName = dt.Rows[0]["ServiceName"].ToString();
                     service.Description = dt.Rows[0]["Description"].ToString();
+                    service.IsUserCheckApplicable = (dt.Rows[0]["IsUserCheckApplicable"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsUserCheckApplicable"]);
+                    service.BusinessCondition = dt.Rows[0]["BusinessCondition"].ToString();
 
                     serviceList.Add(service);
                     //}
@@ -166,5 +170,44 @@ namespace PopTheHood.Controllers
             }
         }
         #endregion
+
+        #region GetServicePlan
+        [HttpGet, Route("GetServicePlan")]
+        public IActionResult GetServicePlan()
+        {
+            List<ServicePlan> PlanList = new List<ServicePlan>();
+            try
+            {
+                DataTable dt = Data.ServiceAvailability.GetServicePlan();
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        ServicePlan service = new ServicePlan();
+                        service.ServicePlanID = (int)dt.Rows[i]["ServicePlanID"];
+                        service.PlanType = dt.Rows[i]["PlanType"].ToString();
+                        service.IsOfferPlan = (bool)dt.Rows[i]["IsOfferPlan"];
+
+                        PlanList.Add(service);
+                    }
+
+                    return StatusCode((int)HttpStatusCode.OK, new { Data = PlanList, Status = "Success" });
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.OK, new { Data = PlanList, Status = "Success" });
+                }
+            }
+
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("GetServicePlan", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+            }
+        }
+        #endregion
+
+       
     }
 }

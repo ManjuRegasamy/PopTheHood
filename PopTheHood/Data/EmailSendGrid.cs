@@ -11,8 +11,6 @@ namespace PopTheHood.Data
 {
     public class EmailSendGrid
     {
-
-
         public static string Apikey()  //Login userInfo
         {
             IConfigurationBuilder builder = new ConfigurationBuilder();

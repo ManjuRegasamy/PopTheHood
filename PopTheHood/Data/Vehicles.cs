@@ -91,6 +91,8 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@Color", vehiclemodel.Color));
                 parameters.Add(new SqlParameter("@LicensePlate", vehiclemodel.LicensePlate));
                 parameters.Add(new SqlParameter("@SpecialNotes", vehiclemodel.SpecialNotes));
+                parameters.Add(new SqlParameter("@VehicleImage", vehiclemodel.VehicleImage));
+                parameters.Add(new SqlParameter("@ImageType", vehiclemodel.ImageType));
                 parameters.Add(new SqlParameter("@Action", Action));
 
                 //using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spSaveVehicle", parameters.ToArray()).Tables[0])

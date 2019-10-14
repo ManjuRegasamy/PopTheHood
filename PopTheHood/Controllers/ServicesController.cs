@@ -24,18 +24,47 @@ namespace PopTheHood.Controllers
         [HttpPost, Route("SaveServiceRequest")]
             public IActionResult SaveServiceRequest([FromBody]ServiceRequest serviceDetails)
             {
-                //string connectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
-
+            //string connectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
+            List<ServiceDetails> serviceDetail = new List<ServiceDetails>();
             try
             {
-                    string row = Data.Services.SaveServiceRequest(serviceDetails);
-
-                    if (row == "Success")
+                DataSet dt = Data.Services.SaveServiceRequest(serviceDetails);
+                string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();                
+                if (row == "Success")
+                {
+                    if (dt.Tables[1].Rows.Count > 0)
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Status = "Success" });
-                    }
+                        for (int i = 0; i < dt.Tables[1].Rows.Count; i++)
+                        {
+                            ServiceDetails service = new ServiceDetails();
+                            service.ServiceID = (dt.Tables[1].Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServiceID"]);
+                            //service.ServicePlanID = (dt.Tables[1].Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePlanID"]);
+                            service.ServicePriceChartId = (dt.Tables[1].Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePriceChartId"]); 
+                            service.PlanType = (dt.Tables[1].Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["PlanType"].ToString());
+                            service.Price = (dt.Tables[1].Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Tables[1].Rows[i]["Price"]);
+                            service.VehicleId = (dt.Tables[1].Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["VehicleId"]);
+                            service.UserId = (dt.Tables[1].Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["UserId"]);
+                            service.RemainderMinutes = (dt.Tables[1].Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["RemainderMinutes"]);
+                            service.LocationID = (dt.Tables[1].Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["LocationID"]);
+                            service.IsTeamsandConditionsAccepted = (dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"]);
+                            service.PromoCodeApplied = (dt.Tables[1].Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["PromoCodeApplied"]);
+                            service.Status = (dt.Tables[1].Rows[i]["Status"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Status"].ToString());
+                            service.ScheduleID = (dt.Tables[1].Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ScheduleID"]);
+                            service.RequestedServiceDate = (dt.Tables[1].Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["RequestedServiceDate"].ToString());
+                            service.ActualServiceDate = (dt.Tables[1].Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ActualServiceDate"].ToString());
+                            service.ServiceOutDate = (dt.Tables[1].Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceOutDate"].ToString());
+                            service.ServiceName = (dt.Tables[1].Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceName"].ToString());
+                            service.Description = (dt.Tables[1].Rows[i]["Description"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Description"].ToString());
+                            service.IsAvailable = (dt.Tables[1].Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsAvailable"]);
 
-                    else
+
+                            serviceDetail.Add(service);
+                        }
+                    }
+                        return StatusCode((int)HttpStatusCode.OK, new { Data = serviceDetail, Status = "Success" });
+                }
+
+                else
                     {
                         return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error while Saving the ServiceRequest", Status = "Error" });
                     }
@@ -69,7 +98,7 @@ namespace PopTheHood.Controllers
                         {
                             ServiceDetails service = new ServiceDetails();
                             service.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
-                           // service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                            service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
                             service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
                             service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                             service.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
@@ -126,6 +155,7 @@ namespace PopTheHood.Controllers
                             ServiceDetails service = new ServiceDetails();
                             service.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
                             //service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                            service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]); 
                             service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
                             service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                             service.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);

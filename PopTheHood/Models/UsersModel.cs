@@ -24,7 +24,7 @@ namespace PopTheHood.Models
         public bool? IsPhoneNumVerified { get; set; }
         public bool? IsPromoCodeApplicable { get; set; }
         public string CreatedDate { get; set; }
-        //public string ModifiedDate { get; set; }
+        public string Role { get; set; }
         //public bool? IsDeleted { get; set; }
         
     }

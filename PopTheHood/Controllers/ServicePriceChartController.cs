@@ -19,34 +19,34 @@ namespace PopTheHood.Controllers
     public class ServicePriceChartController : ControllerBase
     {
         
-        #region DeleteServicePriceChart
-        [HttpDelete, Route("DeleteServicePriceChart/{ServicePriceChartId}")]
-        public IActionResult DeleteServicePriceChart(int ServicePriceChartId)
-        {            
-            try
-            {
-                int row = Data.ServicePriceChart.DeleteServicePriceChart(ServicePriceChartId);
+        //#region DeleteServicePriceChart
+        //[HttpDelete, Route("DeleteServicePriceChart/{ServicePriceChartId}")]
+        //public IActionResult DeleteServicePriceChart(int ServicePriceChartId)
+        //{            
+        //    try
+        //    {
+        //        int row = Data.ServicePriceChart.DeleteServicePriceChart(ServicePriceChartId);
 
-                if (row > 0)
-                {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Deleted Successfully", Status = "Success" });
-                }
+        //        if (row > 0)
+        //        {
+        //            return StatusCode((int)HttpStatusCode.OK, new { Data = "Deleted Successfully", Status = "Success" });
+        //        }
 
-                else
-                {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error Deleting the ServicePriceChart", Status = "Error" });
-                }
+        //        else
+        //        {
+        //            return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error Deleting the ServicePriceChart", Status = "Error" });
+        //        }
 
-            }
-            catch (Exception e)
-            {
-                string SaveErrorLog = Data.Common.SaveErrorLog("DeleteServicePriceChart", e.Message);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        string SaveErrorLog = Data.Common.SaveErrorLog("DeleteServicePriceChart", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
-            }
-        }
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
         #region SaveServicePriceChart
         [HttpPost, Route("SaveServicePriceChart")]
@@ -140,6 +140,50 @@ namespace PopTheHood.Controllers
             try
             {
                 DataTable dt = Data.ServicePriceChart.GetServicePriceChartById(ServicePriceChartId);
+
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        ServicePriceChartModel service = new ServicePriceChartModel();
+                        service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
+                        service.AvailableServiceID = (dt.Rows[i]["AvailableServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["AvailableServiceID"]);
+                        service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                        service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
+                        service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+                        //service.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
+
+                        serviceList.Add(service);
+                    }
+
+                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                }
+            }
+
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("GetServicePriceChart", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+            }
+        }
+        #endregion
+
+
+        #region GetServicePriceByID
+        [HttpGet, Route("GetServicePriceByID/{ServicePlanID}")]
+        public IActionResult GetServicePriceByID(int ServicePlanID)
+        {
+            List<ServicePriceChartModel> serviceList = new List<ServicePriceChartModel>();
+            // string GetConnectionString = ServicesController.GetConnectionString();
+
+            try
+            {
+                DataTable dt = Data.ServiceAvailability.GetServicePriceByID(ServicePlanID);
 
                 if (dt.Rows.Count > 0)
                 {

@@ -85,20 +85,20 @@ namespace PopTheHood.Data
         }
 
 
-        public static string SaveServiceRequest(ServiceRequest serviceDetails)
+        public static DataSet SaveServiceRequest(ServiceRequest serviceDetails)
         {
             try
             {
                 string ConnectionString = Common.GetConnectionString();
                 List<SqlParameter> parameters = new List<SqlParameter>();
-               // parameters.Add(new SqlParameter("@ServicePlanID", serviceDetails.ServicePlanID));
-                parameters.Add(new SqlParameter("@ServicePriceChartId", serviceDetails.ServicePriceChartId));
+                parameters.Add(new SqlParameter("@ServicePlanID", serviceDetails.ServicePlanID));
+                parameters.Add(new SqlParameter("@AvailableServiceID", serviceDetails.AvailableServiceID));
                 parameters.Add(new SqlParameter("@VehicleId", serviceDetails.VehicleId));
                 parameters.Add(new SqlParameter("@RemainderMinutes", serviceDetails.RemainderMinutes));
                 parameters.Add(new SqlParameter("@LocationID", serviceDetails.LocationID));
                 parameters.Add(new SqlParameter("@IsTeamsandConditionsAccepted", serviceDetails.IsTeamsandConditionsAccepted));
                 parameters.Add(new SqlParameter("@PromoCodeApplied", serviceDetails.PromoCodeApplied));
-                parameters.Add(new SqlParameter("@PlanType", serviceDetails.PlanType));
+              //  parameters.Add(new SqlParameter("@PlanType", serviceDetails.PlanType));
 
 
                 //int rowsAffected = SqlHelper.ExecuteScalar(connectionString, CommandType.StoredProcedure, "spSaveUser", parameters.ToArray());
@@ -106,9 +106,16 @@ namespace PopTheHood.Data
                 //return rowsAffected.ToString();
                 using (DataSet dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spSaveServiceRequest", parameters.ToArray()))
                 {
-                    string rowsAffected = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
-
-                    return rowsAffected;
+                    return dt;
+                    //DataTable rowsAffected = dt.Tables[0];
+                    //if(rowsAffected.ToString() == "Success")
+                    //{
+                    //    return dt.Tables[1];
+                    //}
+                    //else
+                    //{ 
+                    //    return dt.Tables[0];
+                    //}
                 }
             }
             catch (Exception e)
