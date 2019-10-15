@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using PopTheHood.Data;
 using PopTheHood.Models;
 
 namespace PopTheHood.Controllers
@@ -24,8 +25,7 @@ namespace PopTheHood.Controllers
         public IActionResult GetUserVehicleDetails(int UserId, string Search)
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
-            List<VehiclesModel> vechileList = new List<VehiclesModel>();            
-            List<VehiclesDetails> UservechileList = new List<VehiclesDetails>();
+            List<VehiclesDetails> vechileList = new List<VehiclesDetails>();            
             
             try
             {
@@ -38,7 +38,7 @@ namespace PopTheHood.Controllers
 
                         if ((dt.Rows[i]["VehicleId"]) != null)
                         {
-                            VehiclesModel vechile = new VehiclesModel();
+                            VehiclesDetails vechile = new VehiclesDetails();
                             //vechile.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
                             //vechile.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
                             //vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
@@ -51,7 +51,7 @@ namespace PopTheHood.Controllers
                             vechile.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
                             vechile.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
                             vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
-                            vechile.VehicleImage = (dt.Rows[i]["VehicleImage"] == DBNull.Value ? new byte[0] : (byte[])dt.Rows[i]["VehicleImage"]);
+                            vechile.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
                             vechile.ImageType = (dt.Rows[i]["ImageType"] == DBNull.Value ? "" : dt.Rows[i]["ImageType"].ToString());
 
                         //vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());
@@ -87,7 +87,7 @@ namespace PopTheHood.Controllers
         public IActionResult GetVehicleById(int VehicleId)
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
-            List<VehiclesModel> vechileList = new List<VehiclesModel>();
+            List<VehiclesDetails> vechileList = new List<VehiclesDetails>();
             try
             {
                 DataTable dt = Data.Vehicles.GetVehicleById(VehicleId);
@@ -96,7 +96,7 @@ namespace PopTheHood.Controllers
                 {
                     //for (int i = 0; i < dt.Rows.Count; i++)
                     //{
-                        VehiclesModel vechile = new VehiclesModel();
+                    VehiclesDetails vechile = new VehiclesDetails();
                         vechile.VehicleId = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]);
                         vechile.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
                         vechile.Make = (dt.Rows[0]["Make"] == DBNull.Value ? "" : dt.Rows[0]["Make"].ToString());
@@ -108,7 +108,7 @@ namespace PopTheHood.Controllers
                         vechile.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                         vechile.CreatedDate = (dt.Rows[0]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[0]["CreatedDate"].ToString());
                         vechile.ModifiedDate = (dt.Rows[0]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[0]["ModifiedDate"].ToString());
-                    vechile.VehicleImage = (dt.Rows[0]["VehicleImage"] == DBNull.Value ? new byte[0] : (byte[])dt.Rows[0]["VehicleImage"]);
+                    vechile.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
                     vechile.ImageType = (dt.Rows[0]["ImageType"] == DBNull.Value ? "" : dt.Rows[0]["ImageType"].ToString());
                         vechileList.Add(vechile);
                     //}
@@ -161,13 +161,17 @@ namespace PopTheHood.Controllers
 
         #region SaveVehicle
         [HttpPost, Route("SaveVehicle")]
-        public IActionResult SaveVehicle([FromBody]VehiclesDetails vehiclemodel, string Action)  //int VehicleId, int UserId, string Make, string Model, int Year, string Color, string LicensePlate, string SpecialNotes
+        public IActionResult SaveVehicle([FromBody]VehiclesModel vehiclemodel, string Action)  //int VehicleId, int UserId, string Make, string Model, int Year, string Color, string LicensePlate, string SpecialNotes
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
             
             try
             {
-                if(vehiclemodel.LicensePlate == "")
+                if(vehiclemodel.VehicleImage.ToString() != "")
+                { 
+                    vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid().ToString(), "vehicleimages").Result;
+                }
+                if (vehiclemodel.LicensePlate == "")
                 {
                     return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Please enter LicensePlate", Status = "Error" });
                 }

@@ -77,7 +77,7 @@ namespace PopTheHood.Data
             }
         }
 
-        public static int SaveVehicle(VehiclesDetails vehiclemodel, string Action)
+        public static int SaveVehicle(VehiclesModel vehiclemodel, string Action)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@Color", vehiclemodel.Color));
                 parameters.Add(new SqlParameter("@LicensePlate", vehiclemodel.LicensePlate));
                 parameters.Add(new SqlParameter("@SpecialNotes", vehiclemodel.SpecialNotes));
-                parameters.Add(new SqlParameter("@VehicleImage", vehiclemodel.VehicleImage));
+                parameters.Add(new SqlParameter("@VehicleImageURL", vehiclemodel.VehicleImageURL));
                 parameters.Add(new SqlParameter("@ImageType", vehiclemodel.ImageType));
                 parameters.Add(new SqlParameter("@Action", Action));
 
