@@ -80,10 +80,46 @@ namespace PopTheHood.Data
                 to = to,
                 text = text
             });
-           
+            var res = results.messages;
+            //SMS.SMSResponseDetail rd = new SMS.SMSResponseDetail(results);
+            //rd = results;
+            //rd.status.ToString();
+
             return results.messages.ToString();
 
         }
+
+
+
+        //public static List<SMSResponseDetail> SendMessage(string to, string text) //List<Attachments> attachments, string body, string cc,
+        //{
+        //    IConfigurationBuilder builder = new ConfigurationBuilder();
+        //    builder.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));
+
+        //    IConfigurationRoot configuration = builder.Build();
+        //    var SMSKey = configuration.GetSection("appSettings").GetSection("Nexmo.api_key").Value;
+        //    var SMSValue = configuration.GetSection("appSettings").GetSection("Nexmo.api_secret").Value;
+
+        //    var client = new Client(creds: new Nexmo.Api.Request.Credentials
+        //    {
+        //        ApiKey = SMSKey,
+        //        ApiSecret = SMSValue
+        //    });
+
+        //    var results = client.SMS.Send(new SMS.SMSRequest
+        //    {
+        //        from = Configuration.Instance.Settings["appsettings:NEXMO_FROM_NUMBER"],
+        //        to = to,
+        //        text = text
+        //    });
+
+        //    List<SMSResponseDetail> res = results.messages.ToList();
+
+        //    //SMSResponse sr = new SMSResponse();
+        //    //sr = results.ToList();
+        //    return res;
+
+        //}
 
     }
 }

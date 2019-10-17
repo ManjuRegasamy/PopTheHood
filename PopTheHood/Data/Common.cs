@@ -174,8 +174,15 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@OTPValue", OTPValue));
                 parameters.Add(new SqlParameter("@Type", Type));
 
-                string rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveOTP", parameters.ToArray()).ToString();
-                return rowsAffected;
+                using (DataSet dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spSaveOTP", parameters.ToArray()))
+                {
+                    string rowsAffected = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    return rowsAffected;
+                }
+                //string rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveOTP", parameters.ToArray()).ToString();
+                //return rowsAffected;
+                //string rowsAffected = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                //return rowsAffected;
             }
             catch (Exception e)
             {

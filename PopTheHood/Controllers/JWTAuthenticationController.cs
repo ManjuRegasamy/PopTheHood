@@ -13,9 +13,11 @@ using PopTheHood.Models;
 using System.Data;
 using System.Net;
 using PopTheHood.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace PopTheHood.Controllers
 {
+    [EnableCors("AllowAll")]
     [Route("api/[controller]")]
     [ApiController]
     public class JWTAuthenticationController : ControllerBase

@@ -23,7 +23,7 @@ namespace PopTheHood.Data
         }
 
 
-        public static async Task<string> Mail(string from, string to, string subject, string UserName, string BodyContent, string FilePath) //List<Attachments> attachments, string body, string cc,
+        public static async Task<string> Mail(string from, string to, string subject, string UserName, string BodyContent)//, string FilePath) //List<Attachments> attachments, string body, string cc,
         {
 
             //var owners = System.IO.File.ReadAllLines(@"..\wwwroot\EmailTemplate\ErrorMessageNotification.html");
@@ -33,17 +33,17 @@ namespace PopTheHood.Data
             #region EmailTemplate for Content of the Mail
             string Body = string.Empty;
 
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(FilePath))
-            {
-                Body = sr.ReadToEnd();
-            }
+            //using (System.IO.StreamReader sr = new System.IO.StreamReader(FilePath))
+            //{
+            //    Body = sr.ReadToEnd();
+            //}
             //Body = Body.Replace("{{name}}", string.Join(" / ", to));
             //Body = Body.Replace("{{LogoImage}}", ImagePath);
-            Body = Body.Replace("{{CompanyName}}", "PopTheHood");
-            Body = Body.Replace("{{From}}",from);
-            Body = Body.Replace("{{To}}", to);
-            Body = Body.Replace("{{UserName}}", UserName);
-            Body = Body.Replace("{{BodyContent}}", BodyContent); 
+            //Body = Body.Replace("{{CompanyName}}", "PopTheHood");
+            //Body = Body.Replace("{{From}}",from);
+            //Body = Body.Replace("{{To}}", to);
+            //Body = Body.Replace("{{UserName}}", UserName);
+            //Body = Body.Replace("{{BodyContent}}", BodyContent); 
 
             mail.HtmlContent = Body;
             #endregion
@@ -66,6 +66,7 @@ namespace PopTheHood.Data
             //}
 
             mail.Subject = subject;
+            mail.PlainTextContent = BodyContent;
 
             //if (attachments != null)
             //{
@@ -80,5 +81,7 @@ namespace PopTheHood.Data
             return status.StatusCode.ToString();
 
         }
+
+
     }
 }

@@ -44,7 +44,7 @@ namespace PopTheHood.Models
         public string VehicleCreatedDate { get; set; }
         public bool IsDeleted { get; set; }
         public byte[] VehicleImage { get; set; }
-        public string ImageType { get; set; }
+        //public string ImageType { get; set; }
         //public string VehicleImageURL { get; set; }
     }
 
@@ -59,7 +59,7 @@ namespace PopTheHood.Models
         public string LicensePlate { get; set; }
         public string SpecialNotes { get; set; }
        // public byte[]  VehicleImage { get; set; }
-        public string ImageType { get; set; }
+       // public string ImageType { get; set; }
         public string VehicleImageURL { get; set; }
         //public string VehicleCreatedDate { get; set; }
         public string CreatedDate { get; set; }

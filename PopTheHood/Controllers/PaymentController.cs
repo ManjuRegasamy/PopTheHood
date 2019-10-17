@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using PopTheHood.Models;
 using static PopTheHood.Models.PaymentModel;
+using Microsoft.AspNetCore.Cors;
 
 namespace PopTheHood.Controllers
 {
+    [EnableCors("AllowAll")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]

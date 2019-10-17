@@ -191,5 +191,28 @@ namespace PopTheHood.Data
             }
             
         }
+
+        public static string PhoneOrEmailVerification(string PhoneEmail, string OTP, string Type)
+        {
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("@PhoneOrEmail", PhoneEmail));
+                parameters.Add(new SqlParameter("@OTP", OTP));
+                parameters.Add(new SqlParameter("@Type", Type));
+
+                using (DataSet dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spPhoneEmailVerification", parameters.ToArray()))
+                {
+                    string rowsAffected = dt.Tables[0].Rows[0]["Status"].ToString();
+                    return rowsAffected;
+                }
+            }
+
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
