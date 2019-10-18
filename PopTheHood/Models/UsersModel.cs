@@ -40,9 +40,9 @@ namespace PopTheHood.Models
     {
         public int UserId { get; set; }
         public bool Status { get; set; } = false;
-        [Required]
-        [EnumDataType(typeof(RegSource))]
-        public RegSource RegSource { get; set; }
+        //[Required]
+        //[EnumDataType(typeof(RegSource))]
+        //public RegSource RegSource { get; set; }
     }
 
     public enum RegSource

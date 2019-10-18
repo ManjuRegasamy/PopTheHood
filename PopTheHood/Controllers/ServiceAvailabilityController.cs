@@ -22,30 +22,28 @@ namespace PopTheHood.Controllers
 
         #region SaveAvailableService
         [HttpPost, Route("SaveAvailableService")]
-        public IActionResult SaveAvailableService([FromBody]ServicesModel ServicesModel, string Action)
+        public IActionResult SaveAvailableService([FromBody]ServicesModel ServicesModel)
         {
+            string Action = "Add";
             //string connectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
             //List<VehicleServiceHistoryDetails> vechileList = new List<VehicleServiceHistoryDetails>();
             try
             {
-                int row = Data.ServiceAvailability.SaveAvailableService(ServicesModel, Action == null ? "" : Action);
+                int row = GetSaveAvailableService(ServicesModel, Action); //Data.ServiceAvailability.SaveAvailableService(ServicesModel, Action);
 
                 if (row > 0)
-                {
-                    if (Action == "Add")
-                    {
-                        //return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
-                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
-                    }
-                    else
-                    {
-                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
-                    }
+                {                    
+                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                    //}
+                    //else
+                    //{
+                    //    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    //}
 
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while Saving/Updating the Service" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Error while Saving the Service" } });
                 }
 
             }
@@ -57,6 +55,38 @@ namespace PopTheHood.Controllers
             }
         }
         #endregion
+
+        #region UpdateAvailableService
+        [HttpPut, Route("UpdateAvailableService")]
+        public IActionResult UpdateAvailableService([FromBody]ServicesModel ServicesModel)
+        {
+            string Action = "Update";
+            //string connectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
+            //List<VehicleServiceHistoryDetails> vechileList = new List<VehicleServiceHistoryDetails>();
+            try
+            {
+                int row = GetSaveAvailableService(ServicesModel, Action); //Data.ServiceAvailability.SaveAvailableService(ServicesModel, Action);
+
+                if (row > 0)
+                {
+                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Error while Updating the Service" } });
+                }
+
+            }
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("UpdateAvailableService", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+            }
+        }
+        #endregion
+
 
         #region GetAvailableService
         [HttpGet, Route("GetAvailableService")]
@@ -161,7 +191,7 @@ namespace PopTheHood.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { Error = "Invalid Service" });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { Error = "Invalid Service" });
                 }
             }
             catch (Exception e)
@@ -211,5 +241,13 @@ namespace PopTheHood.Controllers
         #endregion
 
        
+
+
+        public static int GetSaveAvailableService([FromBody]ServicesModel ServicesModel, string Action)
+        {
+            int row = Data.ServiceAvailability.SaveAvailableService(ServicesModel, Action);
+
+            return row;
+        }
     }
 }

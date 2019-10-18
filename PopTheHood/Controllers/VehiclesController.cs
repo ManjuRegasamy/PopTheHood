@@ -24,7 +24,7 @@ namespace PopTheHood.Controllers
         #region Vehicles
         //GetUserVehicleDetails
         [HttpGet, Route("Vehicles")]
-        public IActionResult GetUserVehicleDetails(int UserId, string Search)
+        public IActionResult GetUserVehicleDetails(int UserId, string Search, int Count, int Offset)
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
             List<VehiclesDetails> vechileList = new List<VehiclesDetails>();            
@@ -32,7 +32,7 @@ namespace PopTheHood.Controllers
             try
             {
                
-                DataTable dt = Data.Vehicles.GetUserVehicleDetails(UserId == null ? 0 : UserId, Search == null ? "" : Search);
+                DataTable dt = Data.Vehicles.GetUserVehicleDetails(UserId == null ? 0 : UserId, Search == null ? "" : Search, Count == 0 ? 10 : Count, Offset == 0 ? 0 : Offset);
                 if (dt.Rows.Count > 0)
                 {                   
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -44,7 +44,7 @@ namespace PopTheHood.Controllers
                             //vechile.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
                             //vechile.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
                             //vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
-                            vechile.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
+                            vechile.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
                             vechile.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);                        
                             vechile.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
                             vechile.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
@@ -53,7 +53,7 @@ namespace PopTheHood.Controllers
                             vechile.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
                             vechile.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
                             vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
-                            vechile.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
+                            vechile.VehicleImageURL = (dt.Rows[i]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[i]["VehicleImageURL"].ToString());
                             //vechile.ImageType = (dt.Rows[i]["ImageType"] == DBNull.Value ? "" : dt.Rows[i]["ImageType"].ToString());
 
                         //vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());
@@ -149,7 +149,7 @@ namespace PopTheHood.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Vehicle not available" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Vehicle not available" } });
                 }
 
             }
@@ -377,7 +377,7 @@ namespace PopTheHood.Controllers
                 else
                 {
                     //return "Invalid";
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Location not saved" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Location not saved" } });
                 }
             }
 
@@ -406,7 +406,7 @@ namespace PopTheHood.Controllers
                 else
                 {
                     //return "Invalid";
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Location not Updated" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Location not Updated" } });
                 }
             }
 

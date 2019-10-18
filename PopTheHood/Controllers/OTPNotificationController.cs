@@ -74,7 +74,7 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Phone number not available" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Phone number not available" } });
                 }
 
             }
@@ -102,7 +102,7 @@ namespace PopTheHood.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while sending OTP" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Error while sending OTP" } });
                 }
             }
 
@@ -198,7 +198,7 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = row } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
                 }
                     
             }

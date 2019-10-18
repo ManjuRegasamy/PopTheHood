@@ -13,6 +13,8 @@ namespace PopTheHood.Models
         public int ServicePlanID { get; set; }
         public bool IsAvailable { get; set; }
         public decimal Price { get; set; }
+        public string ServiceName { get; set; }
+        public string PlanType { get; set; }
         //public int servicePlanID { get; set; }
     }
 

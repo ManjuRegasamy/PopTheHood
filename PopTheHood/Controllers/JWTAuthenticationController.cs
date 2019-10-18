@@ -90,18 +90,18 @@ namespace PopTheHood.Controllers
                     //user.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                     userList.Add(user);
 
-                    var tokenstr = GenerateJSONWebToken();
-                    var encrypt = Common.EncryptData(tokenstr);
+                    var token = GenerateJSONWebToken();
+                    var encrypt = Common.EncryptData(token);
                     //var decrypt = ss.DecryptData(encrypt);    , DecryptedText = decrypt
                     //return StatusCode((int)HttpStatusCode.OK, new { Data = userList, TokenString = tokenstr, EncryptedTokenString = encrypt, Status = "Success" });
-                    return StatusCode((int)HttpStatusCode.OK, new { user, tokenstr });
+                    return StatusCode((int)HttpStatusCode.OK, new { user, token });
                 }
                 else
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("Login", "Invalid User");
 
                     //return StatusCode((int)HttpStatusCode.Unauthorized, new { Data = "Invalid User" });
-                    return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "Invalid User" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Invalid User" } });
                 }
 
             }

@@ -70,7 +70,7 @@ namespace PopTheHood.Data
             }
         }
 
-        public static DataTable GetAllUserList(string Search)
+        public static DataTable GetAllUserList(string Search, int Count, int Offset)
         {
             try
             {
@@ -78,6 +78,8 @@ namespace PopTheHood.Data
                 //Create the parameters in the SqlParameter array
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@Search", Search));
+                parameters.Add(new SqlParameter("@Count", Count));
+                parameters.Add(new SqlParameter("@Offset", Offset));
 
                 //Execute the query
                 using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetUserList", parameters.ToArray()).Tables[0])
@@ -111,7 +113,7 @@ namespace PopTheHood.Data
             }
         }
 
-        public static int UpdateVerificationStatus(int UserId, bool Status, IEnumerable<Common.Source> Source)
+        public static int UpdateVerificationStatus(int UserId, bool Status, string Source)
         {
             try
             {

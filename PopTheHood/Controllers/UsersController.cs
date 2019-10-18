@@ -56,7 +56,7 @@ namespace PopTheHood.Controllers
                 else
                 {
                     //return "Invalid user";
-                   return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "Account not exist" } });
+                   return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Account not exist" } });
                 }
             }
             catch (Exception e)
@@ -85,7 +85,7 @@ namespace PopTheHood.Controllers
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("ForgetPassword", Result);
 
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = Result } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = Result } });
                 }
             }
 
@@ -102,7 +102,7 @@ namespace PopTheHood.Controllers
 
         #region Users
         [HttpGet, Route("Users")]
-        public IActionResult GetAllUserList(string Search)
+        public IActionResult GetAllUserList(string Search, int Count, int Offset)
         {
             //string GetConnectionString = UsersController.GetConnectionString();
             //string GetConnectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
@@ -113,7 +113,7 @@ namespace PopTheHood.Controllers
                 {
                     Search = "";
                 }
-                DataTable dt = Data.Users.GetAllUserList(Search);
+                DataTable dt = Data.Users.GetAllUserList(Search, Count == 0 ? 10 : Count, Offset == 0 ? 0 : Offset);
 
                 if(dt.Rows.Count > 0)
                 { 
@@ -168,7 +168,7 @@ namespace PopTheHood.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while Deleting the record" } });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Deleting the record" } });
                 }
 
             }
@@ -183,13 +183,13 @@ namespace PopTheHood.Controllers
 
         #region UpdateVerificationStatus
         [HttpPut, Route("UpdateVerificationStatus/{UserId}/{Source}/{Status}")]
-        public IActionResult UpdateVerificationStatus(int UserId, bool Status, IEnumerable<Common.Source> Source)
+        public IActionResult UpdateVerificationStatus(int UserId, bool Status, RegSource Source)
         {
             //string connectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
             UsersLogin users = new UsersLogin();
             try
             {
-                int row = Data.Users.UpdateVerificationStatus(UserId, Status, Source);
+                int row = Data.Users.UpdateVerificationStatus(UserId, Status, Source.ToString());
 
                 if (row > 0)
                 {
@@ -197,14 +197,14 @@ namespace PopTheHood.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while Update Phone/Email status" } });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Update Phone/Email status" } });
                 }
             }
             catch (Exception e)
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("UpdatePhoneEmailStatus", e.Message.ToString());
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } }); 
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } }); 
             }
         }
         #endregion
@@ -335,7 +335,7 @@ namespace PopTheHood.Controllers
                 {
                     //return "Invalid user";
                     //var expected = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { foo = "abcd" }));
-                    return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "invalid user" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "invalid user" } });
                 }
             }
 
@@ -391,7 +391,7 @@ namespace PopTheHood.Controllers
                 else
                 {
                     //return "Invalid user";
-                    return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "Invalid User" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Invalid User" } });
                 }
             }
 

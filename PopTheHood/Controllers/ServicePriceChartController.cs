@@ -52,28 +52,26 @@ namespace PopTheHood.Controllers
 
         #region SaveServicePriceChart
         [HttpPost, Route("SaveServicePriceChart")]
-        public IActionResult SaveServicePriceChart([FromBody]ServicePriceChartModel servicePriceChart, string Action)
+        public IActionResult SaveServicePriceChart([FromBody]ServicePriceChartModel servicePriceChart)
         {
-            
+            string Action = "Add";
             try
             {
-                int row = Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action == null ? "" : Action);
+                int row = GetSaveServicePriceChart(servicePriceChart, Action); //Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action);
 
                 if (row > 0)
                 {
-                    if (Action == "Add")
-                    {
-                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
-                    }
-                    else
-                    {
-                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
-                    }
+                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                    //}
+                    //else
+                    //{
+                    //    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    //}
 
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { Error = "Error Save / Update the Service Price Chart" }); 
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { Error = "Error Saving the Service Price Chart" }); 
                 }
 
             }
@@ -85,6 +83,34 @@ namespace PopTheHood.Controllers
             }
         }
 
+        #endregion
+
+        #region UpdateServicePriceChart
+        [HttpPut, Route("UpdateServicePriceChart")]
+        public IActionResult UpdateServicePriceChart([FromBody]ServicePriceChartModel servicePriceChart)
+        {
+            string Action = "Update";
+            try
+            {
+                int row = GetSaveServicePriceChart(servicePriceChart, Action); //Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action);
+
+                if (row > 0)
+                {
+                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");                   
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { Error = "Error Updating the Service Price Chart" });
+                }
+
+            }
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("UpdateServicePriceChart", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+            }
+        }
         #endregion
 
 
@@ -108,6 +134,8 @@ namespace PopTheHood.Controllers
                         services.AvailableServiceID = (dt.Rows[i]["AvailableServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["AvailableServiceID"]);
                         // services.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
                         services.ServicePlanID = (dt.Rows[i]["servicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["servicePlanID"]);
+                        services.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
+                        services.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
                         services.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         services.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
                         //services.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
@@ -151,6 +179,8 @@ namespace PopTheHood.Controllers
                         service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
                         service.AvailableServiceID = (dt.Rows[i]["AvailableServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["AvailableServiceID"]);
                         service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                        service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
+                        service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
                         service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
                         //service.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
@@ -195,6 +225,8 @@ namespace PopTheHood.Controllers
                         service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
                         service.AvailableServiceID = (dt.Rows[i]["AvailableServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["AvailableServiceID"]);
                         service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                        service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
+                        service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
                         service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
                         //service.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
@@ -218,6 +250,14 @@ namespace PopTheHood.Controllers
             }
         }
         #endregion
+
+
+
+        public static int GetSaveServicePriceChart([FromBody]ServicePriceChartModel servicePriceChart, string Action)
+        {
+            int res = Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action);
+            return res;
+        }
 
     }
 }

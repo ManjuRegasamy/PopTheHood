@@ -37,7 +37,7 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = row } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
                 }
             }
 
@@ -102,7 +102,7 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = rowsAffected } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = rowsAffected } });
                 }
 
 
