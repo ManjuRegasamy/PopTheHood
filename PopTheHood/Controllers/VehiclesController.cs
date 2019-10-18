@@ -21,9 +21,9 @@ namespace PopTheHood.Controllers
     public class VehiclesController : ControllerBase
     {
        
-        #region GetUserVehicleDetails
+        #region Vehicles
         //GetUserVehicleDetails
-        [HttpGet, Route("GetUserVehicleDetails")]
+        [HttpGet, Route("Vehicles")]
         public IActionResult GetUserVehicleDetails(int UserId, string Search)
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
@@ -65,27 +65,27 @@ namespace PopTheHood.Controllers
                             vechileList.Add(vechile);
                         }
                     }
-                  return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                  return StatusCode((int)HttpStatusCode.OK, vechileList);
                       
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
             catch (Exception e)
             {
-                string SaveErrorLog = Data.Common.SaveErrorLog("GetVehicleById", e.Message);
+                string SaveErrorLog = Data.Common.SaveErrorLog("Vehicles", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
 
-        #region GetVehicleById
-        [HttpGet, Route("GetVehicleById/{VehicleId}")]
+        #region Vehicle
+        [HttpGet, Route("Vehicle/{VehicleId}")]
         public IActionResult GetVehicleById(int VehicleId)
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
@@ -93,12 +93,13 @@ namespace PopTheHood.Controllers
             try
             {
                 DataTable dt = Data.Vehicles.GetVehicleById(VehicleId);
+                VehiclesDetails vechile = new VehiclesDetails();
 
                 if (dt.Rows.Count > 0)
                 {
                     //for (int i = 0; i < dt.Rows.Count; i++)
                     //{
-                    VehiclesDetails vechile = new VehiclesDetails();
+                    
                         vechile.VehicleId = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]);
                         vechile.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
                         vechile.Make = (dt.Rows[0]["Make"] == DBNull.Value ? "" : dt.Rows[0]["Make"].ToString());
@@ -110,24 +111,24 @@ namespace PopTheHood.Controllers
                         vechile.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                         vechile.CreatedDate = (dt.Rows[0]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[0]["CreatedDate"].ToString());
                         vechile.ModifiedDate = (dt.Rows[0]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[0]["ModifiedDate"].ToString());
-                    vechile.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
+                        vechile.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
                     //vechile.ImageType = (dt.Rows[0]["ImageType"] == DBNull.Value ? "" : dt.Rows[0]["ImageType"].ToString());
                         vechileList.Add(vechile);
                     //}
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, vechile );
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
             catch (Exception e)
             {
-                string SaveErrorLog = Data.Common.SaveErrorLog("GetVehicleById", e.Message);
+                string SaveErrorLog = Data.Common.SaveErrorLog("Vehicle", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
@@ -144,11 +145,11 @@ namespace PopTheHood.Controllers
 
                 if (row > 0)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Deleted Successfully", Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, "Deleted Successfully");
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error Deleting the Vehicle", Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Vehicle not available" } });
                 }
 
             }
@@ -156,59 +157,122 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("DeleteVehicle", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
 
+
         #region SaveVehicle
-        [HttpPost, Route("SaveVehicle")]
-        public IActionResult SaveVehicle([FromBody]VehiclesModel vehiclemodel, string Action)  //int VehicleId, int UserId, string Make, string Model, int Year, string Color, string LicensePlate, string SpecialNotes
+        [HttpPost, Route("Vehicle")]
+        public IActionResult SaveVehicle([FromBody]VehiclesModel vehiclemodel)  //int VehicleId, int UserId, string Make, string Model, int Year, string Color, string LicensePlate, string SpecialNotes
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
-            
+            string Action = "Add";
+            //try
+            //{
+            //    if(vehiclemodel.VehicleImage.ToString() != "")
+            //    { 
+            //        vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
+            //    }
+            //    if (vehiclemodel.LicensePlate == "")
+            //    {
+            //        return StatusCode((int)HttpStatusCode.InternalServerError, new { Error = "Please enter LicensePlate" });
+            //    }
+            //    else if (vehiclemodel.UserId <= 0)
+            //    {
+            //        return StatusCode((int)HttpStatusCode.InternalServerError, new { Error = "Please enter UserId" });
+            //    }
+            //    int row = Data.Vehicles.SaveVehicle(vehiclemodel, Action);
+
+            //    if (row > 0)
+            //    {
+            //        if (Action == "Add")
+            //        {
+            //            return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+            //        }
+            //        else
+            //        {
+            //            return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        return StatusCode((int)HttpStatusCode.BadRequest, new { Error = "Error Saving the Vehicle" });
+            //    }
+
+            //}
             try
             {
-                if(vehiclemodel.VehicleImage.ToString() != "")
-                { 
-                    vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
-                }
-                if (vehiclemodel.LicensePlate == "")
-                {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Please enter LicensePlate", Status = "Error" });
-                }
-                else if (vehiclemodel.UserId <= 0)
-                {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Please enter UserId", Status = "Error" });
-                }
-                int row = Data.Vehicles.SaveVehicle(vehiclemodel, Action == null ? "" : Action);
+                string Results = SaveUpdateVehicle(vehiclemodel, Action);
 
-                if (row > 0)
+                if (Results == "Please enter LicensePlate")
                 {
-                    if (Action == "Add")
-                    {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Status = "Success" });
-                    }
-                    else
-                    {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = "Updated Successfully", Status = "Success" });
-                    }
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter LicensePlate" } });
                 }
-                else
+                else if (Results == "Please enter UserId")
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error Saving the Service", Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter UserId" } });
+                }
+                else if (Results == "Success")
+                {
+                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                }
+                else //if (Results == "Error Updating the Vehicle")
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Vehicle not saved" } });
                 }
 
-            }
+            }            
 
             catch (Exception e)
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("SaveVehicle", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
             }
         }
         #endregion
+
+        #region UpdateVehicle
+        [HttpPut, Route("Vehicle")]
+        public IActionResult UpdateVehicle([FromBody]VehiclesModel vehiclemodel)
+        {
+            string Action = "Update";
+            try
+            {
+                string Results = SaveUpdateVehicle(vehiclemodel, Action);
+
+                if (Results == "Please enter LicensePlate")
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter LicensePlate" } });
+                }
+                else if (Results == "Please enter UserId")
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter UserId" } });
+                }
+                else if (Results == "Success")
+                {
+                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully" );
+                }
+                else //if (Results == "Error Updating the Vehicle")
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Vehicle not updated" } });
+                }
+
+            }            
+            
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("UpdateVehicle", e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+            }
+
+
+        }
+
+        #endregion
+
 
         #region GetVehicleServiceHistoryDetails
         [HttpGet, Route("GetVehicleServiceHistoryDetails/{UserId}")]
@@ -262,17 +326,19 @@ namespace PopTheHood.Controllers
                         vechiles.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
                         vechiles.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
                         vechiles.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
-                        vechiles.VehicleImage = ((byte[])dt.Rows[i]["VehicleImage"]);
-                        vechiles.ImageType = (dt.Rows[i]["ImageType"] == DBNull.Value ? "" : dt.Rows[i]["ImageType"].ToString());
+                        //vechiles.VehicleImage = ((byte[])dt.Rows[i]["VehicleImage"]);
+                        vechiles.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
+
+                       // vechiles.ImageType = (dt.Rows[i]["ImageType"] == DBNull.Value ? "" : dt.Rows[i]["ImageType"].ToString());
 
                         vechileList.Add(vechiles);
                     }
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, vechileList);
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
@@ -280,38 +346,38 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("GetVehicleServiceHistoryDetails", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
         
 
         #region SaveLocation
-        [HttpPost, Route("SaveLocation")]
-        public IActionResult SaveLocation([FromBody]VehicleLocation vehiclelocation, string Action) //int LocationID, int VehicleId, decimal LocationLatitude, decimal LocationLongitude, string LocationFullAddress
+        [HttpPost, Route("Location")]
+        public IActionResult SaveLocation([FromBody]VehicleLocation vehiclelocation) //int LocationID, int VehicleId, decimal LocationLatitude, decimal LocationLongitude, string LocationFullAddress
         {
             //List<VehicleLocation> vehicleLocation = new List<VehicleLocation>();
             //string GetConnectionString = VehiclesController.GetConnectionString();
-           
+            string Action = "Add";
             try
             {
-                int row = Data.Vehicles.SaveLocation(vehiclelocation, Action == null ? "" : Action);
+                int row = Data.Vehicles.SaveLocation(vehiclelocation, Action);
 
                 if (row > 0)
                 {
-                    if (Action == "Add")
-                    {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Status = "Success" });
-                    }
-                    else
-                    {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = "Updated Successfully", Status = "Success" });
-                    }
+                    //if (Action == "Add")
+                    //{
+                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                    //}
+                    //else
+                    //{
+                    //    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    //}
                 }
                 else
                 {
                     //return "Invalid";
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error while Save/Update Location", Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Location not saved" } });
                 }
             }
 
@@ -319,10 +385,78 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("SaveLocation", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
             }
         }
         #endregion
+
+        #region UpdateLocation
+        [HttpPut, Route("Location")]
+        public IActionResult UpdateLocation([FromBody]VehicleLocation vehiclelocation)
+        {
+            string Action = "Update";
+            try
+            {
+                int row = Data.Vehicles.SaveLocation(vehiclelocation, Action);
+
+                if (row > 0)
+                {                    
+                     return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");                    
+                }
+                else
+                {
+                    //return "Invalid";
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Location not Updated" } });
+                }
+            }
+
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("UpdateLocation", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+            }
+        }
+        #endregion
+
+
+        public static string SaveUpdateVehicle([FromBody]VehiclesModel vehiclemodel, string Action)
+        {
+            string Result = "";
+            try
+            {
+                if (vehiclemodel.VehicleImage.ToString() != "")
+                {
+                    vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
+                }
+                if (vehiclemodel.LicensePlate == "")
+                {
+                    Result = "Please enter LicensePlate" ;
+                }
+                else if (vehiclemodel.UserId <= 0)
+                {
+                    Result = "Please enter UserId";
+                }
+                int row = Data.Vehicles.SaveVehicle(vehiclemodel, Action);
+
+                if (row > 0)
+                {
+                    Result = "Success";
+                }
+                else
+                {
+                    Result = "Error Updating the Vehicle";
+                }
+
+                return Result;
+
+            }
+
+            catch (Exception e)
+            {
+                throw e;               
+            }
+        }
 
     }
 }

@@ -27,19 +27,27 @@ namespace PopTheHood.Data
         {
             string uri = "";
 
-            var AccountKey = ConnString();
+            try
+            {
+                var AccountKey = ConnString();
 
-            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(AccountKey);
-            CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(Folder);
-            CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(DocumentName);
-            //cloudBlockBlob.Properties.ContentType = ContentType == "jpg" ? "image/jpg" : "video/mp4";
-            //byte[] byteArray = Encoding.ASCII.GetBytes(DocumentBytes);
-            //MemoryStream stream = new MemoryStream(byteArray);
-            Stream fileStream = new MemoryStream(DocumentBytes);
-            await cloudBlockBlob.UploadFromStreamAsync(fileStream);
-            uri = Convert.ToString(cloudBlockBlob.Uri);
-            return uri;
+                CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(AccountKey);
+                CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+                CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(Folder);
+                CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(DocumentName);
+                //cloudBlockBlob.Properties.ContentType = ContentType == "jpg" ? "image/jpg" : "video/mp4";
+                //byte[] byteArray = Encoding.ASCII.GetBytes(DocumentBytes);
+                //MemoryStream stream = new MemoryStream(byteArray);
+                Stream fileStream = new MemoryStream(DocumentBytes);
+                await cloudBlockBlob.UploadFromStreamAsync(fileStream);
+                uri = Convert.ToString(cloudBlockBlob.Uri);
+                return uri;
+            }
+
+            catch(Exception e)
+            {
+                throw e;
+            }            
 
         }
     }

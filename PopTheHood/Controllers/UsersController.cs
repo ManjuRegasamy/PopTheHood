@@ -51,26 +51,57 @@ namespace PopTheHood.Controllers
 
                 if (row == "Success")
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Updated Successfully", Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully" );
                 }
                 else
                 {
                     //return "Invalid user";
-                   return StatusCode((int)HttpStatusCode.Unauthorized, new { Data = "Account not exist", Status = "Error" });
+                   return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "Account not exist" } });
                 }
             }
             catch (Exception e)
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("UpdatePassword", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
             
         }
         #endregion
 
-        #region GetAllUserList
-        [HttpGet, Route("GetAllUserList")]
+        #region ForgetPassword
+        [HttpGet, Route("ForgetPassword")]
+        [AllowAnonymous]
+        public IActionResult ForgetPassword(string PhoneOrEmail)
+        {
+            try
+            {
+                string Result = Common.SendOTP(PhoneOrEmail, "ForgetPassword");
+                if (Result == "Mail sent successfully.")
+                {
+                    return StatusCode((int)HttpStatusCode.OK, "OTP Sent to Email");
+                }
+                else
+                {
+                    string SaveErrorLog = Data.Common.SaveErrorLog("ForgetPassword", Result);
+
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = Result } });
+                }
+            }
+
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("ForgetPassword", e.Message.ToString());
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
+            }
+            
+            
+        }
+        #endregion
+
+        #region Users
+        [HttpGet, Route("Users")]
         public IActionResult GetAllUserList(string Search)
         {
             //string GetConnectionString = UsersController.GetConnectionString();
@@ -104,25 +135,25 @@ namespace PopTheHood.Controllers
                         userList.Add(user);
                     }
 
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = userList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, userList );
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = userList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
             catch (Exception e)
             {
-                string SaveErrorLog = Data.Common.SaveErrorLog("GetAllUserList", e.Message);
+                string SaveErrorLog = Data.Common.SaveErrorLog("Users", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
         
         #region DeleteUser
-        [HttpDelete, Route("DeleteUser/{UserId}")]
+        [HttpDelete, Route("User/{UserId}")]
         public IActionResult DeleteUser(int UserId)
         {
             //string connectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
@@ -133,11 +164,11 @@ namespace PopTheHood.Controllers
 
                 if (row > 0)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Deleted Successfully", Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, "Deleted Successfully");
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error while Deleting the record", Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while Deleting the record" } });
                 }
 
             }
@@ -145,7 +176,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("DeleteUser", e.Message.ToString());
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
@@ -162,24 +193,24 @@ namespace PopTheHood.Controllers
 
                 if (row > 0)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Updated Successfully", Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error while Update Phone/Email status", Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while Update Phone/Email status" } });
                 }
             }
             catch (Exception e)
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("UpdatePhoneEmailStatus", e.Message.ToString());
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" }); 
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } }); 
             }
         }
         #endregion
         
-        #region GetUserById
-        [HttpGet, Route("GetUserById/{UserId}")]
+        #region User
+        [HttpGet, Route("User/{UserId}")]
         public IActionResult GetUserById(int UserId)
         {
             //string GetConnectionString = UsersController.GetConnectionString();
@@ -187,55 +218,57 @@ namespace PopTheHood.Controllers
             try
             {
                 DataTable dt = Data.Users.GetUserById(UserId);
+                UsersLogin user = new UsersLogin();
 
-                if(dt.Rows.Count > 0)
+                if (dt.Rows.Count > 0)
                 {
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        UsersLogin user = new UsersLogin();
-                        user.UserId = (int)dt.Rows[i]["UserId"];
-                        user.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
-                        user.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
+                    //for (int i = 0; i < dt.Rows.Count; i++)
+                    //{
+                        
+                        user.UserId = (int)dt.Rows[0]["UserId"];
+                        user.Email = (dt.Rows[0]["Email"] == DBNull.Value ? "" : dt.Rows[0]["Email"].ToString());
+                        user.Name = (dt.Rows[0]["Name"] == DBNull.Value ? "" : dt.Rows[0]["Name"].ToString());
                         //user.Password = (dt.Rows[i]["Password"] == DBNull.Value ? "" : dt.Rows[i]["Password"].ToString());
-                        user.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
-                        user.SourceofReg = (dt.Rows[i]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[i]["SourceofReg"].ToString());
-                        user.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
-                        user.IsEmailVerified = (dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
-                        user.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
-                        user.CreatedDate = (dt.Rows[i]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["CreatedDate"].ToString());
-                        user.Role = (dt.Rows[i]["Role"] == DBNull.Value ? "" : dt.Rows[i]["Role"].ToString());
+                        user.PhoneNumber = (dt.Rows[0]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[0]["PhoneNumber"].ToString());
+                        user.SourceofReg = (dt.Rows[0]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[0]["SourceofReg"].ToString());
+                        user.IsPromoCodeApplicable = (dt.Rows[0]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPromoCodeApplicable"]);
+                        user.IsEmailVerified = (dt.Rows[0]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsEmailVerified"]);
+                        user.IsPhoneNumVerified = (dt.Rows[0]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPhoneNumVerified"]);
+                        user.CreatedDate = (dt.Rows[0]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[0]["CreatedDate"].ToString());
+                        user.Role = (dt.Rows[0]["Role"] == DBNull.Value ? "" : dt.Rows[0]["Role"].ToString());
                         //user.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
                         userList.Add(user);
-                    }
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = userList, Status = "Success" });
+                    //}
+                    return StatusCode((int)HttpStatusCode.OK, new { user });
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = userList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
                 
             }
             catch (Exception e)
             {
-                string SaveErrorLog = Data.Common.SaveErrorLog("GetUserById", e.Message);
+                string SaveErrorLog = Data.Common.SaveErrorLog("User", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
 
         #region SaveUser
-        [HttpPost, Route("SaveUser")]
+        [HttpPost, Route("User")]
         [AllowAnonymous]
-        public IActionResult SaveUser([FromBody]UsersLogin userlogin, string Action)  //int UserId, string Name, string PhoneNumber, string Email, string Password, string SourceofReg, bool IsEmailVerified, bool IsPhoneNumVerified,
+        public IActionResult SaveUser([FromBody]UsersLogin userlogin)  //int UserId, string Name, string PhoneNumber, string Email, string Password, string SourceofReg, bool IsEmailVerified, bool IsPhoneNumVerified,
             //bool IsPromoCodeApplicable, string Action
         {
             //string GetConnectionString = UsersController.GetConnectionString();
             List<UsersLogin> userList = new List<UsersLogin>();
+            string Action = "Add";
             try
             {
-                string row = Data.Users.SaveUser(userlogin , Action == null ? "" : Action);
+                string row = Data.Users.SaveUser(userlogin , Action);
                 string res = "";
                 string smsres = "";
 
@@ -254,13 +287,13 @@ namespace PopTheHood.Controllers
 
                     string OTPValue = Common.GenerateOTP();
 
-        //res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", "murukeshs@apptomate.co", "User Registration", userlogin.Name, "Hi " + userlogin.Name + " , your OTP is " + OTPValue + " and it's expiry time is 5 minutes.", FilePath).Result; // "chitrasubburaj30@gmail.com",
+                    //res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", "murukeshs@apptomate.co", "User Registration", userlogin.Name, "Hi " + userlogin.Name + " , your OTP is " + OTPValue + " and it's expiry time is 5 minutes.", FilePath).Result; // "chitrasubburaj30@gmail.com",
 
 
                     var results = "";
                     //results = SmsNotification.SendMessage("7010214439", "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").ToString();
 
-       // results = SmsNotification.SendMessage(userlogin.PhoneNumber, "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").Status.ToString();
+                    // results = SmsNotification.SendMessage(userlogin.PhoneNumber, "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").Status.ToString();
 
                     //var client = new Client(creds: new Nexmo.Api.Request.Credentials
                     //{
@@ -273,11 +306,11 @@ namespace PopTheHood.Controllers
                     //    to = "7010214439",
                     //    text = "Hi User, your OTP is" + OTPValue
                     //});
-                    
+
                     var SmsStatus = "";
                     if (results == "RanToCompletion")
                     {
-                        string SaveOtpValue = Data.Common.SaveOTP("4560123045", OTPValue, "Phone");
+                        string SaveOtpValue = Data.Common.SaveOTP(userlogin.PhoneNumber, OTPValue, "Phone");
                         SmsStatus = "Message sent successfully.";
                     }
                     else
@@ -286,21 +319,23 @@ namespace PopTheHood.Controllers
                     }
 
                     var result = "";
-                    if(res == "Accepted")
+                    if (res == "Accepted")
                     {
-                        string SaveOtpValue = Data.Common.SaveOTP("murukeshs@apptomate.co", OTPValue, "Email");
+                        string SaveOtpValue = Data.Common.SaveOTP(userlogin.Email, OTPValue, "Email");
                         result = "Mail sent successfully.";
                     }
                     else
                     {
                         result = "Bad Request";
                     }
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Mailing = result, SMS = results, SMSSTATUS = SmsStatus, OTP = OTPValue, Status = "Success" });
+                    //return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Mailing = result, SMS = results, SMSSTATUS = SmsStatus, OTP = OTPValue, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
                 }
                 else
                 {
                     //return "Invalid user";
-                    return StatusCode((int)HttpStatusCode.Unauthorized, new { Data = "User already exist", Status = "Error" });
+                    //var expected = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { foo = "abcd" }));
+                    return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "invalid user" } });
                 }
             }
 
@@ -308,11 +343,67 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("SaveUser", e.Message.ToString());
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
             }
         }
 
         #endregion
 
+        #region UpdateUser
+        [HttpPut, Route("User")]
+        public IActionResult UpdateUser([FromBody]UsersLogin userlogin)
+        {
+            List<UsersLogin> userList = new List<UsersLogin>();
+            string Action = "Update";
+            try
+            {
+                string row = Data.Users.SaveUser(userlogin, Action);
+
+                if (row == "Success")
+                {
+                    //string OTPValue = Common.GenerateOTP();
+                    
+                    //var results = "";
+                  
+                    //var SmsStatus = "";
+                    //if (results == "RanToCompletion")
+                    //{
+                    //    string SaveOtpValue = Data.Common.SaveOTP("4560123045", OTPValue, "Phone");
+                    //    SmsStatus = "Message sent successfully.";
+                    //}
+                    //else
+                    //{
+                    //    SmsStatus = "Message not sent..";
+                    //}
+
+                    //var result = "";
+                    //if (res == "Accepted")
+                    //{
+                    //    string SaveOtpValue = Data.Common.SaveOTP("murukeshs@apptomate.co", OTPValue, "Email");
+                    //    result = "Mail sent successfully.";
+                    //}
+                    //else
+                    //{
+                    //    result = "Bad Request";
+                    //}
+                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully" );
+                }
+                else
+                {
+                    //return "Invalid user";
+                    return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "Invalid User" } });
+                }
+            }
+
+            catch(Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("UpdateUser", e.Message.ToString());
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+            }
+        }
+
+        #endregion
+        
     }
 }

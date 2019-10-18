@@ -47,9 +47,11 @@ namespace PopTheHood.Data
             //    new SqlParameter("@Email", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 10, 0, "Email", DataRowVersion.Proposed, userlogin.Email),
             //    new SqlParameter("@Password", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 10, 0, "Password", DataRowVersion.Proposed, userlogin.Password)
             //};
+            var encryptPassword = Common.EncryptData(userlogin.Password);
+
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@Email", userlogin.Email));
-            parameters.Add(new SqlParameter("@Password", userlogin.Password));
+            parameters.Add(new SqlParameter("@Password", encryptPassword));
 
             try
             {

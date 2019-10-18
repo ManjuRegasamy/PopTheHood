@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace PopTheHood.Data
         }
         #endregion
 
-
+        #region ErrorLog
         public static string SaveErrorLog(string FunctionName, string ErrorMessage)
         {
             try
@@ -69,7 +70,7 @@ namespace PopTheHood.Data
                 throw e;
             }
         }
-
+        #endregion
 
         #region Encryption_Decryption
         public static string EncryptData(string textToEncrypt)
@@ -147,6 +148,7 @@ namespace PopTheHood.Data
         }
         #endregion
 
+
         public enum Source
         {
             Phone = 1,
@@ -157,13 +159,64 @@ namespace PopTheHood.Data
         #region GenerateOTP
         public static string GenerateOTP()
         {
-            Random generator = new Random();
-            string OTPValue = generator.Next(0, 999999).ToString("D6");
-            return OTPValue;
+            try
+            {
+                Random generator = new Random();
+                string OTPValue = generator.Next(0, 999999).ToString("D6");
+                return OTPValue;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
         #endregion
 
+        #region SendOTPViaEmail
+        public static string SendOTP(string emailid, string Type)
+        {
+            try
+            {
+                string res = "";
+                var result = "";
 
+                string OTPValue = Common.GenerateOTP();
+
+                string SaveOtpValue = Data.Common.SaveOTP(emailid, OTPValue, Type);
+
+                if (SaveOtpValue == "Success")
+                {
+                    res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", emailid, "OTP Verification", "userlogin.Name", "Hello, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.").Result; // "chitrasubburaj30@gmail.com",, FilePath
+                    if (res == "Accepted")
+                    {
+                        result = "Mail sent successfully.";
+                    }
+                    else
+                    {
+                        result = "Bad Request";
+                    }
+
+                    return result;
+                }
+
+                else
+                {
+                    return SaveOtpValue;
+                }
+            }
+
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("SendOTP", e.Message.ToString());
+
+                throw e;
+            }
+        }
+
+
+        #endregion
+        
+        #region SaveOTP
         public static string SaveOTP(string PhoneNumber, string OTPValue, string Type)
         {
             try
@@ -189,6 +242,8 @@ namespace PopTheHood.Data
                 throw e;
             }
         }
+
+        #endregion
 
     }
 }

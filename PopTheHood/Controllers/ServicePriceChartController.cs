@@ -31,7 +31,7 @@ namespace PopTheHood.Controllers
 
         //        if (row > 0)
         //        {
-        //            return StatusCode((int)HttpStatusCode.OK, new { Data = "Deleted Successfully", Status = "Success" });
+        //            return StatusCode((int)HttpStatusCode.OK, new { Data = "Deleted Successfully");
         //        }
 
         //        else
@@ -63,17 +63,17 @@ namespace PopTheHood.Controllers
                 {
                     if (Action == "Add")
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
                     }
                     else
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = "Updated Successfully", Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
                     }
 
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error Saving the Service Price Chart", Status = "Error" }); 
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { Error = "Error Save / Update the Service Price Chart" }); 
                 }
 
             }
@@ -81,7 +81,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("SaveServicePriceChart", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
             }
         }
 
@@ -115,11 +115,11 @@ namespace PopTheHood.Controllers
                         serviceList.Add(services);
                     }
 
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, serviceList);
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
             }
 
@@ -127,7 +127,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("GetServicePriceChart", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
@@ -158,11 +158,11 @@ namespace PopTheHood.Controllers
                         serviceList.Add(service);
                     }
 
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, serviceList);
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
             }
 
@@ -170,7 +170,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("GetServicePriceChart", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion
@@ -202,11 +202,11 @@ namespace PopTheHood.Controllers
                         serviceList.Add(service);
                     }
 
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, serviceList);
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
             }
 
@@ -214,7 +214,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("GetServicePriceChart", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion

@@ -32,12 +32,12 @@ namespace PopTheHood.Controllers
 
                 if (row == "Success")
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = row, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = row } });
                 }
             }
 
@@ -46,12 +46,12 @@ namespace PopTheHood.Controllers
             {              
                 if (e.Message.Contains("UNIQUE KEY constraint") == true)
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "PromoCode is already exists", Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "PromoCode is already exists" } });
                 }
                 else
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("SavePromoCode", e.Message);
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
                 }               
             }
         }
@@ -92,17 +92,17 @@ namespace PopTheHood.Controllers
                             promoCode.Add(promo);
                         }
 
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = promoCode, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, promoCode);
                     }
                     else
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = promoCode, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, new { });
                     }
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = rowsAffected, Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = rowsAffected } });
                 }
 
 
@@ -112,7 +112,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("ApplyPromoCode", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion

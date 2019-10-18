@@ -18,7 +18,7 @@ namespace PopTheHood.Controllers
     [EnableCors("AllowAll")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
 
     public class OTPNotificationController : ControllerBase
     {
@@ -33,6 +33,7 @@ namespace PopTheHood.Controllers
 
         #region SmsOTP
         [HttpGet, Route("SmsOTP")]
+        [AllowAnonymous]
         public IActionResult SmsOTP(string PhoneNumber)
         {
             try
@@ -68,12 +69,12 @@ namespace PopTheHood.Controllers
                         SmsStatus = "Message not sent..";
                     }
 
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = SmsStatus, result = results, Status = "success" });
+                    return StatusCode((int)HttpStatusCode.OK, SmsStatus);
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Phone number not available", Status = "success" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Phone number not available" } });
                 }
 
             }
@@ -82,78 +83,97 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("SmsOTP", e.Message.ToString());
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
             }
         }
         #endregion
 
         #region EmailOTP
         [HttpGet, Route("EmailOTP")]
+        [AllowAnonymous]
         public IActionResult EmailOTP(string emailid)
         {
             try
-            {
-                string res = "";
-                var result = "";
-
-                //var FilePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                //+ "EmailView"
-                //+ Path.DirectorySeparatorChar.ToString()
-                //+ "EmailTemplate.html";
-                //var ImagePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                //+ "Images"
-                //+ Path.DirectorySeparatorChar.ToString()
-                //+ "PopTheHood_Logo.jpg";
-
-                string OTPValue = Common.GenerateOTP();
-
-                string SaveOtpValue = Data.Common.SaveOTP(emailid, OTPValue, "Email");
-
-                if (SaveOtpValue == "Success")
+            { 
+                string Result = Common.SendOTP(emailid, "Email");
+                if (Result == "Mail sent successfully.")
                 {
-                    res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", emailid, "OTP Verification", "userlogin.Name", "Hello, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.").Result; // "chitrasubburaj30@gmail.com",, FilePath
-                    if (res == "Accepted")
-                    {
-                        result = "Mail sent successfully.";
-                    }
-                    else
-                    {
-                        result = "Bad Request";
-                    }
-
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = result, SaveOtpValues = SaveOtpValue, Status = "success" });
+                    return StatusCode((int)HttpStatusCode.OK, "OTP Sent to Email");
                 }
-
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Email Id not available", SaveOtpValues = SaveOtpValue, Status = "success" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while sending OTP" } });
                 }
-
-
-                //var result = "";
-                //if (res == "Accepted")
-                //{
-                //    result = "Mail sent successfully.";
-                //}
-                //else
-                //{
-                //    result = "Bad Request";
-                //}
-
-                //return StatusCode((int)HttpStatusCode.OK, new { Data = result, Status = "Success" });
             }
 
-            catch (Exception e)
+            catch(Exception e)
             {
-                string SaveErrorLog = Data.Common.SaveErrorLog("EmailOTP", e.Message.ToString());
-
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                throw e;
             }
+            //try
+            //{
+            //    string res = "";
+            //    var result = "";
+
+            //    //var FilePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
+            //    //+ "EmailView"
+            //    //+ Path.DirectorySeparatorChar.ToString()
+            //    //+ "EmailTemplate.html";
+            //    //var ImagePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
+            //    //+ "Images"
+            //    //+ Path.DirectorySeparatorChar.ToString()
+            //    //+ "PopTheHood_Logo.jpg";
+
+            //    string OTPValue = Common.GenerateOTP();
+
+            //    string SaveOtpValue = Data.Common.SaveOTP(emailid, OTPValue, "Email");
+
+            //    if (SaveOtpValue == "Success")
+            //    {
+            //        res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", emailid, "OTP Verification", "userlogin.Name", "Hello, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.").Result; // "chitrasubburaj30@gmail.com",, FilePath
+            //        if (res == "Accepted")
+            //        {
+            //            result = "Mail sent successfully.";
+            //        }
+            //        else
+            //        {
+            //            result = "Bad Request";
+            //        }
+
+            //        return StatusCode((int)HttpStatusCode.OK, result);
+            //    }
+
+            //    else
+            //    {
+            //        return StatusCode((int)HttpStatusCode.BadRequest, new { Error = "Email Id not available" });
+            //    }
+
+
+            //    //var result = "";
+            //    //if (res == "Accepted")
+            //    //{
+            //    //    result = "Mail sent successfully.";
+            //    //}
+            //    //else
+            //    //{
+            //    //    result = "Bad Request";
+            //    //}
+
+            //    //return StatusCode((int)HttpStatusCode.OK, new { Data = result, Status = "Success" });
+            //}
+
+            //catch (Exception e)
+            //{
+            //    string SaveErrorLog = Data.Common.SaveErrorLog("EmailOTP", e.Message.ToString());
+
+            //    return StatusCode((int)HttpStatusCode.InternalServerError, new { Error = e.Message.ToString() });
+            //}
         }
         #endregion
 
         #region OTPVerification
         [HttpPost, Route("OTPVerification")]
+        [AllowAnonymous]
         public IActionResult OTPVerification(string OTP, string PhoneorEmail)
         {
             try
@@ -173,12 +193,12 @@ namespace PopTheHood.Controllers
                 
                 if (row == "OTP Verified")
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = "Verified Successfully", Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, "Verified Successfully");
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = row, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = row } });
                 }
                     
             }
@@ -187,7 +207,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("OTPVerification", e.Message.ToString());
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
             }
         }
         #endregion

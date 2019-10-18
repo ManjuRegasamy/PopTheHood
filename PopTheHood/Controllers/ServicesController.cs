@@ -63,12 +63,12 @@ namespace PopTheHood.Controllers
                             serviceDetail.Add(service);
                         }
                     }
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = serviceDetail, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, serviceDetail);
                 }
 
                 else
                     {
-                        return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = "Error while Saving the ServiceRequest", Status = "Error" });
+                        return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Error while Saving the ServiceRequest" } });
                     }
                 }
 
@@ -77,7 +77,7 @@ namespace PopTheHood.Controllers
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("SaveServiceRequest", e.Message);
 
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
                 }
             }
             #endregion
@@ -100,7 +100,7 @@ namespace PopTheHood.Controllers
                         {
                             ServiceDetails service = new ServiceDetails();
                             service.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
-                            service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                           // service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
                             service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
                             service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                             service.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
@@ -121,11 +121,11 @@ namespace PopTheHood.Controllers
                             serviceDetails.Add(service);
                         }
 
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = serviceDetails, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, serviceDetails);
                     }
                     else
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = serviceDetails, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, new { });
                     }
                 }
 
@@ -133,7 +133,7 @@ namespace PopTheHood.Controllers
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("GetServiceDetailsByServiceId", e.Message);
 
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
                 }
             }
             #endregion
@@ -178,11 +178,11 @@ namespace PopTheHood.Controllers
                             serviceDetails.Add(service);
                         }
 
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = serviceDetails, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, serviceDetails);
                     }
                     else
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { Data = serviceDetails, Status = "Success" });
+                        return StatusCode((int)HttpStatusCode.OK, new { });
                     }
                 }
 
@@ -190,7 +190,7 @@ namespace PopTheHood.Controllers
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("UpdateServiceSchedule", e.Message);
 
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
                 }
             }
 
@@ -244,11 +244,11 @@ namespace PopTheHood.Controllers
                         serviceList.Add(service);
                     }
 
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, serviceList);
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = serviceList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
 
                 }
             }
@@ -257,7 +257,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("GetServiceDetailsLocationWise", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
 
         }

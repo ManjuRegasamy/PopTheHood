@@ -33,8 +33,8 @@ namespace PopTheHood.Models
         public bool IsDeleted { get; set; }
         public int ServicePriceChartId { get; set; }
         public int ScheduleID { get; set; }
-        public byte[] VehicleImage { get; set; }
-        public string ImageType { get; set; }
+        public string VehicleImageURL { get; set; }
+       // public string ImageType { get; set; }
     }
 
 

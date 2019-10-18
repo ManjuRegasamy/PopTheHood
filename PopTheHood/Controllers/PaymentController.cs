@@ -62,12 +62,12 @@ namespace PopTheHood.Controllers
                         vechile.PaymentDate = (dt.Rows[i]["PaymentDate"] == DBNull.Value ? "" : dt.Rows[i]["PaymentDate"].ToString());
                         vechileList.Add(vechile);
                     }
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, vechileList);
                 }
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = vechileList, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
@@ -75,7 +75,7 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("GetVehiclePaymentDetails", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message, Status = "Error" });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
             }
         }
         #endregion

@@ -93,13 +93,15 @@ namespace PopTheHood.Controllers
                     var tokenstr = GenerateJSONWebToken();
                     var encrypt = Common.EncryptData(tokenstr);
                     //var decrypt = ss.DecryptData(encrypt);    , DecryptedText = decrypt
-                    return StatusCode((int)HttpStatusCode.OK, new { Data = userList, TokenString = tokenstr, EncryptedTokenString = encrypt, Status = "Success" });
+                    //return StatusCode((int)HttpStatusCode.OK, new { Data = userList, TokenString = tokenstr, EncryptedTokenString = encrypt, Status = "Success" });
+                    return StatusCode((int)HttpStatusCode.OK, new { user, tokenstr });
                 }
                 else
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("Login", "Invalid User");
 
-                    return StatusCode((int)HttpStatusCode.Unauthorized, new { Data = "Invalid User", Status = "Error" });
+                    //return StatusCode((int)HttpStatusCode.Unauthorized, new { Data = "Invalid User" });
+                    return StatusCode((int)HttpStatusCode.Unauthorized, new { error = new { message = "Invalid User" } });
                 }
 
             }
@@ -108,7 +110,8 @@ namespace PopTheHood.Controllers
             {
                 string SaveErrorLog = Data.Common.SaveErrorLog("Login", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString(), Status = "Error" });
+                //return StatusCode((int)HttpStatusCode.InternalServerError, new { Data = e.Message.ToString() });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
             }
         }
         #endregion
