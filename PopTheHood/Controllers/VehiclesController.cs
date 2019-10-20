@@ -24,7 +24,7 @@ namespace PopTheHood.Controllers
         #region Vehicles
         //GetUserVehicleDetails
         [HttpGet, Route("Vehicles")]
-        public IActionResult GetUserVehicleDetails(int UserId, string Search, int Count, int Offset)
+        public IActionResult GetUserVehicleDetails(int UserId)
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
             List<VehiclesDetails> vechileList = new List<VehiclesDetails>();            
@@ -32,7 +32,7 @@ namespace PopTheHood.Controllers
             try
             {
                
-                DataTable dt = Data.Vehicles.GetUserVehicleDetails(UserId == null ? 0 : UserId, Search == null ? "" : Search, Count == 0 ? 10 : Count, Offset == 0 ? 0 : Offset);
+                DataTable dt = Data.Vehicles.GetUserVehicleDetails(UserId == null ? 0 : UserId);
                 if (dt.Rows.Count > 0)
                 {                   
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -41,9 +41,10 @@ namespace PopTheHood.Controllers
                         if ((dt.Rows[i]["VehicleId"]) != null)
                         {
                             VehiclesDetails vechile = new VehiclesDetails();
-                            //vechile.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
-                            //vechile.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
-                            //vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
+                            vechile.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
+                            vechile.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
+                            vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
+                            vechile.Address = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[i]["LocationFullAddress"].ToString());
                             vechile.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
                             vechile.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);                        
                             vechile.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
@@ -54,14 +55,17 @@ namespace PopTheHood.Controllers
                             vechile.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
                             vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
                             vechile.VehicleImageURL = (dt.Rows[i]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[i]["VehicleImageURL"].ToString());
+                            vechile.NextService = (dt.Rows[i]["NextService"] == DBNull.Value ? "" : dt.Rows[i]["NextService"].ToString());
+
+                            
                             //vechile.ImageType = (dt.Rows[i]["ImageType"] == DBNull.Value ? "" : dt.Rows[i]["ImageType"].ToString());
 
-                        //vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());
-                        //vechile.VehicleCreatedDate = (dt.Rows[i]["VehicleCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["VehicleCreatedDate"].ToString());
-                        //vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
-                        //    vechile.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
-                        //    vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
-                        //    vechile.SourceofReg = (dt.Rows[i]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[i]["SourceofReg"].ToString());
+                            //vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());
+                            //vechile.VehicleCreatedDate = (dt.Rows[i]["VehicleCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["VehicleCreatedDate"].ToString());
+                            //vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
+                            //    vechile.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
+                            //    vechile.IsPromoCodeApplicable = (dt.Rows[i]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPromoCodeApplicable"]);
+                            //    vechile.SourceofReg = (dt.Rows[i]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[i]["SourceofReg"].ToString());
                             vechileList.Add(vechile);
                         }
                     }
@@ -71,7 +75,7 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { });
+                    return StatusCode((int)HttpStatusCode.OK,   vechileList );
                 }
 
             }

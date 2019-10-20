@@ -45,6 +45,7 @@ namespace PopTheHood.Models
         public string Description { get; set; }
         public bool IsUserCheckApplicable { get; set; }
         public string BusinessCondition { get; set; }
+        public string Notes { get; set; }
         //[DefaultValue(false)]
         //public bool? IsDeleted { get; set; }
     }

@@ -25,8 +25,10 @@ namespace PopTheHood.Models
         public bool? IsPromoCodeApplicable { get; set; }
         public string CreatedDate { get; set; }
         public string Role { get; set; }
+        [DefaultValue(0)]
+       public int VehicleCount { get; set; }
         //public bool? IsDeleted { get; set; }
-        
+
     }
 
     public class Login

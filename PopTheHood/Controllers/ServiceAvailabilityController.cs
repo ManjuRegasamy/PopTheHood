@@ -110,6 +110,8 @@ namespace PopTheHood.Controllers
                         service.Description = dt.Rows[i]["Description"].ToString();
                         service.IsUserCheckApplicable = (dt.Rows[i]["IsUserCheckApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsUserCheckApplicable"]);
                         service.BusinessCondition = dt.Rows[i]["BusinessCondition"].ToString();
+                        service.Notes = dt.Rows[i]["Notes"].ToString();
+
 
                         serviceList.Add(service);
                     }

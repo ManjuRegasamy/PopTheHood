@@ -35,7 +35,7 @@ namespace PopTheHood.Data
            
         }
 
-        public static DataTable GetUserVehicleDetails(int UserId, string Search, int Count, int Offset)
+        public static DataTable GetUserVehicleDetails(int UserId)
         {
 
             try
@@ -44,9 +44,6 @@ namespace PopTheHood.Data
                 //Create the parameters in the SqlParameter array
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@UserId", UserId));
-                parameters.Add(new SqlParameter("@Search", Search));
-                parameters.Add(new SqlParameter("@Count", Count));
-                parameters.Add(new SqlParameter("@Offset", Offset));
 
                 //Execute the query
                 using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetUserVehicleDetails", parameters.ToArray()).Tables[0])

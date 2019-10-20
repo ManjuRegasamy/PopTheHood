@@ -102,18 +102,15 @@ namespace PopTheHood.Controllers
 
         #region Users
         [HttpGet, Route("Users")]
-        public IActionResult GetAllUserList(string Search, int Count, int Offset)
+        public IActionResult GetAllUserList()
         {
             //string GetConnectionString = UsersController.GetConnectionString();
             //string GetConnectionString = configuration.GetSection("ConnectionString").GetSection("DefaultConnection").Value;
             List<UsersLogin> userList = new List<UsersLogin>();
             try
             {
-                if (Search == null)
-                {
-                    Search = "";
-                }
-                DataTable dt = Data.Users.GetAllUserList(Search, Count == 0 ? 10 : Count, Offset == 0 ? 0 : Offset);
+               
+                DataTable dt = Data.Users.GetAllUserList();
 
                 if(dt.Rows.Count > 0)
                 { 
@@ -130,6 +127,7 @@ namespace PopTheHood.Controllers
                         user.IsPhoneNumVerified = (dt.Rows[i]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsPhoneNumVerified"]);
                         user.CreatedDate = (dt.Rows[i]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["CreatedDate"].ToString());
                         user.Role = (dt.Rows[i]["Role"] == DBNull.Value ? "" : dt.Rows[i]["Role"].ToString());
+                        user.VehicleCount= (int)dt.Rows[i]["VehicleCount"];
                         //user.ModifiedDate = (dt.Rows[i]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[i]["ModifiedDate"].ToString());
                         //user.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                         userList.Add(user);
@@ -139,7 +137,7 @@ namespace PopTheHood.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { });
+                    return StatusCode((int)HttpStatusCode.OK,  userList);
                 }
 
             }
