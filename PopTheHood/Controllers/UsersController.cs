@@ -117,8 +117,12 @@ namespace PopTheHood.Controllers
                    for(int i=0; i < dt.Rows.Count;i++)
                     {                        
                         UsersLogin user = new UsersLogin();
+
+                        var DecryptPassword = Common.DecryptData(dt.Rows[i]["Password"] == DBNull.Value ? "" : dt.Rows[i]["Password"].ToString());
+
                         user.UserId =(int)dt.Rows[i]["UserId"];
                         user.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
+                        user.Password = DecryptPassword;    // (dt.Rows[i]["Password"] == DBNull.Value ? "" : dt.Rows[i]["Password"].ToString());
                         user.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
                         user.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
                         user.SourceofReg = (dt.Rows[i]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[i]["SourceofReg"].ToString()); 
@@ -131,6 +135,7 @@ namespace PopTheHood.Controllers
                         //user.ModifiedDate = (dt.Rows[i]["ModifiedDate"] == DBNull.Value ? "" : dt.Rows[i]["ModifiedDate"].ToString());
                         //user.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                         userList.Add(user);
+                        DecryptPassword = "";
                     }
 
                     return StatusCode((int)HttpStatusCode.OK, userList );
@@ -222,11 +227,11 @@ namespace PopTheHood.Controllers
                 {
                     //for (int i = 0; i < dt.Rows.Count; i++)
                     //{
-                        
+                    var DecryptPassword = Common.DecryptData(dt.Rows[0]["Password"] == DBNull.Value ? "" : dt.Rows[0]["Password"].ToString()); 
                         user.UserId = (int)dt.Rows[0]["UserId"];
                         user.Email = (dt.Rows[0]["Email"] == DBNull.Value ? "" : dt.Rows[0]["Email"].ToString());
                         user.Name = (dt.Rows[0]["Name"] == DBNull.Value ? "" : dt.Rows[0]["Name"].ToString());
-                        //user.Password = (dt.Rows[i]["Password"] == DBNull.Value ? "" : dt.Rows[i]["Password"].ToString());
+                        user.Password = DecryptPassword; //(dt.Rows[0]["Password"] == DBNull.Value ? "" : dt.Rows[0]["Password"].ToString());
                         user.PhoneNumber = (dt.Rows[0]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[0]["PhoneNumber"].ToString());
                         user.SourceofReg = (dt.Rows[0]["SourceofReg"] == DBNull.Value ? "" : dt.Rows[0]["SourceofReg"].ToString());
                         user.IsPromoCodeApplicable = (dt.Rows[0]["IsPromoCodeApplicable"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPromoCodeApplicable"]);

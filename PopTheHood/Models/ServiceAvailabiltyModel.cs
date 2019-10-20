@@ -56,4 +56,41 @@ namespace PopTheHood.Models
         public string PlanType { get; set; }
         public bool IsOfferPlan { get; set; }
     }
+
+    public class VehicleDetailsList
+    {
+        public int UserId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public int VehicleId { get; set; }
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public string Color { get; set; }
+        public string VehicleImageURL { get; set; }
+        public string LicensePlate { get; set; }
+        public int LocationID { get; set; }
+        //public decimal LocationLatitude { get; set; }
+        //public decimal LocationLongitude { get; set; }
+        public string LocationFullAddress { get; set; }
+        public int ServicePlanID { get; set; }
+        public string ServiceName { get; set; }
+        public string ServiceDescription { get; set; }
+        public int ServicePriceChartId { get; set; }
+        public int RemainderMinutes { get; set; }
+        public bool IsTeamsandConditionsAccepted { get; set; }
+        public string PlanType { get; set; }
+        public decimal ServiceAmount { get; set; }
+        public int ScheduleID { get; set; }
+        public string RequestedServiceDate { get; set; }
+        public string ActualServiceDate { get; set; }
+        public string ServiceOutDate { get; set; }
+        public string Status { get; set; }
+        public int PaymentDetailId { get; set; }
+        public string PaymentType { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Promocode_ReducedAmount { get; set; }
+        public string PaymentDate { get; set; }
+        public string PaymentStatus { get; set; }
+    }
 }

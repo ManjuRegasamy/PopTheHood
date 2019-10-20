@@ -162,5 +162,29 @@ namespace PopTheHood.Data
         }
 
 
+        public static DataTable GetVehicleDetailedList(int VehicleId)
+        {
+
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+                //Create the parameters in the SqlParameter array
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("@VehicleId", VehicleId));
+
+                //Execute the query
+                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetVehicleSerivceDetails", parameters.ToArray()).Tables[0])
+                {
+                    return dt;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+
+
     }
 }
