@@ -94,9 +94,9 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@ServicePlanID", serviceDetails.ServicePlanID));
                 parameters.Add(new SqlParameter("@AvailableServiceID", serviceDetails.AvailableServiceID));
                 parameters.Add(new SqlParameter("@VehicleId", serviceDetails.VehicleId));
-                parameters.Add(new SqlParameter("@RemainderMinutes", serviceDetails.RemainderMinutes));
-                parameters.Add(new SqlParameter("@LocationID", serviceDetails.LocationID));
-                parameters.Add(new SqlParameter("@IsTeamsandConditionsAccepted", serviceDetails.IsTeamsandConditionsAccepted));
+                //parameters.Add(new SqlParameter("@RemainderMinutes", serviceDetails.RemainderMinutes));
+                //parameters.Add(new SqlParameter("@LocationID", serviceDetails.LocationID));
+                //parameters.Add(new SqlParameter("@IsTeamsandConditionsAccepted", serviceDetails.IsTeamsandConditionsAccepted));
                 parameters.Add(new SqlParameter("@PromoCodeApplied", serviceDetails.PromoCodeApplied));
               //  parameters.Add(new SqlParameter("@PlanType", serviceDetails.PlanType));
 

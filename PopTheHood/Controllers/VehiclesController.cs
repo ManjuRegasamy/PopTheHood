@@ -233,7 +233,7 @@ namespace PopTheHood.Controllers
 
                 if (Results == "Success")
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                    return StatusCode((int)HttpStatusCode.OK, vehiclemodel.LicensePlate + " is saved Successfully");
                 }
                 else //if (Results == "Error Updating the Vehicle")
                 {
