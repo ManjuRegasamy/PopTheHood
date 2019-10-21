@@ -78,4 +78,10 @@ namespace PopTheHood.Models
         public bool? PromoCodeApplied { get; set; }
        // public string PlanType { get; set; }
     }
+
+    public class PlanInfo
+    {
+        public string PlanType { get; set; }
+        public string ServiceDescription { get; set; }
+    }
 }

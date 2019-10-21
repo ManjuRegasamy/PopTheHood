@@ -12,7 +12,8 @@ namespace PopTheHood.Models
             public int Users { get; set; }
             public int Vehicles { get; set; }
             public int Services { get; set; }
-            public string Monthwise { get; set; }
+            public string MonthList { get; set; }
+            public int MonthwiseCount { get; set; }
         }
     }
 }

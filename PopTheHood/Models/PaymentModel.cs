@@ -37,4 +37,14 @@ namespace PopTheHood.Models
 
     }
 
+    public class PaymentDetails
+    {
+        public int PaymentDetailId { get; set; }
+        public string PaymentType { get; set; }
+        public decimal Amount { get; set; }
+        public string Promocode_ReducedAmount { get; set; }
+        public string PaymentStatus { get; set; }
+        public string PaymentDate { get; set; }
+    }
+
 }

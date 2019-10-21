@@ -26,7 +26,7 @@ namespace PopTheHood.Models
         public string CreatedDate { get; set; }
         public string Role { get; set; }
         [DefaultValue(0)]
-       public int VehicleCount { get; set; }
+        public int VehicleCount { get; set; }
         //public bool? IsDeleted { get; set; }
 
     }
@@ -37,7 +37,7 @@ namespace PopTheHood.Models
         public string Password { get; set; }
     }
 
-    
+
     public class Verification
     {
         public int UserId { get; set; }
@@ -49,11 +49,21 @@ namespace PopTheHood.Models
 
     public enum RegSource
     {
-       Phone,
-       Email
+        Phone,
+        Email
     }
 
+    public class UserInfo
+    {
+        public int UserId { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public int LocationID { get; set; }
+        public decimal LocationLatitude { get; set; }
+        public decimal LocationLongitude { get; set; }
+        public string LocationFullAddress { get; set; }
+    }
 }
-
 
 

@@ -106,12 +106,16 @@ namespace PopTheHood.Controllers
                     {
                         ServicesModel service = new ServicesModel();
                         service.AvailableServiceID = (int)dt.Rows[i]["AvailableServiceID"];
+                        service.ServicePriceChartId = (int)dt.Rows[0]["ServicePriceChartId"];
+                        service.ServicePlanID = (int)dt.Rows[0]["ServicePlanID"];
                         service.ServiceName = dt.Rows[i]["ServiceName"].ToString();
                         service.Description = dt.Rows[i]["Description"].ToString();
                         service.IsUserCheckApplicable = (dt.Rows[i]["IsUserCheckApplicable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsUserCheckApplicable"]);
                         service.BusinessCondition = dt.Rows[i]["BusinessCondition"].ToString();
                         service.Notes = dt.Rows[i]["Notes"].ToString();
-
+                        service.PlanType = dt.Rows[i]["PlanType"].ToString();
+                        service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["Price"]);
+                        service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
 
                         serviceList.Add(service);
                     }
@@ -150,15 +154,21 @@ namespace PopTheHood.Controllers
                     //{
                     ServicesModel service = new ServicesModel();
                     service.AvailableServiceID = (int)dt.Rows[0]["AvailableServiceID"];
+                    service.ServicePriceChartId = (int)dt.Rows[0]["ServicePriceChartId"];
+                    service.ServicePlanID = (int)dt.Rows[0]["ServicePlanID"];
                     service.ServiceName = dt.Rows[0]["ServiceName"].ToString();
                     service.Description = dt.Rows[0]["Description"].ToString();
                     service.IsUserCheckApplicable = (dt.Rows[0]["IsUserCheckApplicable"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsUserCheckApplicable"]);
                     service.BusinessCondition = dt.Rows[0]["BusinessCondition"].ToString();
+                    service.Notes = dt.Rows[0]["Notes"].ToString();
+                    service.PlanType = dt.Rows[0]["PlanType"].ToString();
+                    service.Price = (dt.Rows[0]["Price"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["Price"]);
+                    service.IsAvailable = (dt.Rows[0]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsAvailable"]);
 
                     serviceList.Add(service);
                     //}
 
-                    return StatusCode((int)HttpStatusCode.OK, serviceList);
+                    return StatusCode((int)HttpStatusCode.OK, service);
                 }
                 else
                 {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using static Nexmo.Api.SMS;
 
 namespace PopTheHood.Data
 {
@@ -59,7 +59,7 @@ namespace PopTheHood.Data
         //}
 
        
-        public static async Task<string> SendMessage(string to, string text) //List<Attachments> attachments, string body, string cc,
+        public static SMSResponse SendMessage(string to, string text) //List<Attachments> attachments, string body, string cc,
         {
             try
             {
@@ -82,12 +82,12 @@ namespace PopTheHood.Data
                     to = to,
                     text = text
                 });
-                var res = results.messages;
-                //SMS.SMSResponseDetail rd = new SMS.SMSResponseDetail(results);
-                //rd = results;
-                //rd.status.ToString();
+                //var res = results.messages;
+                ////SMS.SMSResponseDetail rd = new SMS.SMSResponseDetail(results);
+                ////rd = results;
+                ////rd.status.ToString();
 
-                return results.messages.ToString();
+                return results;
             }
 
             catch (Exception e)

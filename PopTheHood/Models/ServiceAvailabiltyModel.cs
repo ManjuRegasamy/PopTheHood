@@ -41,11 +41,16 @@ namespace PopTheHood.Models
     public class ServicesModel
     {
         public int AvailableServiceID { get; set; }
+        public int ServicePriceChartId { get; set; }
+        public int ServicePlanID { get; set; }
         public string ServiceName { get; set; }
         public string Description { get; set; }
         public bool IsUserCheckApplicable { get; set; }
         public string BusinessCondition { get; set; }
         public string Notes { get; set; }
+        public string PlanType { get; set; }
+        public decimal Price { get; set; }
+        public bool IsAvailable { get; set; }
         //[DefaultValue(false)]
         //public bool? IsDeleted { get; set; }
     }
@@ -70,8 +75,8 @@ namespace PopTheHood.Models
         public string VehicleImageURL { get; set; }
         public string LicensePlate { get; set; }
         public int LocationID { get; set; }
-        //public decimal LocationLatitude { get; set; }
-        //public decimal LocationLongitude { get; set; }
+        public decimal LocationLatitude { get; set; }
+        public decimal LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }
         public int ServicePlanID { get; set; }
         public string ServiceName { get; set; }
@@ -92,5 +97,21 @@ namespace PopTheHood.Models
         public decimal Promocode_ReducedAmount { get; set; }
         public string PaymentDate { get; set; }
         public string PaymentStatus { get; set; }
+    }
+
+    public class ServiceInfo
+    {
+        public int ServicePlanID { get; set; }
+        public int ScheduleID { get; set; }
+        public int ServicePriceChartId { get; set; }
+        public string ServiceName { get; set; }
+        public decimal ServiceAmount { get; set; }
+        public string RequestedServiceDate { get; set; }
+        public int RemainderMinutes { get; set; }        
+        public string ActualServiceDate { get; set; }
+        public string ServiceOutDate { get; set; }
+        public string Status { get; set; }
+        public bool IsTeamsandConditionsAccepted { get; set; }
+        //public bool IsDeleted { get; set; }            
     }
 }

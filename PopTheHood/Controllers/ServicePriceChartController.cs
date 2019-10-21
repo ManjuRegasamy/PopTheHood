@@ -138,6 +138,8 @@ namespace PopTheHood.Controllers
                         services.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
                         services.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         services.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+                        services.Description = dt.Rows[i]["Description"].ToString();
+                        services.Notes = dt.Rows[i]["Notes"].ToString();
                         //services.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
 
                         serviceList.Add(services);
@@ -183,6 +185,8 @@ namespace PopTheHood.Controllers
                         service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
                         service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+                        service.Description = dt.Rows[i]["Description"].ToString();
+                        service.Notes = dt.Rows[i]["Notes"].ToString();
                         //service.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
 
                         serviceList.Add(service);
@@ -229,6 +233,8 @@ namespace PopTheHood.Controllers
                         service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
                         service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                         service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+                        service.Description = dt.Rows[i]["Description"].ToString();
+                        service.Notes = dt.Rows[i]["Notes"].ToString();
                         //service.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
 
                         serviceList.Add(service);

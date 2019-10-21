@@ -40,7 +40,7 @@ namespace PopTheHood.Controllers
             {
                 string OTPValue = Common.GenerateOTP();
 
-                var results = "";
+                SMSResponse results = new SMSResponse();
                 //results = SmsNotification.SendMessage(PhoneNumber, "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").ToString();
                 //// results = SmsNotification.SendMessage(userlogin.PhoneNumber, "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").Status.ToString();
 
@@ -59,8 +59,9 @@ namespace PopTheHood.Controllers
                 if (SaveOtpValue == "Success")
                 {
                     //SMSResponse results = SmsNotification.SendMessage(PhoneNumber, "Hi User, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.");
-                    results = SmsNotification.SendMessage(PhoneNumber, "Hi User, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.").Status.ToString();
-                    if (results == "RanToCompletion")
+
+                    results = SmsNotification.SendMessage(PhoneNumber, "Hi User, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.");
+                    if (results.messages.ToString() == "Success" )
                     {
                         SmsStatus = "Message sent successfully.";
                     }
@@ -69,7 +70,7 @@ namespace PopTheHood.Controllers
                         SmsStatus = "Message not sent..";
                     }
 
-                    return StatusCode((int)HttpStatusCode.OK, SmsStatus);
+                    return StatusCode((int)HttpStatusCode.OK, new { results.messages, SmsStatus });
                 }
 
                 else
