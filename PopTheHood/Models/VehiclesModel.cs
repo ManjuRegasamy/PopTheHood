@@ -82,6 +82,7 @@ namespace PopTheHood.Models
         public decimal LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }
         public string LandMark { get; set; }
+        public string CityName { get; set; }
     }
 }
 

@@ -16,6 +16,7 @@ namespace PopTheHood.Models
         public string ServiceName { get; set; }
         public string PlanType { get; set; }
         public string Description { get; set; }
+        public string BusinessCondition { get; set; }
         public string Notes { get; set; }
         //public int servicePlanID { get; set; }
     }

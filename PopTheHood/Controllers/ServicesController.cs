@@ -21,7 +21,6 @@ namespace PopTheHood.Controllers
     public class ServicesController : ControllerBase
     {
         
-
         #region SaveServiceRequest
         [HttpPost, Route("SaveServiceRequest")]
             public IActionResult SaveServiceRequest([FromBody]ServiceRequest serviceDetails)
@@ -30,6 +29,8 @@ namespace PopTheHood.Controllers
             List<ServiceDetails> serviceDetail = new List<ServiceDetails>();
             try
             {
+
+                
                 DataSet dt = Data.Services.SaveServiceRequest(serviceDetails);
                 string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();                
                 if (row == "Success")
@@ -68,7 +69,7 @@ namespace PopTheHood.Controllers
 
                 else
                     {
-                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Error while Saving the ServiceRequest" } });
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
                     }
                 }
 
@@ -212,12 +213,29 @@ namespace PopTheHood.Controllers
                     Search = "";
                 }
 
-                DataTable dt = Data.Services.GetServiceDetailsLocationWise(Search);
-
+                DataSet ds = Data.Services.GetServiceDetailsLocationWise(Search);
+                DataTable dt = new DataTable();
+               // DataTable dt1 = new DataTable();
+                dt = ds.Tables[0];
+               // dt1 = ds.Tables[1];
                 if (dt.Rows.Count > 0)
                 {
+                    var Status = "";
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
+                        if(dt.Rows[i]["Status"].ToString() == "Service Inprogress")
+                        {
+                            Status = "Service on due";
+                        }
+                        if (dt.Rows[i]["Status"].ToString() == "Upcoming Service")
+                        {
+                            Status = "Next to Service";
+                        }
+                        else
+                        {
+                            Status = "No further Service";
+                        }
+
                         ServiceLocation service = new ServiceLocation();
                         service.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
                         service.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "-" : dt.Rows[i]["Name"].ToString());
@@ -239,8 +257,12 @@ namespace PopTheHood.Controllers
                         service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
                         service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
                         service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
-                        service.Status = dt.Rows[i]["Status"].ToString();
-
+                        service.Status = Status;     //dt.Rows[i]["Status"].ToString();
+                        //service.TotalAmount = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["LocationLongitude"]);
+                        service.TotalAmount = (dt.Rows[i]["TotalAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["TotalAmount"]);
+                        service.Paid = (dt.Rows[i]["Amount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["Amount"]);
+                        service.Due = (dt.Rows[i]["DueAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["DueAmount"]);
+                       
                         serviceList.Add(service);
                     }
 
@@ -263,6 +285,143 @@ namespace PopTheHood.Controllers
         }
         #endregion
 
+
+        #region GetServiceRequestListByVehicleId
+        [HttpGet, Route("GetServiceRequestedListByVehicleId")]
+        public IActionResult GetServiceRequestedList(int VehicleId)
+        {
+            List<ServiceDetails> serviceDetail = new List<ServiceDetails>();
+            try
+            {
+
+
+                DataTable dt = Data.Services.GetServiceRequestListByVehicleId(VehicleId);
+               // string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                //if (row == "Success")
+                //{
+                    if (dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            ServiceDetails service = new ServiceDetails();
+                            service.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
+                            //service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                            service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
+                            service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
+                            service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
+                            service.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
+                            service.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
+                            //service.RemainderMinutes = (dt.Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Rows[i]["RemainderMinutes"]);
+                            //service.LocationID = (dt.Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["LocationID"]);
+                            //service.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
+                            service.PromoCodeApplied = (dt.Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Rows[i]["PromoCodeApplied"]);
+                            service.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "-" : dt.Rows[i]["Status"].ToString());
+                            service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
+                            service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
+                            service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
+                            service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
+                            service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
+                            service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
+                            service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+
+
+                            serviceDetail.Add(service);
+                        }
+
+                        return StatusCode((int)HttpStatusCode.OK, serviceDetail);
+                    }
+                    
+                //}
+
+                    else
+                    {
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { });
+                    }
+            }
+
+
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("SaveServiceRequest", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+            }
+        }
+        #endregion
+
+
+        #region SetRemainder
+        [HttpPost, Route("SetRemainder")]
+        public IActionResult SetRemainder(string[] ServicePriceChartId, int VehicleId)
+        {
+            try
+            {
+                if (ServicePriceChartId[0] != "")
+                {
+                    string idString = string.Join(",", ServicePriceChartId);
+                    int row = Data.Services.SetRemainder(idString, VehicleId);
+
+                    if (row > 0)
+                    {
+                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    }
+                    else
+                    {
+                        return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Updating the Remainder" } });
+                    }
+
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some value" } });
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("SetRemainder", e.Message.ToString());
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
+            }
+        }
+        #endregion
+
+        #region SetTeamsandConditions
+        [HttpPost, Route("SetTeamsandCondition")]
+        public IActionResult SetTeamsandCondition(int[] ServicePriceChartId, int VehicleId)
+        {
+            try
+            {
+                if (ServicePriceChartId[0] != 0)
+                {
+                    string idString = string.Join(",", ServicePriceChartId);
+                    int row = Data.Services.SetTeamsandCondition(idString, VehicleId);
+
+                    if (row > 0)
+                    {
+                        return StatusCode((int)HttpStatusCode.OK, "Teams and Conditions Updated Successfully");
+                    }
+                    else
+                    {
+                        return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Updating the Teams and Conditions" } });
+                    }
+
+                }
+                else
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some value" } });
+                }
+            }
+            
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("SetTeamsandCondition", e.Message.ToString());
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
+            }
+        }
+        #endregion
 
     }
 }

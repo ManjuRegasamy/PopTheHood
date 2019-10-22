@@ -209,13 +209,24 @@ namespace PopTheHood.Controllers
             try
             {
 
-                if (vehiclemodel.ImageType == "")
+                //if (vehiclemodel.ImageType == "")  
+                //{
+                //    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Image Type" } });
+                //}
+                //else if (vehiclemodel.VehicleImage.ToString() != "")
+                //{
+                //    vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
+                //}
+                if (vehiclemodel.VehicleImage != null && vehiclemodel.VehicleImage.Length > 0)
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Image Type" } });
-                }
-                else if (vehiclemodel.VehicleImage.ToString() != "")
-                {
-                    vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
+                    if (vehiclemodel.ImageType == "")
+                    {
+                        return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Image Type" } });
+                    }
+                    else
+                    {
+                        vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
+                    }
                 }
 
                 if (vehiclemodel.LicensePlate == "")
@@ -281,13 +292,21 @@ namespace PopTheHood.Controllers
             {
               string Result = "";
 
-                if (vehiclemodel.ImageType == "")
+                //if (vehiclemodel.ImageType == "")
+                //{
+                //    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Image Type" } });
+                //}
+                //else
+                if (vehiclemodel.VehicleImage != null && vehiclemodel.VehicleImage.Length > 0)
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Image Type" } });
-                }
-                else if (vehiclemodel.VehicleImage.ToString() != "")
-                {
-                    vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
+                    if (vehiclemodel.ImageType == "")
+                    {
+                        return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Image Type" } });
+                    }
+                    else
+                    { 
+                        vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
+                    }
                 }
 
                 if (vehiclemodel.LicensePlate == "")
@@ -422,16 +441,68 @@ namespace PopTheHood.Controllers
         {
             //List<VehicleLocation> vehicleLocation = new List<VehicleLocation>();
             //string GetConnectionString = VehiclesController.GetConnectionString();
+            List<ServiceDetails> serviceDetail = new List<ServiceDetails>();
             string Action = "Add";
             try
             {
-                int row = Data.Vehicles.SaveLocation(vehiclelocation, Action);
+                //int row = Data.Vehicles.SaveLocation(vehiclelocation, Action);
 
-                if (row > 0)
+                DataSet dt = Data.Vehicles.SaveLocation(vehiclelocation, Action);
+                string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                if (row == "Success")
+                //{
+                //    ServiceAmount amt = new ServiceAmount();
+
+                //    if (dt.Tables[1].Rows.Count > 0)
+                //    {
+                       
+                //        for (int i = 0; i < dt.Tables[1].Rows.Count; i++)
+                //        {
+                //            ServiceDetails service = new ServiceDetails();
+                //            service.ServiceID = (dt.Tables[1].Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServiceID"]);
+                //            //service.ServicePlanID = (dt.Tables[1].Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePlanID"]);
+                //            service.ServicePriceChartId = (dt.Tables[1].Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePriceChartId"]);
+                //            service.PlanType = (dt.Tables[1].Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["PlanType"].ToString());
+                //            service.Price = (dt.Tables[1].Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Tables[1].Rows[i]["Price"]);
+                //            service.VehicleId = (dt.Tables[1].Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["VehicleId"]);
+                //            service.UserId = (dt.Tables[1].Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["UserId"]);
+                //            //service.RemainderMinutes = (dt.Tables[1].Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["RemainderMinutes"]);
+                //            //service.LocationID = (dt.Tables[1].Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["LocationID"]);
+                //            //service.IsTeamsandConditionsAccepted = (dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"]);
+                //            service.PromoCodeApplied = (dt.Tables[1].Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["PromoCodeApplied"]);
+                //            service.Status = (dt.Tables[1].Rows[i]["Status"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Status"].ToString());
+                //            service.ScheduleID = (dt.Tables[1].Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ScheduleID"]);
+                //            service.RequestedServiceDate = (dt.Tables[1].Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["RequestedServiceDate"].ToString());
+                //            service.ActualServiceDate = (dt.Tables[1].Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ActualServiceDate"].ToString());
+                //            service.ServiceOutDate = (dt.Tables[1].Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceOutDate"].ToString());
+                //            service.ServiceName = (dt.Tables[1].Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceName"].ToString());
+                //            service.Description = (dt.Tables[1].Rows[i]["Description"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Description"].ToString());
+                //            service.IsAvailable = (dt.Tables[1].Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsAvailable"]);
+
+                //            serviceDetail.Add(service);
+                //        }
+
+                //        if(dt.Tables[2].Rows.Count > 0)
+                //        {
+                //            amt.TotalAmount = (dt.Tables[2].Rows[0]["TotalAmount"] == DBNull.Value ? 0 : (decimal)dt.Tables[2].Rows[0]["TotalAmount"]);
+                //        }
+                //    }
+
+                //    return StatusCode((int)HttpStatusCode.OK, new { serviceDetail, amt});
+
+                //}
+
+                //else
+                //{
+                //    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
+                //}
+                //}
+
+                //if (row > 0)
                 {
                     //if (Action == "Add")
                     //{
-                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
                     //}
                     //else
                     //{
@@ -441,7 +512,7 @@ namespace PopTheHood.Controllers
                 else
                 {
                     //return "Invalid";
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Location not saved" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
                 }
             }
 
@@ -458,20 +529,71 @@ namespace PopTheHood.Controllers
         [HttpPut, Route("Location")]
         public IActionResult UpdateLocation([FromBody]VehicleLocation vehiclelocation)
         {
+            List<ServiceDetails> serviceDetail = new List<ServiceDetails>();
+
             string Action = "Update";
             try
             {
-                int row = Data.Vehicles.SaveLocation(vehiclelocation, Action);
+                DataSet dt = Data.Vehicles.SaveLocation(vehiclelocation, Action);
+                string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
 
-                if (row > 0)
-                {                    
-                     return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");                    
+                if (row == "Success")
+                {
+                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
                 }
                 else
                 {
                     //return "Invalid";
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Location not Updated" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
                 }
+
+                //if (row == "Success")
+                //{
+                //    ServiceAmount amt = new ServiceAmount();
+
+                //    if (dt.Tables[1].Rows.Count > 0)
+                //    {
+
+                //        for (int i = 0; i < dt.Tables[1].Rows.Count; i++)
+                //        {
+                //            ServiceDetails service = new ServiceDetails();
+                //            service.ServiceID = (dt.Tables[1].Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServiceID"]);
+                //            //service.ServicePlanID = (dt.Tables[1].Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePlanID"]);
+                //            service.ServicePriceChartId = (dt.Tables[1].Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePriceChartId"]);
+                //            service.PlanType = (dt.Tables[1].Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["PlanType"].ToString());
+                //            service.Price = (dt.Tables[1].Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Tables[1].Rows[i]["Price"]);
+                //            service.VehicleId = (dt.Tables[1].Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["VehicleId"]);
+                //            service.UserId = (dt.Tables[1].Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["UserId"]);
+                //            //service.RemainderMinutes = (dt.Tables[1].Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["RemainderMinutes"]);
+                //            //service.LocationID = (dt.Tables[1].Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["LocationID"]);
+                //            //service.IsTeamsandConditionsAccepted = (dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"]);
+                //            service.PromoCodeApplied = (dt.Tables[1].Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["PromoCodeApplied"]);
+                //            service.Status = (dt.Tables[1].Rows[i]["Status"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Status"].ToString());
+                //            service.ScheduleID = (dt.Tables[1].Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ScheduleID"]);
+                //            service.RequestedServiceDate = (dt.Tables[1].Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["RequestedServiceDate"].ToString());
+                //            service.ActualServiceDate = (dt.Tables[1].Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ActualServiceDate"].ToString());
+                //            service.ServiceOutDate = (dt.Tables[1].Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceOutDate"].ToString());
+                //            service.ServiceName = (dt.Tables[1].Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceName"].ToString());
+                //            service.Description = (dt.Tables[1].Rows[i]["Description"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Description"].ToString());
+                //            service.IsAvailable = (dt.Tables[1].Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsAvailable"]);
+
+                //            serviceDetail.Add(service);
+                //        }
+
+                //        if (dt.Tables[2].Rows.Count > 0)
+                //        {
+                //            amt.TotalAmount = (dt.Tables[2].Rows[0]["TotalAmount"] == DBNull.Value ? 0 : (decimal)dt.Tables[2].Rows[0]["TotalAmount"]);
+                //        }
+                //    }
+
+                //    return StatusCode((int)HttpStatusCode.OK, new { serviceDetail, amt });
+
+                //}
+
+                //else
+                //{
+                //    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
+                //}
             }
 
             catch (Exception e)
@@ -489,6 +611,8 @@ namespace PopTheHood.Controllers
         public IActionResult GetVehicleDetailedList(int VehicleId)
         {
             List<ServiceInfo> ServiceList = new List<ServiceInfo>();
+            PaymentDetails paymentinfo = new PaymentDetails();
+            PlanInfo planInfo = new PlanInfo();
 
             try
             {
@@ -501,93 +625,113 @@ namespace PopTheHood.Controllers
                 //{
                 //    SearchRes = Search;
                 //}
-                DataTable dt = Data.Vehicles.GetVehicleDetailedList(VehicleId);
+                DataSet ds = Data.Vehicles.GetVehicleDetailedList(VehicleId);
+                DataTable dt = new DataTable();
+                DataTable dt1 = new DataTable();
 
-                if (dt.Rows.Count > 0)
+                UserInfo userInfo = new UserInfo();
+
+                VehiclesModel vehicleInfo = new VehiclesModel();
+
+                // DataTable dt = Data.Vehicles.GetVehicleDetailedList(VehicleId);
+                if (ds.Tables.Count > 0)
                 {
-                    UserInfo userInfo = new UserInfo();
-                    userInfo.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
-                    userInfo.Email = (dt.Rows[0]["Email"] == DBNull.Value ? "" : dt.Rows[0]["Email"].ToString());
-                    userInfo.Name = (dt.Rows[0]["Name"] == DBNull.Value ? "" : dt.Rows[0]["Name"].ToString());
-                    userInfo.PhoneNumber = (dt.Rows[0]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[0]["PhoneNumber"].ToString());
-                    userInfo.LocationID = (dt.Rows[0]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[0]["LocationID"]);
-                    userInfo.LocationLatitude = (dt.Rows[0]["LocationLatitude"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["LocationLatitude"]);
-                    userInfo.LocationLongitude = (dt.Rows[0]["LocationLongitude"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["LocationLongitude"]);
-                    userInfo.LocationFullAddress = (dt.Rows[0]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[0]["LocationFullAddress"].ToString());
-
-                    VehiclesModel vehicleInfo = new VehiclesModel();
-                    vehicleInfo.VehicleId = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]);
-                    vehicleInfo.Make = (dt.Rows[0]["Make"] == DBNull.Value ? "" : dt.Rows[0]["Make"].ToString());
-                    vehicleInfo.Model = (dt.Rows[0]["Model"] == DBNull.Value ? "" : dt.Rows[0]["Model"].ToString());
-                    vehicleInfo.Color = (dt.Rows[0]["Color"] == DBNull.Value ? "" : dt.Rows[0]["Color"].ToString());
-                    vehicleInfo.LicensePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
-                    vehicleInfo.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
-
-                    PlanInfo planInfo = new PlanInfo();
-                    planInfo.PlanType = (dt.Rows[0]["PlanType"] == DBNull.Value ? "" : dt.Rows[0]["PlanType"].ToString());
-                    planInfo.ServiceDescription = (dt.Rows[0]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[0]["ServiceDescription"].ToString());
-
-
-                    for (int i = 0; i < dt.Rows.Count; i++)
+                    dt = ds.Tables[0];
+                    dt1 = ds.Tables[1];
+                    if (dt.Rows.Count > 0)
                     {
-                        ServiceInfo vechiles = new ServiceInfo();
-                        //vechiles.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
-                        //vechiles.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
-                        //vechiles.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
-                        //vechiles.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
-                        //vechiles.LocationID = (dt.Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["LocationID"]);
-                        //vechiles.LocationLatitude = (dt.Rows[i]["LocationLatitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLatitude"].ToString());
-                        //vechiles.LocationLongitude = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLongitude"].ToString());
-                        //vechiles.LocationFullAddress = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[i]["LocationFullAddress"].ToString());
-                        //vechiles.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
+                        userInfo.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
+                        userInfo.Email = (dt.Rows[0]["Email"] == DBNull.Value ? "" : dt.Rows[0]["Email"].ToString());
+                        userInfo.Name = (dt.Rows[0]["Name"] == DBNull.Value ? "" : dt.Rows[0]["Name"].ToString());
+                        userInfo.PhoneNumber = (dt.Rows[0]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[0]["PhoneNumber"].ToString());
+                        userInfo.LocationID = (dt.Rows[0]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[0]["LocationID"]);
+                        userInfo.LocationLatitude = (dt.Rows[0]["LocationLatitude"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["LocationLatitude"]);
+                        userInfo.LocationLongitude = (dt.Rows[0]["LocationLongitude"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["LocationLongitude"]);
+                        userInfo.LocationFullAddress = (dt.Rows[0]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[0]["LocationFullAddress"].ToString());
 
-                        //vechiles.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
-                        //vechiles.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
-                        //vechiles.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
-                        //vechiles.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
-                        //vechiles.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
-                        //vechiles.VehicleImage = ((byte[])dt.Rows[i]["VehicleImage"]);
-                        //vechiles.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
+                        vehicleInfo.VehicleId = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]);
+                        vehicleInfo.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
+                        vehicleInfo.Make = (dt.Rows[0]["Make"] == DBNull.Value ? "" : dt.Rows[0]["Make"].ToString());
+                        vehicleInfo.Model = (dt.Rows[0]["Model"] == DBNull.Value ? "" : dt.Rows[0]["Model"].ToString());
+                        vehicleInfo.Color = (dt.Rows[0]["Color"] == DBNull.Value ? "" : dt.Rows[0]["Color"].ToString());
+                        vehicleInfo.LicensePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
+                        vehicleInfo.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
+                                               
+                        planInfo.PlanType = (dt.Rows[0]["PlanType"] == DBNull.Value ? "" : dt.Rows[0]["PlanType"].ToString());
+                        planInfo.ServiceDescription = (dt.Rows[0]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[0]["ServiceDescription"].ToString());
 
-                        //vechiles.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[i]["ServiceDescription"].ToString());
-                        //vechiles.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
-                        vechiles.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
-                        vechiles.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
-                        vechiles.ServiceAmount = (dt.Rows[i]["ServiceAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["ServiceAmount"]);
-                        //(dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
-                        vechiles.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["RequestedServiceDate"].ToString());
-                        vechiles.RemainderMinutes = (dt.Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Rows[i]["RemainderMinutes"]);
-                        vechiles.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["ActualServiceDate"].ToString());
-                        vechiles.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "" : dt.Rows[i]["ServiceOutDate"].ToString());
-                        vechiles.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "" : dt.Rows[i]["Status"].ToString());
 
-                        vechiles.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
-                        vechiles.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
-                        vechiles.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            ServiceInfo vechiles = new ServiceInfo();
+                            //vechiles.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
+                            //vechiles.Email = (dt.Rows[i]["Email"] == DBNull.Value ? "" : dt.Rows[i]["Email"].ToString());
+                            //vechiles.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
+                            //vechiles.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
+                            //vechiles.LocationID = (dt.Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["LocationID"]);
+                            //vechiles.LocationLatitude = (dt.Rows[i]["LocationLatitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLatitude"].ToString());
+                            //vechiles.LocationLongitude = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLongitude"].ToString());
+                            //vechiles.LocationFullAddress = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[i]["LocationFullAddress"].ToString());
+                            //vechiles.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
+
+                            //vechiles.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
+                            //vechiles.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
+                            //vechiles.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
+                            //vechiles.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
+                            //vechiles.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
+                            //vechiles.VehicleImage = ((byte[])dt.Rows[i]["VehicleImage"]);
+                            //vechiles.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
+
+                            //vechiles.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[i]["ServiceDescription"].ToString());
+                            //vechiles.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
+                            vechiles.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                            vechiles.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
+                            vechiles.ServiceAmount = (dt.Rows[i]["ServiceAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["ServiceAmount"]);
+                            //(dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
+                            vechiles.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["RequestedServiceDate"].ToString());
+                            vechiles.RemainderMinutes = (dt.Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Rows[i]["RemainderMinutes"]);
+                            vechiles.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["ActualServiceDate"].ToString());
+                            vechiles.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "" : dt.Rows[i]["ServiceOutDate"].ToString());
+                            vechiles.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "" : dt.Rows[i]["Status"].ToString());
+
+                            vechiles.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
+                            vechiles.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
+                            vechiles.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
+
+
+                            //vechiles.PaymentDetailId = (dt.Rows[i]["PaymentDetailId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["PaymentDetailId"]);
+                            //vechiles.PaymentType = (dt.Rows[i]["PaymentType"] == DBNull.Value ? "" : dt.Rows[i]["PaymentType"].ToString());
+                            //vechiles.Amount = (dt.Rows[i]["Amount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["Amount"]);
+                            //vechiles.Promocode_ReducedAmount = (dt.Rows[i]["Promocode_ReducedAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["Promocode_ReducedAmount"]);
+                            //vechiles.PaymentDate = (dt.Rows[i]["PaymentDate"] == DBNull.Value ? "" : dt.Rows[i]["PaymentDate"].ToString());
+                            //vechiles.PaymentStatus = (dt.Rows[i]["PaymentStatus"] == DBNull.Value ? "" : dt.Rows[i]["PaymentStatus"].ToString());
+
+                            ServiceList.Add(vechiles);
+
+                        }
+
                         
-
-                        //vechiles.PaymentDetailId = (dt.Rows[i]["PaymentDetailId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["PaymentDetailId"]);
-                        //vechiles.PaymentType = (dt.Rows[i]["PaymentType"] == DBNull.Value ? "" : dt.Rows[i]["PaymentType"].ToString());
-                        //vechiles.Amount = (dt.Rows[i]["Amount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["Amount"]);
-                        //vechiles.Promocode_ReducedAmount = (dt.Rows[i]["Promocode_ReducedAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["Promocode_ReducedAmount"]);
-                        //vechiles.PaymentDate = (dt.Rows[i]["PaymentDate"] == DBNull.Value ? "" : dt.Rows[i]["PaymentDate"].ToString());
-                        //vechiles.PaymentStatus = (dt.Rows[i]["PaymentStatus"] == DBNull.Value ? "" : dt.Rows[i]["PaymentStatus"].ToString());
-
-                        ServiceList.Add(vechiles);
-
+                        if (dt1.Rows.Count > 0)
+                        {
+                            paymentinfo.PaymentDetailId = (dt.Rows[0]["PaymentDetailId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["PaymentDetailId"]);
+                            paymentinfo.PaymentType = (dt.Rows[0]["PaymentType"] == DBNull.Value ? "" : dt.Rows[0]["PaymentType"].ToString());
+                            paymentinfo.TotalAmount = (dt1.Rows[0]["TotalAmount"] == DBNull.Value ? 00 : (decimal)dt1.Rows[0]["TotalAmount"]);
+                            paymentinfo.Paid = (dt.Rows[0]["Amount"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["Amount"]);
+                            paymentinfo.Due = ((dt1.Rows[0]["TotalAmount"] == DBNull.Value ? 00 : (decimal)dt1.Rows[0]["TotalAmount"]) - (dt.Rows[0]["Amount"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["Amount"]));
+                            //(dt1.Rows[0]["Amount"] == DBNull.Value ? 00 : (decimal)dt1.Rows[0]["Amount"]);
+                            paymentinfo.Promocode_ReducedAmount = (dt.Rows[0]["Promocode_ReducedAmount"] == DBNull.Value ? "" : dt.Rows[0]["Promocode_ReducedAmount"].ToString());
+                            paymentinfo.PaymentDate = (dt.Rows[0]["PaymentDate"] == DBNull.Value ? "" : dt.Rows[0]["PaymentDate"].ToString());
+                            paymentinfo.PaymentStatus = (dt.Rows[0]["PaymentStatus"] == DBNull.Value ? "" : dt.Rows[0]["PaymentStatus"].ToString());
+                        }
+                        
                     }
-
-                    PaymentDetails paymentinfo = new PaymentDetails();
-                    paymentinfo.PaymentDetailId = (dt.Rows[0]["PaymentDetailId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["PaymentDetailId"]);
-                    paymentinfo.PaymentType = (dt.Rows[0]["PaymentType"] == DBNull.Value ? "" : dt.Rows[0]["PaymentType"].ToString());
-                    paymentinfo.Amount = (dt.Rows[0]["Amount"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["Amount"]);
-                    paymentinfo.Promocode_ReducedAmount = (dt.Rows[0]["Promocode_ReducedAmount"] == DBNull.Value ? "" : dt.Rows[0]["Promocode_ReducedAmount"].ToString());
-                    paymentinfo.PaymentDate = (dt.Rows[0]["PaymentDate"] == DBNull.Value ? "" : dt.Rows[0]["PaymentDate"].ToString());
-                    paymentinfo.PaymentStatus = (dt.Rows[0]["PaymentStatus"] == DBNull.Value ? "" : dt.Rows[0]["PaymentStatus"].ToString());
-
                     return StatusCode((int)HttpStatusCode.OK, new { userInfo, vehicleInfo, planInfo, ServiceList, paymentinfo });
-                }
 
+                    //else
+                    //{
+                    //    return StatusCode((int)HttpStatusCode.OK, new { });
+                    //}
+                }
                 else
                 {
                     return StatusCode((int)HttpStatusCode.OK, new { });

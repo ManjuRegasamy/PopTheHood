@@ -59,7 +59,7 @@ namespace PopTheHood.Data
             }
         }
        
-        public static DataTable GetServiceDetailsLocationWise(string Search)
+        public static DataSet GetServiceDetailsLocationWise(string Search)
         {
             try
             {
@@ -73,9 +73,9 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@Search", Search));
 
                 //Execute the query
-                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetServiceDetailsLocationWise", parameters.ToArray()).Tables[0])
+                using (DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetServiceDetailsLocationWise", parameters.ToArray()))
                 {
-                    return dt;
+                    return ds;
                 }
             }
             catch (Exception e)
@@ -84,15 +84,17 @@ namespace PopTheHood.Data
             }
         }
 
-
         public static DataSet SaveServiceRequest(ServiceRequest serviceDetails)
         {
             try
             {
+                int[] ServicePriceChartId = serviceDetails.ServicePriceChartId;          // { "2343", "2344", "2345" };
+                string idString = string.Join(",", ServicePriceChartId);
+
                 string ConnectionString = Common.GetConnectionString();
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@ServicePlanID", serviceDetails.ServicePlanID));
-                parameters.Add(new SqlParameter("@AvailableServiceID", serviceDetails.AvailableServiceID));
+                parameters.Add(new SqlParameter("@ServicePriceChartId", idString));
                 parameters.Add(new SqlParameter("@VehicleId", serviceDetails.VehicleId));
                 //parameters.Add(new SqlParameter("@RemainderMinutes", serviceDetails.RemainderMinutes));
                 //parameters.Add(new SqlParameter("@LocationID", serviceDetails.LocationID));
@@ -126,7 +128,65 @@ namespace PopTheHood.Data
 
         }
 
+        public static DataTable GetServiceRequestListByVehicleId (int VehicleId)
+        {
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("@VehicleId", VehicleId));
+
+                //Execute the query
+                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetServiceRequestListByVehicleId", parameters.ToArray()).Tables[0])
+                {
+                    return dt;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public static int SetRemainder(string ServicePriceChartId, int VehicleId)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@ServicePriceChartId", ServicePriceChartId));
+            parameters.Add(new SqlParameter("@VehicleId", VehicleId));
+
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+
+                int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSetRemainder", parameters.ToArray());
+                return rowsAffected;
+            }
+            catch (Exception e)
+            {
+                //loggerErr.Error(e.Message + " - " + e.StackTrace);
+                throw e;
+            }
+        }
         
+        public static int SetTeamsandCondition(string ServicePriceChartId, int VehicleId)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@ServicePriceChartId", ServicePriceChartId));
+            parameters.Add(new SqlParameter("@VehicleId", VehicleId));
+
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+
+                int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSetTeamsandConditions", parameters.ToArray());
+                return rowsAffected;
+            }
+            catch (Exception e)
+            {
+                //loggerErr.Error(e.Message + " - " + e.StackTrace);
+                throw e;
+            }
+        }
 
     }
 }

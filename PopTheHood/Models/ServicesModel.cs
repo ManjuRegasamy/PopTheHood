@@ -50,6 +50,9 @@ namespace PopTheHood.Models
         public string ServiceDescription { get; set; }
         public string PlanType { get; set; }
         public decimal ServiceAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal Paid { get; set; }
+        public decimal Due { get; set; }
         public string RequestedServiceDate { get; set; }
         public string ActualServiceDate { get; set; }
         public string ServiceOutDate { get; set; }
@@ -69,11 +72,11 @@ namespace PopTheHood.Models
     public class ServiceRequest
     {
         public int ServicePlanID { get; set; }
-        public int AvailableServiceID { get; set; }
+        public int[] ServicePriceChartId { get; set; }
         public int VehicleId { get; set; }
-        public int RemainderMinutes { get; set; }
-        public int LocationID { get; set; }
-        public bool IsTeamsandConditionsAccepted { get; set; }
+        //public int RemainderMinutes { get; set; }
+        //public int LocationID { get; set; }
+        //public bool IsTeamsandConditionsAccepted { get; set; }
         [DefaultValue(false)]
         public bool? PromoCodeApplied { get; set; }
        // public string PlanType { get; set; }
@@ -83,5 +86,10 @@ namespace PopTheHood.Models
     {
         public string PlanType { get; set; }
         public string ServiceDescription { get; set; }
+    }
+
+    public class ServiceAmount
+    {
+        public decimal TotalAmount { get; set; }
     }
 }

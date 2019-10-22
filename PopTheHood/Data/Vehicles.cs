@@ -136,7 +136,7 @@ namespace PopTheHood.Data
         }
         
 
-        public static int SaveLocation(VehicleLocation vehiclelocation, string Action)
+        public static DataSet SaveLocation(VehicleLocation vehiclelocation, string Action)
         {
             try
             {
@@ -148,11 +148,16 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@LocationLatitude", vehiclelocation.LocationLatitude));
                 parameters.Add(new SqlParameter("@LocationLongitude", vehiclelocation.LocationLongitude));
                 parameters.Add(new SqlParameter("@LocationFullAddress", vehiclelocation.LocationFullAddress));
-                parameters.Add(new SqlParameter("@LandMark", vehiclelocation.LandMark)); 
+                parameters.Add(new SqlParameter("@LandMark", vehiclelocation.LandMark));
+                parameters.Add(new SqlParameter("@CityName", vehiclelocation.CityName));
                 parameters.Add(new SqlParameter("@Action", Action));
 
-                int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveLocation", parameters.ToArray());
-                return rowsAffected;
+                //int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveLocation", parameters.ToArray());
+                //return rowsAffected;
+                using (DataSet dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spSaveLocation", parameters.ToArray()))
+                {
+                    return dt;
+                }
             }
             catch (Exception e)
             {
@@ -162,7 +167,7 @@ namespace PopTheHood.Data
         }
 
 
-        public static DataTable GetVehicleDetailedList(int VehicleId)
+        public static DataSet GetVehicleDetailedList(int VehicleId)
         {
 
             try
@@ -173,10 +178,14 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@VehicleId", VehicleId));
 
                 //Execute the query
-                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetVehicleSerivceDetails", parameters.ToArray()).Tables[0])
+                using (DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetVehicleSerivceDetails", parameters.ToArray()))
                 {
-                    return dt;
+                    return ds;
                 }
+                //using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spGetVehicleSerivceDetails", parameters.ToArray()).Tables[0])
+                //{
+                //    return dt;
+                //}
             }
             catch (Exception e)
             {
