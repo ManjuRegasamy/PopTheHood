@@ -613,6 +613,7 @@ namespace PopTheHood.Controllers
             List<ServiceInfo> ServiceList = new List<ServiceInfo>();
             PaymentDetails paymentinfo = new PaymentDetails();
             PlanInfo planInfo = new PlanInfo();
+            List<PlanInfo> planInfoList = new List<PlanInfo>();
 
             try
             {
@@ -628,6 +629,7 @@ namespace PopTheHood.Controllers
                 DataSet ds = Data.Vehicles.GetVehicleDetailedList(VehicleId);
                 DataTable dt = new DataTable();
                 DataTable dt1 = new DataTable();
+                DataTable dt2 = new DataTable();
 
                 UserInfo userInfo = new UserInfo();
 
@@ -638,6 +640,8 @@ namespace PopTheHood.Controllers
                 {
                     dt = ds.Tables[0];
                     dt1 = ds.Tables[1];
+                    dt2 = ds.Tables[2];
+
                     if (dt.Rows.Count > 0)
                     {
                         userInfo.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
@@ -657,8 +661,23 @@ namespace PopTheHood.Controllers
                         vehicleInfo.LicensePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
                         vehicleInfo.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
                                                
-                        planInfo.PlanType = (dt.Rows[0]["PlanType"] == DBNull.Value ? "" : dt.Rows[0]["PlanType"].ToString());
-                        planInfo.ServiceDescription = (dt.Rows[0]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[0]["ServiceDescription"].ToString());
+                        
+                        if(dt2.Rows.Count > 0)
+                        {
+                           // planInfo.PlanType = (dt.Rows[0]["PlanType"] == DBNull.Value ? "" : dt.Rows[0]["PlanType"].ToString());
+                            
+                            for (int i = 0; i < dt2.Rows.Count; i++)
+                            {
+                                PlanInfo planInfo1 = new PlanInfo();
+
+                                planInfo1.PlanType = (dt.Rows[0]["PlanType"] == DBNull.Value ? "" : dt.Rows[0]["PlanType"].ToString());
+                                planInfo1.ServiceNameList = (dt2.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt2.Rows[i]["ServiceName"].ToString());
+                                planInfo1.ServiceDescription = (dt2.Rows[i]["ServiceDescription"] == DBNull.Value ? "" : dt2.Rows[i]["ServiceDescription"].ToString());
+
+                                planInfoList.Add(planInfo1);
+                            }                             
+
+                        }
 
 
                         for (int i = 0; i < dt.Rows.Count; i++)
@@ -725,7 +744,7 @@ namespace PopTheHood.Controllers
                         }
                         
                     }
-                    return StatusCode((int)HttpStatusCode.OK, new { userInfo, vehicleInfo, planInfo, ServiceList, paymentinfo });
+                    return StatusCode((int)HttpStatusCode.OK, new { userInfo, vehicleInfo, planInfoList, ServiceList, paymentinfo });
 
                     //else
                     //{

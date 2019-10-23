@@ -54,23 +54,36 @@ namespace PopTheHood.Controllers
                 //{
                 //    SmsStatus = "Message not sent..";
                 //}
+                PhoneNumber = "+14087224019";
 
                 string SaveOtpValue = Data.Common.SaveOTP(PhoneNumber, OTPValue, "Phone");
+
                 if (SaveOtpValue == "Success")
                 {
                     //SMSResponse results = SmsNotification.SendMessage(PhoneNumber, "Hi User, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.");
 
                     results = SmsNotification.SendMessage(PhoneNumber, "Hi User, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.");
-                    if (results.messages.ToString() == "Success" )
+
+                    string status = results.messages[0].status.ToString();
+
+                    if (status == "0" )
                     {
                         SmsStatus = "Message sent successfully.";
                     }
                     else
                     {
-                        SmsStatus = "Message not sent..";
+                        string err = results.messages[0].error_text.ToString();
+                        SmsStatus = err;
                     }
+                    
 
-                    return StatusCode((int)HttpStatusCode.OK, new { results.messages, SmsStatus });
+                   // results = SmsNotification.SendMessage(PhoneNumber, "Hi User, your OTP is " + OTPValue + " and it's expiry time is 5 minutes.");
+                    //var res = new List<SMSResponseDetail>();
+                    //res = results.messages;
+
+
+
+                    return StatusCode((int)HttpStatusCode.OK, new { SmsStatus });       //results.messages, 
                 }
 
                 else

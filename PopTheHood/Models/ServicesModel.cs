@@ -85,7 +85,9 @@ namespace PopTheHood.Models
     public class PlanInfo
     {
         public string PlanType { get; set; }
+        public string ServiceNameList { get; set; }
         public string ServiceDescription { get; set; }
+
     }
 
     public class ServiceAmount

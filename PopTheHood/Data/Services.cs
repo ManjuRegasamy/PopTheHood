@@ -148,11 +148,12 @@ namespace PopTheHood.Data
             }
         }
 
-        public static int SetRemainder(string ServicePriceChartId, int VehicleId)
+        public static int SetRemainder(string ServicePriceChartId, int VehicleId, int RemainderTime)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@ServicePriceChartId", ServicePriceChartId));
             parameters.Add(new SqlParameter("@VehicleId", VehicleId));
+            parameters.Add(new SqlParameter("@RemainderTime", RemainderTime));
 
             try
             {
@@ -168,11 +169,12 @@ namespace PopTheHood.Data
             }
         }
         
-        public static int SetTeamsandCondition(string ServicePriceChartId, int VehicleId)
+        public static int SetTeamsandCondition(string ServicePriceChartId, int VehicleId, bool Status)
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@ServicePriceChartId", ServicePriceChartId));
             parameters.Add(new SqlParameter("@VehicleId", VehicleId));
+            parameters.Add(new SqlParameter("@Status", Status));
 
             try
             {

@@ -352,28 +352,36 @@ namespace PopTheHood.Controllers
 
         #region SetRemainder
         [HttpPost, Route("SetRemainder")]
-        public IActionResult SetRemainder(string[] ServicePriceChartId, int VehicleId)
+        public IActionResult SetRemainder(string[] ServicePriceChartId, int VehicleId, int RemainderTime)
         {
             try
             {
-                if (ServicePriceChartId[0] != "")
+                if (ServicePriceChartId[0] != null)
                 {
-                    string idString = string.Join(",", ServicePriceChartId);
-                    int row = Data.Services.SetRemainder(idString, VehicleId);
-
-                    if (row > 0)
+                    if(RemainderTime != 0)
                     {
-                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                        string idString = string.Join(",", ServicePriceChartId);
+                        int row = Data.Services.SetRemainder(idString, VehicleId, RemainderTime);
+
+                        if (row > 0)
+                        {
+                            return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                        }
+                        else
+                        {
+                            return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Updating the Remainder" } });
+                        }
+
                     }
                     else
                     {
-                        return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Updating the Remainder" } });
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please Enter Remainder time" } });
                     }
 
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some value" } });
+                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some Service Price Chart value" } });
                 }
 
             }
@@ -389,14 +397,14 @@ namespace PopTheHood.Controllers
 
         #region SetTeamsandConditions
         [HttpPost, Route("SetTeamsandCondition")]
-        public IActionResult SetTeamsandCondition(int[] ServicePriceChartId, int VehicleId)
+        public IActionResult SetTeamsandCondition(int[] ServicePriceChartId, int VehicleId, bool Status)
         {
             try
             {
                 if (ServicePriceChartId[0] != 0)
                 {
                     string idString = string.Join(",", ServicePriceChartId);
-                    int row = Data.Services.SetTeamsandCondition(idString, VehicleId);
+                    int row = Data.Services.SetTeamsandCondition(idString, VehicleId, Status);
 
                     if (row > 0)
                     {

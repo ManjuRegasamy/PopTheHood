@@ -21,11 +21,17 @@ namespace PopTheHood.Controllers
         {
             DataSet ds = Data.Dashboard.GetDashboard();
             DataTable dt1 = new DataTable();
-            DataTable dt2 = new DataTable();            
-            
-            List<DashboardRecords> reportList = new List<DashboardRecords>();
-            List<DashboardRecords> MonthlyreportList = new List<DashboardRecords>();
+            DataTable dt2 = new DataTable();
+            DataTable dt3 = new DataTable();
+            DataTable dt4 = new DataTable();
+            DataTable dt5 = new DataTable();
 
+            List<DashboardRecords> reportList = new List<DashboardRecords>();
+            List<DashboardMonthlyReport> MonthlyreportList = new List<DashboardMonthlyReport>();
+            List<DashboardGeneralServicereport> GeneralServiceList = new List<DashboardGeneralServicereport>();
+            List<VehicleScheduledReport> VehicleScheduledListForADay = new List<VehicleScheduledReport>();
+            List<VehicleScheduledReport> VehicleScheduledForAWeek = new List<VehicleScheduledReport>();
+            
             try
             { 
 
@@ -33,6 +39,10 @@ namespace PopTheHood.Controllers
                 {
                     dt1 = ds.Tables[0];
                     dt2 = ds.Tables[1];
+                    dt3 = ds.Tables[2];
+                    dt4 = ds.Tables[3];
+                    dt5 = ds.Tables[4];
+
                     DashboardRecords report = new DashboardRecords();
 
                     if (dt1.Rows.Count > 0)
@@ -47,13 +57,53 @@ namespace PopTheHood.Controllers
                     {
                         for (int i = 0; i < dt2.Rows.Count; i++)
                         {
-                            DashboardRecords Monthlyreport = new DashboardRecords();
+                            DashboardMonthlyReport Monthlyreport = new DashboardMonthlyReport();
                             Monthlyreport.MonthList = dt2.Rows[i]["MonthwiseCount"].ToString();
                             Monthlyreport.MonthwiseCount = (int)dt2.Rows[i]["TotalService"];
                             MonthlyreportList.Add(Monthlyreport);
                         }
                     }
-                    return StatusCode((int)HttpStatusCode.OK, new { report, MonthlyreportList });
+
+                    if (dt3.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt3.Rows.Count; i++)
+                        {
+                            DashboardGeneralServicereport GeneralServicereport = new DashboardGeneralServicereport();
+                            GeneralServicereport.ServiceStatus = dt3.Rows[i]["ServiceStatus"].ToString();
+                            GeneralServicereport.ServicesCount = (int)dt3.Rows[i]["ServicesCount"];
+                            GeneralServiceList.Add(GeneralServicereport);
+                        }
+                    }
+
+                    if (dt4.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt4.Rows.Count; i++)
+                        {
+                            VehicleScheduledReport vehicles = new VehicleScheduledReport();
+                            vehicles.LicensePlate = dt4.Rows[i]["LicensePlate"].ToString();
+                            vehicles.Make = dt4.Rows[i]["Make"].ToString();
+                            vehicles.Name = dt4.Rows[i]["Name"].ToString();
+                            vehicles.PhoneNumber = dt4.Rows[i]["PhoneNumber"].ToString();
+                            vehicles.LocationFullAddress = dt4.Rows[i]["LocationFullAddress"].ToString();
+                            vehicles.CityName = dt4.Rows[i]["CityName"].ToString();
+                            VehicleScheduledListForADay.Add(vehicles);
+                        }
+                    }
+
+                    if (dt5.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt5.Rows.Count; i++)
+                        {
+                            VehicleScheduledReport vehicles = new VehicleScheduledReport();
+                            vehicles.LicensePlate = dt5.Rows[i]["LicensePlate"].ToString();
+                            vehicles.RequestServiceDate = dt5.Rows[i]["RequestServiceDate"].ToString();
+                            VehicleScheduledForAWeek.Add(vehicles);
+
+                        }
+                    }
+
+                    return StatusCode((int)HttpStatusCode.OK, new { report, MonthlyreportList, GeneralServiceList, VehicleScheduledListForADay, VehicleScheduledForAWeek });
+                    
                 }
 
                 else

@@ -72,16 +72,19 @@ namespace PopTheHood.Data
 
                 var client = new Client(creds: new Nexmo.Api.Request.Credentials
                 {
-                    ApiKey = SMSKey,
-                    ApiSecret = SMSValue
+                    //ApiKey = SMSKey,
+                    //ApiSecret = SMSValue
+                    ApiKey = "5d5eb59f",
+                    ApiSecret = "xFT1BuHaxN6wzA8M"
                 });
 
                 var results = client.SMS.Send(new SMS.SMSRequest
                 {
-                    from = Configuration.Instance.Settings["appsettings:NEXMO_FROM_NUMBER"],
-                    to = to,
+                    from = "19565390371",             //"7708178085",     //Configuration.Instance.Settings["appsettings:NEXMO_FROM_NUMBER"],
+                    to = "+14087224019",
                     text = text
                 });
+
                 //var res = results.messages;
                 ////SMS.SMSResponseDetail rd = new SMS.SMSResponseDetail(results);
                 ////rd = results;
