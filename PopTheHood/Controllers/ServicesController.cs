@@ -223,19 +223,7 @@ namespace PopTheHood.Controllers
                     var Status = "";
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        if(dt.Rows[i]["Status"].ToString() == "Service Inprogress")
-                        {
-                            Status = "Service on due";
-                        }
-                        if (dt.Rows[i]["Status"].ToString() == "Upcoming Service")
-                        {
-                            Status = "Next to Service";
-                        }
-                        else
-                        {
-                            Status = "No further Service";
-                        }
-
+                        
                         ServiceLocation service = new ServiceLocation();
                         service.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
                         service.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "-" : dt.Rows[i]["Name"].ToString());
@@ -257,7 +245,7 @@ namespace PopTheHood.Controllers
                         service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
                         service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
                         service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
-                        service.Status = Status;     //dt.Rows[i]["Status"].ToString();
+                        service.Status =dt.Rows[i]["Status"].ToString();
                         //service.TotalAmount = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["LocationLongitude"]);
                         service.TotalAmount = (dt.Rows[i]["TotalAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["TotalAmount"]);
                         service.Paid = (dt.Rows[i]["Amount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["Amount"]);
