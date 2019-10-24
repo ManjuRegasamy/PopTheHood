@@ -56,8 +56,9 @@ namespace PopTheHood.Controllers
                             vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
                             vechile.VehicleImageURL = (dt.Rows[i]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[i]["VehicleImageURL"].ToString());
                             vechile.NextService = (dt.Rows[i]["NextService"] == DBNull.Value ? "" : dt.Rows[i]["NextService"].ToString());
+                            vechile.IsServiceScheduled = (dt.Rows[i]["IsServiceScheduled"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsServiceScheduled"]);
 
-                            
+
                             //vechile.ImageType = (dt.Rows[i]["ImageType"] == DBNull.Value ? "" : dt.Rows[i]["ImageType"].ToString());
 
                             //vechile.UserCreatedDate = (dt.Rows[i]["UserCreatedDate"] == DBNull.Value ? "" : dt.Rows[i]["UserCreatedDate"].ToString());

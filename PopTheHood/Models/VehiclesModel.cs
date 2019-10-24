@@ -70,7 +70,8 @@ namespace PopTheHood.Models
         public string Email { get; set; } 
         public string Address { get; set; }
         public string NextService { get; set; }
-        
+        public bool? IsServiceScheduled { get; set; }
+
     }
 
 
