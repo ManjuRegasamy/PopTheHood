@@ -173,50 +173,9 @@ namespace PopTheHood.Controllers
         {
             //string GetConnectionString = VehiclesController.GetConnectionString();
             string Action = "Add";
-            //try
-            //{
-            //    if(vehiclemodel.VehicleImage.ToString() != "")
-            //    { 
-            //        vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
-            //    }
-            //    if (vehiclemodel.LicensePlate == "")
-            //    {
-            //        return StatusCode((int)HttpStatusCode.InternalServerError, new { Error = "Please enter LicensePlate" });
-            //    }
-            //    else if (vehiclemodel.UserId <= 0)
-            //    {
-            //        return StatusCode((int)HttpStatusCode.InternalServerError, new { Error = "Please enter UserId" });
-            //    }
-            //    int row = Data.Vehicles.SaveVehicle(vehiclemodel, Action);
-
-            //    if (row > 0)
-            //    {
-            //        if (Action == "Add")
-            //        {
-            //            return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
-            //        }
-            //        else
-            //        {
-            //            return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        return StatusCode((int)HttpStatusCode.BadRequest, new { Error = "Error Saving the Vehicle" });
-            //    }
-
-            //}
+            
             try
             {
-
-                //if (vehiclemodel.ImageType == "")  
-                //{
-                //    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Image Type" } });
-                //}
-                //else if (vehiclemodel.VehicleImage.ToString() != "")
-                //{
-                //    vehiclemodel.VehicleImageURL = AzureStorage.UploadImage(vehiclemodel.VehicleImage, Guid.NewGuid() + "." + vehiclemodel.ImageType, "vehicleimages").Result;
-                //}
                 if (vehiclemodel.VehicleImage != null && vehiclemodel.VehicleImage.Length > 0)
                 {
                     if (vehiclemodel.ImageType == "")
@@ -242,9 +201,10 @@ namespace PopTheHood.Controllers
 
                 string Results = SaveUpdateVehicle(vehiclemodel, Action);
 
-                if (Results == "Success")
+                if (Results != "Error Updating the Vehicle")
                 {
-                    return StatusCode((int)HttpStatusCode.OK, vehiclemodel.LicensePlate + " is saved Successfully");
+                    int VehicleId = Convert.ToInt32(Results);
+                    return StatusCode((int)HttpStatusCode.OK, new { VehicleId, message = vehiclemodel.LicensePlate + " is saved successfully"  });
                 }
                 else //if (Results == "Error Updating the Vehicle")
                 {
@@ -334,13 +294,14 @@ namespace PopTheHood.Controllers
 
                 string Results = SaveUpdateVehicle(vehiclemodel, Action);
 
-                if (Results == "Success")
+                if (Results != "Error Updating the Vehicle")
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully" );
+                    int VehicleId = Convert.ToInt32(Results);
+                    return StatusCode((int)HttpStatusCode.OK, new { VehicleId, message = vehiclemodel.LicensePlate + " is updated successfully" });
                 }
                 else //if (Results == "Error Updating the Vehicle")
                 {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Vehicle not updated" } });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Vehicle not saved" } });
                 }
 
             }            
@@ -790,16 +751,20 @@ namespace PopTheHood.Controllers
                 //}
                 //else
                 //{
-                    int row = Data.Vehicles.SaveVehicle(vehiclemodel, Action);
+                    DataTable dt = Data.Vehicles.SaveVehicle(vehiclemodel, Action);
+                    //VehiclesDetails vechile = new VehiclesDetails();
 
-                    if (row > 0)
+                    if (dt.Rows[0]["VehicleId"].ToString() != "")
                     {
-                        Result = "Success";
+                        Result = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]).ToString();
                     }
                     else
                     {
                         Result = "Error Updating the Vehicle";
                     }
+
+
+
 
                 //}
 

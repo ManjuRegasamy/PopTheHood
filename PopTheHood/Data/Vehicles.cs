@@ -76,7 +76,7 @@ namespace PopTheHood.Data
             }
         }
 
-        public static int SaveVehicle(VehiclesModel vehiclemodel, string Action)
+        public static DataTable SaveVehicle(VehiclesModel vehiclemodel, string Action)
         {
             try
             {
@@ -94,12 +94,13 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@ImageType", vehiclemodel.ImageType));
                 parameters.Add(new SqlParameter("@Action", Action));
 
-                //using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spSaveVehicle", parameters.ToArray()).Tables[0])
-                //{
-                    int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveVehicle", parameters.ToArray());
-                    return rowsAffected;
-                //}
-            }
+                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spSaveVehicle", parameters.ToArray()).Tables[0])
+                {
+                    return dt;
+                    //int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spSaveVehicle", parameters.ToArray());
+                    //return rowsAffected;
+                }
+             }
             catch (Exception e)
             {
                 //loggerErr.Error(e.Message + " - " + e.StackTrace);

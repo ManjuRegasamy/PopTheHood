@@ -97,13 +97,22 @@ namespace PopTheHood
                     Name = "Authorization",
                     Type = "apiKey"
                 });
-              //  c.OperationFilter<SecurityRequirementsOperationFilter>();
+                //  c.OperationFilter<SecurityRequirementsOperationFilter>();
+                
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                 { "Bearer", Enumerable.Empty<string>() },
                 });
 
                 //var xmlPath = System.AppDomain.CurrentDomain.BaseDirectory + @"PopTheHood.xml";
                 //c.IncludeXmlComments(xmlPath);
+
+                //var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, $"{_webApiAssemblyName}.xml");
+                //options.IncludeXmlComments(filePath);
+                //options.DescribeAllEnumsAsStrings();
+                ////this is the step where we add the operation filter
+                //options.OperationFilter<FileUploadOperation>();
+
+
             });
             
 
