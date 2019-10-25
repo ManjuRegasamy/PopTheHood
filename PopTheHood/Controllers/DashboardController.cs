@@ -86,6 +86,8 @@ namespace PopTheHood.Controllers
                             vehicles.PhoneNumber = dt4.Rows[i]["PhoneNumber"].ToString();
                             vehicles.LocationFullAddress = dt4.Rows[i]["LocationFullAddress"].ToString();
                             vehicles.CityName = dt4.Rows[i]["CityName"].ToString();
+                            vehicles.vehicleId = (int)dt4.Rows[i]["vehicleId"];
+                            
                             VehicleScheduledListForADay.Add(vehicles);
                         }
                     }
@@ -97,6 +99,7 @@ namespace PopTheHood.Controllers
                             VehicleScheduledReport vehicles = new VehicleScheduledReport();
                             vehicles.LicensePlate = dt5.Rows[i]["LicensePlate"].ToString();
                             vehicles.RequestServiceDate = dt5.Rows[i]["RequestServiceDate"].ToString();
+                            vehicles.vehicleId = (int)dt5.Rows[i]["vehicleId"];
                             VehicleScheduledForAWeek.Add(vehicles);
 
                         }
