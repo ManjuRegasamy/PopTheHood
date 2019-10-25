@@ -103,6 +103,7 @@ namespace PopTheHood.Models
     {
         public int ScheduleID { get; set; }
         public int ServicePlanID { get; set; }
+        public int ServiceID { get; set; }
         public int ServicePriceChartId { get; set; }
         public string ServiceName { get; set; }
         public decimal ServiceAmount { get; set; }
