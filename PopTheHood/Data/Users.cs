@@ -21,12 +21,17 @@ namespace PopTheHood.Data
                 //    new SqlParameter("@Email", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 10, 0, "Email", DataRowVersion.Proposed, userlogin.Email),
                 //    new SqlParameter("@Password", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, 10, 0, "Password", DataRowVersion.Proposed, userlogin.Password)
                 //};
+                string Role = "User";
+                if (userlogin.Role=="Admin")
+                {
+                    Role = "Admin";
+                }
                 var encryptPassword = Common.EncryptData(userlogin.Password);
 
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@Email", userlogin.Email));
                 parameters.Add(new SqlParameter("@Password", encryptPassword));
-
+                parameters.Add(new SqlParameter("@Role", Role));
                 DataTable dt = new DataTable();
                 using (dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spLoginUser", parameters.ToArray()).Tables[0])
                 {
