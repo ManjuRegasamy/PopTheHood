@@ -269,6 +269,10 @@ namespace PopTheHood.Controllers
             //string GetConnectionString = UsersController.GetConnectionString();
             List<UsersLogin> userList = new List<UsersLogin>();
             string Action = "Add";
+            if (userlogin.Role != "Admin")
+            {
+                userlogin.Role = "User";
+            }
             try
             {
                 string row = Data.Users.SaveUser(userlogin , Action);

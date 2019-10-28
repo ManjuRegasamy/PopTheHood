@@ -41,7 +41,7 @@ namespace PopTheHood.Data
                 string ConnectionString = Common.GetConnectionString();
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@ScheduleID", servicedetails.ScheduleID));
-                parameters.Add(new SqlParameter("@ServiceID", servicedetails.ServiceID));
+               // parameters.Add(new SqlParameter("@ServiceID", servicedetails.ServiceID));
                 parameters.Add(new SqlParameter("@RequestedServiceDate", Convert.ToDateTime(servicedetails.RequestedServiceDate)));
                 //parameters.Add(new SqlParameter("@ActualServiceDate", Convert.ToDateTime(servicedetails.ActualServiceDate)));
                 //parameters.Add(new SqlParameter("@ServiceOutDate", Convert.ToDateTime(servicedetails.ServiceOutDate)));
