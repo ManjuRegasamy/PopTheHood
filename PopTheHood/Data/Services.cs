@@ -43,8 +43,8 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@ScheduleID", servicedetails.ScheduleID));
                 parameters.Add(new SqlParameter("@ServiceID", servicedetails.ServiceID));
                 parameters.Add(new SqlParameter("@RequestedServiceDate", Convert.ToDateTime(servicedetails.RequestedServiceDate)));
-                parameters.Add(new SqlParameter("@ActualServiceDate", Convert.ToDateTime(servicedetails.ActualServiceDate)));
-                parameters.Add(new SqlParameter("@ServiceOutDate", Convert.ToDateTime(servicedetails.ServiceOutDate)));
+                //parameters.Add(new SqlParameter("@ActualServiceDate", Convert.ToDateTime(servicedetails.ActualServiceDate)));
+                //parameters.Add(new SqlParameter("@ServiceOutDate", Convert.ToDateTime(servicedetails.ServiceOutDate)));
                 parameters.Add(new SqlParameter("@Status", servicedetails.Status));
 
                 //Execute the query
