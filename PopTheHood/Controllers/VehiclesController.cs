@@ -237,9 +237,16 @@ namespace PopTheHood.Controllers
 
             catch (Exception e)
             {
-                string SaveErrorLog = Data.Common.SaveErrorLog("SaveVehicle", e.Message);
+                if (e.Message.Contains("UNIQUE KEY constraint") == true)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "LicensePlate is already exists" } });
+                }
+                else
+                {
+                    string SaveErrorLog = Data.Common.SaveErrorLog("SaveVehicle", e.Message);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message.ToString() } });
+                }
             }
         }
         #endregion

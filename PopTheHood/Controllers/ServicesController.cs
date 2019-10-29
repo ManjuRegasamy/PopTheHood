@@ -344,11 +344,19 @@ namespace PopTheHood.Controllers
         {
             try
             {
-                if (ServicePriceChartId[0] != null)
-                {
-                    if(RemainderTime != 0)
+                string idString = "";
+                //if (ServicePriceChartId[0] != null)
+                //{
+                    if (RemainderTime != 0)
                     {
-                        string idString = string.Join(",", ServicePriceChartId);
+                        if (ServicePriceChartId[0] != null)
+                        {
+                            idString = string.Join(",", ServicePriceChartId);
+                        }
+                        else
+                        {
+                            idString = "0";
+                        }
                         int row = Data.Services.SetRemainder(idString, VehicleId, RemainderTime);
 
                         if (row > 0)
@@ -366,11 +374,11 @@ namespace PopTheHood.Controllers
                         return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please Enter Remainder time" } });
                     }
 
-                }
-                else
-                {
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some Service Price Chart value" } });
-                }
+                //}
+                //else
+                //{
+                //    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some Service Price Chart value" } });
+                //}
 
             }
 
@@ -389,9 +397,17 @@ namespace PopTheHood.Controllers
         {
             try
             {
-                if (ServicePriceChartId[0] != 0)
-                {
-                    string idString = string.Join(",", ServicePriceChartId);
+                //if (ServicePriceChartId[0] != 0)
+                //{
+                    string idString = "";
+                    if (ServicePriceChartId[0] != null)
+                    {
+                        idString = string.Join(",", ServicePriceChartId);
+                    }
+                    else
+                    {
+                        idString = "0";
+                    }
                     int row = Data.Services.SetTeamsandCondition(idString, VehicleId, Status);
 
                     if (row > 0)
@@ -403,11 +419,11 @@ namespace PopTheHood.Controllers
                         return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Updating the Teams and Conditions" } });
                     }
 
-                }
-                else
-                {
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some value" } });
-                }
+                //}
+                //else
+                //{
+                //    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please give some value" } });
+                //}
             }
             
             catch (Exception e)

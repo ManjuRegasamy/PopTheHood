@@ -47,9 +47,9 @@ namespace PopTheHood.Controllers
 
                     if (dt1.Rows.Count > 0)
                     {                        
-                        report.Users = (int)dt1.Rows[0]["Count"];
-                        report.Vehicles = (int)dt1.Rows[1]["Count"];
-                        report.Services = (int)dt1.Rows[2]["Count"];
+                        report.Users = (int)dt1.Rows[2]["Count"];
+                        report.Vehicles = (int)dt1.Rows[3]["Count"];
+                        report.Services = (int)dt1.Rows[1]["Count"];
                         reportList.Add(report);                        
                     }
                     
