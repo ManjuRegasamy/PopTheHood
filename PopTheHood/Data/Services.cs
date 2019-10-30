@@ -46,6 +46,7 @@ namespace PopTheHood.Data
                 //parameters.Add(new SqlParameter("@ActualServiceDate", Convert.ToDateTime(servicedetails.ActualServiceDate)));
                 //parameters.Add(new SqlParameter("@ServiceOutDate", Convert.ToDateTime(servicedetails.ServiceOutDate)));
                 parameters.Add(new SqlParameter("@Status", servicedetails.Status));
+                parameters.Add(new SqlParameter("@Comments", servicedetails.Comments));
 
                 //Execute the query
                 using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spUpdateServiceSchedule", parameters.ToArray()).Tables[0])
@@ -100,7 +101,7 @@ namespace PopTheHood.Data
                 //parameters.Add(new SqlParameter("@LocationID", serviceDetails.LocationID));
                 //parameters.Add(new SqlParameter("@IsTeamsandConditionsAccepted", serviceDetails.IsTeamsandConditionsAccepted));
                 parameters.Add(new SqlParameter("@PromoCodeApplied", serviceDetails.PromoCodeApplied));
-              //  parameters.Add(new SqlParameter("@PlanType", serviceDetails.PlanType));
+                
 
 
                 //int rowsAffected = SqlHelper.ExecuteScalar(connectionString, CommandType.StoredProcedure, "spSaveUser", parameters.ToArray());

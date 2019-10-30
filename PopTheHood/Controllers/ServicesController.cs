@@ -111,6 +111,7 @@ namespace PopTheHood.Controllers
                             //service.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
                             service.PromoCodeApplied = (dt.Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Rows[i]["PromoCodeApplied"]);
                             service.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "-" : dt.Rows[i]["Status"].ToString());
+                            service.Comments = (dt.Rows[i]["Comments"] == DBNull.Value ? "-" : dt.Rows[i]["Comments"].ToString());
                             service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
                             service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
                             service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
@@ -168,6 +169,7 @@ namespace PopTheHood.Controllers
                             //service.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
                             service.PromoCodeApplied = (dt.Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Rows[i]["PromoCodeApplied"]);
                             service.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "-" : dt.Rows[i]["Status"].ToString());
+                            service.Comments = (dt.Rows[i]["Comments"] == DBNull.Value ? "-" : dt.Rows[i]["Comments"].ToString());
                             service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
                             service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
                             service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
@@ -304,6 +306,7 @@ namespace PopTheHood.Controllers
                             //service.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
                             service.PromoCodeApplied = (dt.Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Rows[i]["PromoCodeApplied"]);
                             service.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "-" : dt.Rows[i]["Status"].ToString());
+                            service.Comments = (dt.Rows[i]["Comments"] == DBNull.Value ? "-" : dt.Rows[i]["Comments"].ToString());
                             service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
                             service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
                             service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());

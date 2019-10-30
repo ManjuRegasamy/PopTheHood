@@ -21,6 +21,7 @@ namespace PopTheHood.Models
         public bool? PromoCodeApplied { get; set; }
         public int ScheduleID { get; set; }
         public string Status { get; set; }
+        public string Comments { get; set; }
         public string RequestedServiceDate { get; set; }
         public string ActualServiceDate { get; set; }
         public string ServiceOutDate { get; set; }
@@ -67,6 +68,7 @@ namespace PopTheHood.Models
         //public string ActualServiceDate { get; set; }
         //public string ServiceOutDate { get; set; }
         public string Status { get; set; }
+        public string Comments { get; set; }
     }
 
     public class ServiceRequest
