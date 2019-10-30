@@ -66,7 +66,7 @@ namespace PopTheHood.Models
        // public int ServiceID { get; set; }
         public string RequestedServiceDate { get; set; }
         //public string ActualServiceDate { get; set; }
-        //public string ServiceOutDate { get; set; }
+        public string ServiceOutDate { get; set; }
         public string Status { get; set; }
         public string Comments { get; set; }
     }

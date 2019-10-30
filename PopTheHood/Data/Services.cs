@@ -38,13 +38,22 @@ namespace PopTheHood.Data
         {
             try
             {
+                var ServiceOutDate = "1900-01-01";
+                if (servicedetails.ServiceOutDate!="" && servicedetails.ServiceOutDate != null && servicedetails.ServiceOutDate != "string")
+                {
+                    ServiceOutDate = servicedetails.ServiceOutDate;
+                }
+                //else
+                //{
+                //    ServiceOutDate = Convert.ToDateTime("1900-01-01");
+                //}
                 string ConnectionString = Common.GetConnectionString();
                 List<SqlParameter> parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("@ScheduleID", servicedetails.ScheduleID));
                // parameters.Add(new SqlParameter("@ServiceID", servicedetails.ServiceID));
                 parameters.Add(new SqlParameter("@RequestedServiceDate", Convert.ToDateTime(servicedetails.RequestedServiceDate)));
                 //parameters.Add(new SqlParameter("@ActualServiceDate", Convert.ToDateTime(servicedetails.ActualServiceDate)));
-                //parameters.Add(new SqlParameter("@ServiceOutDate", Convert.ToDateTime(servicedetails.ServiceOutDate)));
+                parameters.Add(new SqlParameter("@ServiceOutDate", Convert.ToDateTime(ServiceOutDate)));
                 parameters.Add(new SqlParameter("@Status", servicedetails.Status));
                 parameters.Add(new SqlParameter("@Comments", servicedetails.Comments));
 
