@@ -112,6 +112,7 @@ namespace PopTheHood.Models
         public string ActualServiceDate { get; set; }
         public string ServiceOutDate { get; set; }
         public string Status { get; set; }
+        public string Comments { get; set; }
         public bool IsTeamsandConditionsAccepted { get; set; }
         //public bool IsDeleted { get; set; }            
     }

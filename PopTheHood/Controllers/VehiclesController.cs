@@ -599,6 +599,7 @@ namespace PopTheHood.Controllers
                 DataTable dt = new DataTable();
                 DataTable dt1 = new DataTable();
                 DataTable dt2 = new DataTable();
+                DataTable dt3 = new DataTable();
 
                 UserInfo userInfo = new UserInfo();
 
@@ -610,6 +611,7 @@ namespace PopTheHood.Controllers
                     dt = ds.Tables[0];
                     dt1 = ds.Tables[1];
                     dt2 = ds.Tables[2];
+                    dt3 = ds.Tables[3];
 
                     if (dt.Rows.Count > 0)
                     {
@@ -649,7 +651,7 @@ namespace PopTheHood.Controllers
                         }
 
 
-                        for (int i = 0; i < dt.Rows.Count; i++)
+                        for (int i = 0; i < dt3.Rows.Count; i++)
                         {
                             ServiceInfo vechiles = new ServiceInfo();
                             //vechiles.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
@@ -675,17 +677,19 @@ namespace PopTheHood.Controllers
                             vechiles.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
                             vechiles.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
                             vechiles.ServiceName = (dt.Rows[1]["ServiceNameList"] == DBNull.Value ? "" : dt.Rows[1]["ServiceNameList"].ToString());
-                            vechiles.ServiceAmount = (dt.Rows[i]["ServiceAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["ServiceAmount"]);
+                            vechiles.ServiceAmount = (dt3.Rows[i]["Amount"] == DBNull.Value ? 00 : (decimal)dt3.Rows[i]["Amount"]);
                             //(dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
-                            vechiles.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["RequestedServiceDate"].ToString());
+                            vechiles.RequestedServiceDate = (dt3.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "" : dt3.Rows[i]["RequestedServiceDate"].ToString());
                             vechiles.RemainderMinutes = (dt.Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Rows[i]["RemainderMinutes"]);
                             vechiles.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["ActualServiceDate"].ToString());
-                            vechiles.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "" : dt.Rows[i]["ServiceOutDate"].ToString());
-                            vechiles.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "" : dt.Rows[i]["Status"].ToString());
+                            vechiles.ServiceOutDate = (dt3.Rows[i]["ServiceOutDate"] == DBNull.Value ? "" : dt3.Rows[i]["ServiceOutDate"].ToString());
+                            vechiles.Status = (dt3.Rows[i]["Status"] == DBNull.Value ? "" : dt3.Rows[i]["Status"].ToString());
 
                             vechiles.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
                             vechiles.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
-                            vechiles.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
+                            vechiles.ScheduleID = (dt3.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt3.Rows[i]["ScheduleID"]);
+
+                            vechiles.Comments = (dt3.Rows[i]["Comments"] == DBNull.Value ? "-" : dt3.Rows[i]["Comments"].ToString());
 
 
                             //vechiles.PaymentDetailId = (dt.Rows[i]["PaymentDetailId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["PaymentDetailId"]);
