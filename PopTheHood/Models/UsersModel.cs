@@ -60,6 +60,11 @@ namespace PopTheHood.Models
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        [DefaultValue(false)]
+        public bool? IsEmailVerified { get; set; }
+        [DefaultValue(false)]
+        public bool? IsPhoneNumVerified { get; set; }
+
         public int LocationID { get; set; }
         public string LocationLatitude { get; set; }
         public string LocationLongitude { get; set; }

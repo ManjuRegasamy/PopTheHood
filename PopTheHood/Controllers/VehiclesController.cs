@@ -610,6 +610,8 @@ namespace PopTheHood.Controllers
                         userInfo.Email = (dt.Rows[0]["Email"] == DBNull.Value ? "" : dt.Rows[0]["Email"].ToString());
                         userInfo.Name = (dt.Rows[0]["Name"] == DBNull.Value ? "" : dt.Rows[0]["Name"].ToString());
                         userInfo.PhoneNumber = (dt.Rows[0]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[0]["PhoneNumber"].ToString());
+                        userInfo.IsEmailVerified = (dt.Rows[0]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsEmailVerified"]);
+                        userInfo.IsPhoneNumVerified = (dt.Rows[0]["IsPhoneNumVerified"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsPhoneNumVerified"]);
                         userInfo.LocationID = (dt.Rows[0]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[0]["LocationID"]);
                         userInfo.LocationLatitude = (dt.Rows[0]["LocationLatitude"] == DBNull.Value ? "-" : dt.Rows[0]["LocationLatitude"].ToString());
                         userInfo.LocationLongitude = (dt.Rows[0]["LocationLongitude"] == DBNull.Value ? "-" : dt.Rows[0]["LocationLongitude"].ToString());
