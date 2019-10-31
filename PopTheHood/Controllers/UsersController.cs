@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -47,17 +48,36 @@ namespace PopTheHood.Controllers
             UsersLogin user = new UsersLogin();
             try
             {
-                string row = Data.Users.UpdatePassword(userlogin);
-
-                if (row == "Success")
+                if (userlogin.Password == "" ||  userlogin.Password == null)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully" );
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Password" } });
+                }
+                else if (userlogin.Email == "" ||  userlogin.Email == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Email" } });
+                }
+
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(userlogin.Email);
+                if (match.Success)
+                {
+                    string row = Data.Users.UpdatePassword(userlogin);
+
+                    if (row == "Success")
+                    {
+                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    }
+                    else
+                    {
+                        //return "Invalid user";
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Account not exist" } });
+                    }
                 }
                 else
                 {
-                    //return "Invalid user";
-                   return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Account not exist" } });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a valid Email" } });
                 }
+
             }
             catch (Exception e)
             {
@@ -76,6 +96,10 @@ namespace PopTheHood.Controllers
         {
             try
             {
+                if(PhoneOrEmail == "" || PhoneOrEmail == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a valid Email / Phone number" } });
+                }
                 string Result = Common.SendOTP(PhoneOrEmail, "ForgetPassword");
                 if (Result == "Mail sent successfully.")
                 {
@@ -192,15 +216,22 @@ namespace PopTheHood.Controllers
             UsersLogin users = new UsersLogin();
             try
             {
-                int row = Data.Users.UpdateVerificationStatus(UserId, Status, Source.ToString());
-
-                if (row > 0)
+                if (UserId <= 0 || UserId == null)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
-                }
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter UserID" } });
+                }                
                 else
-                {
-                    return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Update Phone/Email status" } });
+                { 
+                    int row = Data.Users.UpdateVerificationStatus(UserId, Status, Source.ToString());
+
+                    if (row > 0)
+                    {
+                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    }
+                    else
+                    {
+                        return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Update Phone/Email status" } });
+                    }
                 }
             }
             catch (Exception e)
@@ -274,75 +305,97 @@ namespace PopTheHood.Controllers
                 userlogin.Role = "User";
             }
             try
-            {
-                string row = Data.Users.SaveUser(userlogin , Action);
-                string res = "";
-                string smsres = "";
-
-                if (row == "Success")
+            {              
+                if (userlogin.Name == "" || userlogin.Name == "string" || userlogin.Name == null)
                 {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Name" } });
+                }
+                else if (userlogin.Password == "" || userlogin.Password == "string" || userlogin.Password == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Password" } });
+                }
+                else if (userlogin.Email == "" || userlogin.Email == "string" || userlogin.Email == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Email" } });
+                }
 
-                    var FilePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                    + "EmailView"
-                    + Path.DirectorySeparatorChar.ToString()
-                    + "EmailTemplate.html";
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(userlogin.Email);
+                if (match.Success)
+                {                     
+                   string row = Data.Users.SaveUser(userlogin , Action);
+                   string res = "";
+                   string smsres = "";
+                   
+                   if (row == "Success")
+                        {
 
-                    var ImagePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                    + "Images"
-                    + Path.DirectorySeparatorChar.ToString()
-                    + "PopTheHood_Logo.jpg";
+                            var FilePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                            + "EmailView"
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "EmailTemplate.html";
 
-                    string OTPValue = Common.GenerateOTP();
+                            var ImagePath = _env.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                            + "Images"
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "PopTheHood_Logo.jpg";
 
-                    //res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", "murukeshs@apptomate.co", "User Registration", userlogin.Name, "Hi " + userlogin.Name + " , your OTP is " + OTPValue + " and it's expiry time is 5 minutes.", FilePath).Result; // "chitrasubburaj30@gmail.com",
+                            string OTPValue = Common.GenerateOTP();
+
+                            //res = EmailSendGrid.Mail("chitrasubburaj30@gmail.com", "murukeshs@apptomate.co", "User Registration", userlogin.Name, "Hi " + userlogin.Name + " , your OTP is " + OTPValue + " and it's expiry time is 5 minutes.", FilePath).Result; // "chitrasubburaj30@gmail.com",
 
 
-                    var results = "";
-                    //results = SmsNotification.SendMessage("7010214439", "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").ToString();
+                            var results = "";
+                            //results = SmsNotification.SendMessage("7010214439", "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").ToString();
 
-                    // results = SmsNotification.SendMessage(userlogin.PhoneNumber, "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").Status.ToString();
+                            // results = SmsNotification.SendMessage(userlogin.PhoneNumber, "Hi User, your OTP is" + OTPValue + "and it's expiry time is 5 minutes.").Status.ToString();
 
-                    //var client = new Client(creds: new Nexmo.Api.Request.Credentials
-                    //{
-                    //    ApiKey = "5d5eb59f",
-                    //    ApiSecret = "xFT1BuHaxN6wzA8M"
-                    //});
-                    //var results = client.SMS.Send(new SMS.SMSRequest
-                    //{
-                    //    from = "7708178085",
-                    //    to = "7010214439",
-                    //    text = "Hi User, your OTP is" + OTPValue
-                    //});
+                            //var client = new Client(creds: new Nexmo.Api.Request.Credentials
+                            //{
+                            //    ApiKey = "5d5eb59f",
+                            //    ApiSecret = "xFT1BuHaxN6wzA8M"
+                            //});
+                            //var results = client.SMS.Send(new SMS.SMSRequest
+                            //{
+                            //    from = "7708178085",
+                            //    to = "7010214439",
+                            //    text = "Hi User, your OTP is" + OTPValue
+                            //});
 
-                    var SmsStatus = "";
-                    if (results == "RanToCompletion")
+                            var SmsStatus = "";
+                            if (results == "RanToCompletion")
+                            {
+                                string SaveOtpValue = Data.Common.SaveOTP(userlogin.PhoneNumber, OTPValue, "Phone");
+                                SmsStatus = "Message sent successfully.";
+                            }
+                            else
+                            {
+                                SmsStatus = "Message not sent..";
+                            }
+
+                            var result = "";
+                            if (res == "Accepted")
+                            {
+                                string SaveOtpValue = Data.Common.SaveOTP(userlogin.Email, OTPValue, "Email");
+                                result = "Mail sent successfully.";
+                            }
+                            else
+                            {
+                                result = "Bad Request";
+                            }
+                            //return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Mailing = result, SMS = results, SMSSTATUS = SmsStatus, OTP = OTPValue, Status = "Success" });
+                            return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                        }
+                   else
                     {
-                        string SaveOtpValue = Data.Common.SaveOTP(userlogin.PhoneNumber, OTPValue, "Phone");
-                        SmsStatus = "Message sent successfully.";
-                    }
-                    else
-                    {
-                        SmsStatus = "Message not sent..";
-                    }
-
-                    var result = "";
-                    if (res == "Accepted")
-                    {
-                        string SaveOtpValue = Data.Common.SaveOTP(userlogin.Email, OTPValue, "Email");
-                        result = "Mail sent successfully.";
-                    }
-                    else
-                    {
-                        result = "Bad Request";
-                    }
-                    //return StatusCode((int)HttpStatusCode.OK, new { Data = "Saved Successfully", Mailing = result, SMS = results, SMSSTATUS = SmsStatus, OTP = OTPValue, Status = "Success" });
-                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                        //return "Invalid user";
+                        //var expected = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { foo = "abcd" }));
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "invalid user" } });
+                    }                    
                 }
                 else
                 {
-                    //return "Invalid user";
-                    //var expected = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { foo = "abcd" }));
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "invalid user" } });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a valid Email" } });
                 }
             }
 
@@ -364,41 +417,63 @@ namespace PopTheHood.Controllers
             string Action = "Update";
             try
             {
-                string row = Data.Users.SaveUser(userlogin, Action);
-
-                if (row == "Success")
+                if (userlogin.Name == "" || userlogin.Name == "string")
                 {
-                    //string OTPValue = Common.GenerateOTP();
-                    
-                    //var results = "";
-                  
-                    //var SmsStatus = "";
-                    //if (results == "RanToCompletion")
-                    //{
-                    //    string SaveOtpValue = Data.Common.SaveOTP("4560123045", OTPValue, "Phone");
-                    //    SmsStatus = "Message sent successfully.";
-                    //}
-                    //else
-                    //{
-                    //    SmsStatus = "Message not sent..";
-                    //}
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Name" } });
+                }
+                else if (userlogin.UserId <= 0 || userlogin.UserId == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter UserID" } });
+                }
+                else if (userlogin.Email == "" || userlogin.Email == "string")
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter Email" } });
+                }
+                
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(userlogin.Email);
+                if (match.Success)
+                {
+                    string row = Data.Users.SaveUser(userlogin, Action);
 
-                    //var result = "";
-                    //if (res == "Accepted")
-                    //{
-                    //    string SaveOtpValue = Data.Common.SaveOTP("murukeshs@apptomate.co", OTPValue, "Email");
-                    //    result = "Mail sent successfully.";
-                    //}
-                    //else
-                    //{
-                    //    result = "Bad Request";
-                    //}
-                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully" );
+                    if (row == "Success")
+                    {
+                        //string OTPValue = Common.GenerateOTP();
+
+                        //var results = "";
+
+                        //var SmsStatus = "";
+                        //if (results == "RanToCompletion")
+                        //{
+                        //    string SaveOtpValue = Data.Common.SaveOTP("4560123045", OTPValue, "Phone");
+                        //    SmsStatus = "Message sent successfully.";
+                        //}
+                        //else
+                        //{
+                        //    SmsStatus = "Message not sent..";
+                        //}
+
+                        //var result = "";
+                        //if (res == "Accepted")
+                        //{
+                        //    string SaveOtpValue = Data.Common.SaveOTP("murukeshs@apptomate.co", OTPValue, "Email");
+                        //    result = "Mail sent successfully.";
+                        //}
+                        //else
+                        //{
+                        //    result = "Bad Request";
+                        //}
+                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    }
+                    else
+                    {
+                        //return "Invalid user";
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Invalid User" } });
+                    }
                 }
                 else
                 {
-                    //return "Invalid user";
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Invalid User" } });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a valid Email" } });
                 }
             }
 

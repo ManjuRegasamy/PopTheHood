@@ -29,52 +29,64 @@ namespace PopTheHood.Controllers
             List<ServiceDetails> serviceDetail = new List<ServiceDetails>();
             try
             {
-
-                
-                DataSet dt = Data.Services.SaveServiceRequest(serviceDetails);
-                string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();                
-                if (row == "Success")
+                if (serviceDetails.VehicleId <= 0 || serviceDetails.VehicleId == null)
                 {
-                    //if (dt.Tables[1].Rows.Count > 0)
-                    //{
-                    //    for (int i = 0; i < dt.Tables[1].Rows.Count; i++)
-                    //    {
-                    //        ServiceDetails service = new ServiceDetails();
-                    //        service.ServiceID = (dt.Tables[1].Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServiceID"]);
-                    //        //service.ServicePlanID = (dt.Tables[1].Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePlanID"]);
-                    //        service.ServicePriceChartId = (dt.Tables[1].Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePriceChartId"]); 
-                    //        service.PlanType = (dt.Tables[1].Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["PlanType"].ToString());
-                    //        service.Price = (dt.Tables[1].Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Tables[1].Rows[i]["Price"]);
-                    //        service.VehicleId = (dt.Tables[1].Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["VehicleId"]);
-                    //        service.UserId = (dt.Tables[1].Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["UserId"]);
-                    //        //service.RemainderMinutes = (dt.Tables[1].Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["RemainderMinutes"]);
-                    //        //service.LocationID = (dt.Tables[1].Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["LocationID"]);
-                    //        //service.IsTeamsandConditionsAccepted = (dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"]);
-                    //        service.PromoCodeApplied = (dt.Tables[1].Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["PromoCodeApplied"]);
-                    //        service.Status = (dt.Tables[1].Rows[i]["Status"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Status"].ToString());
-                    //        service.ScheduleID = (dt.Tables[1].Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ScheduleID"]);
-                    //        service.RequestedServiceDate = (dt.Tables[1].Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["RequestedServiceDate"].ToString());
-                    //        service.ActualServiceDate = (dt.Tables[1].Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ActualServiceDate"].ToString());
-                    //        service.ServiceOutDate = (dt.Tables[1].Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceOutDate"].ToString());
-                    //        service.ServiceName = (dt.Tables[1].Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceName"].ToString());
-                    //        service.Description = (dt.Tables[1].Rows[i]["Description"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Description"].ToString());
-                    //        service.IsAvailable = (dt.Tables[1].Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsAvailable"]);
-
-
-                    //        serviceDetail.Add(service);
-                    //    }
-                    //}
-                        return StatusCode((int)HttpStatusCode.OK, new { Message = new { message ="Saved successfully", ServiceId= (int)dt.Tables[0].Rows[0]["ServiceId"] } });
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "VehicleId is required" } });
                 }
-
+                else if (serviceDetails.ServicePlanID <= 0 || serviceDetails.ServicePlanID == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "ServicePlanID is required" } });
+                }
+                else if (serviceDetails.ServicePriceChartId.Length == 0)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "ServicePriceChartId is required" } });
+                }
                 else
+                { 
+                    DataSet dt = Data.Services.SaveServiceRequest(serviceDetails);
+                    string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();                
+                    if (row == "Success")
+                    {
+                        //if (dt.Tables[1].Rows.Count > 0)
+                        //{
+                        //    for (int i = 0; i < dt.Tables[1].Rows.Count; i++)
+                        //    {
+                        //        ServiceDetails service = new ServiceDetails();
+                        //        service.ServiceID = (dt.Tables[1].Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServiceID"]);
+                        //        //service.ServicePlanID = (dt.Tables[1].Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePlanID"]);
+                        //        service.ServicePriceChartId = (dt.Tables[1].Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePriceChartId"]); 
+                        //        service.PlanType = (dt.Tables[1].Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["PlanType"].ToString());
+                        //        service.Price = (dt.Tables[1].Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Tables[1].Rows[i]["Price"]);
+                        //        service.VehicleId = (dt.Tables[1].Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["VehicleId"]);
+                        //        service.UserId = (dt.Tables[1].Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["UserId"]);
+                        //        //service.RemainderMinutes = (dt.Tables[1].Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["RemainderMinutes"]);
+                        //        //service.LocationID = (dt.Tables[1].Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["LocationID"]);
+                        //        //service.IsTeamsandConditionsAccepted = (dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"]);
+                        //        service.PromoCodeApplied = (dt.Tables[1].Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["PromoCodeApplied"]);
+                        //        service.Status = (dt.Tables[1].Rows[i]["Status"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Status"].ToString());
+                        //        service.ScheduleID = (dt.Tables[1].Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ScheduleID"]);
+                        //        service.RequestedServiceDate = (dt.Tables[1].Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["RequestedServiceDate"].ToString());
+                        //        service.ActualServiceDate = (dt.Tables[1].Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ActualServiceDate"].ToString());
+                        //        service.ServiceOutDate = (dt.Tables[1].Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceOutDate"].ToString());
+                        //        service.ServiceName = (dt.Tables[1].Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceName"].ToString());
+                        //        service.Description = (dt.Tables[1].Rows[i]["Description"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Description"].ToString());
+                        //        service.IsAvailable = (dt.Tables[1].Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsAvailable"]);
+
+
+                        //        serviceDetail.Add(service);
+                        //    }
+                        //}
+                            return StatusCode((int)HttpStatusCode.OK, new { Message = new { message ="Saved successfully", ServiceId= (int)dt.Tables[0].Rows[0]["ServiceId"] } });
+                    }
+
+                    else
                     {
                         return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
                     }
                 }
+            }
 
-
-                catch (Exception e)
+            catch (Exception e)
                 {
                     string SaveErrorLog = Data.Common.SaveErrorLog("SaveServiceRequest", e.Message);
 
@@ -150,43 +162,53 @@ namespace PopTheHood.Controllers
 
             List<ServiceDetails> serviceDetails = new List<ServiceDetails>();
                 try
-                {                   
-                    DataTable dt = Data.Services.GetUpdateServiceSchedule(servicedetails);
-
-                    if (dt.Rows.Count > 0)
+                {    
+                    if(servicedetails.ScheduleID <= 0 || servicedetails.ScheduleID == null)
                     {
-                        for (int i = 0; i < dt.Rows.Count; i++)
-                        {
-                            ServiceDetails service = new ServiceDetails();
-                            service.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
-                            //service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
-                           // service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]); 
-                            service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
-                            service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
-                            service.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
-                            service.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
-                            //service.RemainderMinutes = (dt.Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Rows[i]["RemainderMinutes"]);
-                            //service.LocationID = (dt.Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["LocationID"]);
-                            //service.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
-                            service.PromoCodeApplied = (dt.Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Rows[i]["PromoCodeApplied"]);
-                            service.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "-" : dt.Rows[i]["Status"].ToString());
-                            service.Comments = (dt.Rows[i]["Comments"] == DBNull.Value ? "-" : dt.Rows[i]["Comments"].ToString());
-                            service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
-                            service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
-                            service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
-                            service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
-                            service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
-                         //   service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
-                           // service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
-
-                            serviceDetails.Add(service);
-                        }
-
-                        return StatusCode((int)HttpStatusCode.OK, serviceDetails);
+                        return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter ScheduleID" } });
                     }
-                    else
+                    else if (servicedetails.RequestedServiceDate == "" || servicedetails.RequestedServiceDate == "string" || servicedetails.RequestedServiceDate == null)
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { });
+                        return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter RequestedServiceDate" } });
+                    }
+                    else { 
+                        DataTable dt = Data.Services.GetUpdateServiceSchedule(servicedetails);
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                ServiceDetails service = new ServiceDetails();
+                                service.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
+                                //service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
+                               // service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]); 
+                                service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
+                                service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
+                                service.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
+                                service.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
+                                //service.RemainderMinutes = (dt.Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Rows[i]["RemainderMinutes"]);
+                                //service.LocationID = (dt.Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["LocationID"]);
+                                //service.IsTeamsandConditionsAccepted = (dt.Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsTeamsandConditionsAccepted"]);
+                                service.PromoCodeApplied = (dt.Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Rows[i]["PromoCodeApplied"]);
+                                service.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "-" : dt.Rows[i]["Status"].ToString());
+                                service.Comments = (dt.Rows[i]["Comments"] == DBNull.Value ? "-" : dt.Rows[i]["Comments"].ToString());
+                                service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
+                                service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
+                                service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
+                                service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
+                                service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
+                             //   service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
+                               // service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+
+                                serviceDetails.Add(service);
+                            }
+
+                            return StatusCode((int)HttpStatusCode.OK, serviceDetails);
+                        }
+                        else
+                        {
+                            return StatusCode((int)HttpStatusCode.OK, new { });
+                        }
                     }
                 }
 
@@ -237,14 +259,14 @@ namespace PopTheHood.Controllers
                         service.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "-" : dt.Rows[i]["Model"].ToString());
                         service.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "-" : dt.Rows[i]["Color"].ToString());
                         service.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "-" : dt.Rows[i]["LicensePlate"].ToString());
-                       // service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
-                        service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
-                        service.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceDescription"].ToString());
-                        service.LocationLatitude = (dt.Rows[i]["LocationLatitude"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["LocationLatitude"]);
-                        service.LocationLongitude = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["LocationLongitude"]);
+                        service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
+                        //service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
+                       // service.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceDescription"].ToString());
+                        service.LocationLatitude = (dt.Rows[i]["LocationLatitude"] == DBNull.Value ? "-" : dt.Rows[i]["LocationLatitude"].ToString());
+                        service.LocationLongitude = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? "-" : dt.Rows[i]["LocationLongitude"].ToString());
                         service.LocationFullAddress = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "-" : dt.Rows[i]["LocationFullAddress"].ToString());
                         service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
-                        service.ServiceAmount = (dt.Rows[i]["ServiceAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["ServiceAmount"]);
+                        //service.ServiceAmount = (dt.Rows[i]["ServiceAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["ServiceAmount"]);
                         service.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["RequestedServiceDate"].ToString());
                         service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
                         service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
@@ -261,8 +283,9 @@ namespace PopTheHood.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { });
-
+                    string[] data = new string[0];
+                    return StatusCode((int)HttpStatusCode.OK, data);
+                   // return StatusCode((int)HttpStatusCode.OK, new { });
                 }
             }
 
@@ -351,6 +374,12 @@ namespace PopTheHood.Controllers
                 string idString = "";
                 //if (ServicePriceChartId[0] != null)
                 //{
+                if(ServiceId <= 0 || ServiceId == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter ServiceId" } });
+                }
+                else
+                { 
                     if (RemainderTime != 0)
                     {
                         
@@ -370,7 +399,7 @@ namespace PopTheHood.Controllers
                     {
                         return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = "Please Enter Remainder time" } });
                     }
-
+                }
                 //}
                 //else
                 //{
@@ -396,7 +425,12 @@ namespace PopTheHood.Controllers
             {
                 //if (ServicePriceChartId[0] != 0)
                 //{
-                   
+                if (ServiceId <= 0 || ServiceId == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter ServiceId" } });
+                }
+                else
+                {
                     int row = Data.Services.SetTeamsandCondition(ServiceId, Status);
 
                     if (row > 0)
@@ -408,6 +442,7 @@ namespace PopTheHood.Controllers
                         return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = "Error while Updating the Teams and Conditions" } });
                     }
 
+                }
                 //}
                 //else
                 //{

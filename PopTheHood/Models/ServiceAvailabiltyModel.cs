@@ -75,8 +75,8 @@ namespace PopTheHood.Models
         public string VehicleImageURL { get; set; }
         public string LicensePlate { get; set; }
         public int LocationID { get; set; }
-        public decimal LocationLatitude { get; set; }
-        public decimal LocationLongitude { get; set; }
+        public string LocationLatitude { get; set; }
+        public string LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }
         public int ServicePlanID { get; set; }
         public string ServiceName { get; set; }

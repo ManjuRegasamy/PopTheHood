@@ -111,7 +111,9 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { });
+                    string[] data = new string[0];
+                        return StatusCode((int)HttpStatusCode.OK, data);
+                        // return StatusCode((int)HttpStatusCode.OK, new { });
                 }
             }
 

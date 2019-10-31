@@ -76,7 +76,9 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK,   vechileList );
+                    string[] data = new string[0];
+                    return StatusCode((int)HttpStatusCode.OK, data);
+                    // return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
@@ -125,7 +127,9 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { });
+                    string[] data = new string[0];
+                    return StatusCode((int)HttpStatusCode.OK, data);
+                    // return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
@@ -390,7 +394,9 @@ namespace PopTheHood.Controllers
 
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.OK, new { });
+                    string[] data = new string[0];
+                    return StatusCode((int)HttpStatusCode.OK, data);
+                    // return StatusCode((int)HttpStatusCode.OK, new { });
                 }
 
             }
@@ -414,74 +420,35 @@ namespace PopTheHood.Controllers
             string Action = "Add";
             try
             {
-                //int row = Data.Vehicles.SaveLocation(vehiclelocation, Action);
-
-                DataSet dt = Data.Vehicles.SaveLocation(vehiclelocation, Action);
-                string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
-                if (row == "Success")
-                //{
-                //    ServiceAmount amt = new ServiceAmount();
-
-                //    if (dt.Tables[1].Rows.Count > 0)
-                //    {
-                       
-                //        for (int i = 0; i < dt.Tables[1].Rows.Count; i++)
-                //        {
-                //            ServiceDetails service = new ServiceDetails();
-                //            service.ServiceID = (dt.Tables[1].Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServiceID"]);
-                //            //service.ServicePlanID = (dt.Tables[1].Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePlanID"]);
-                //            service.ServicePriceChartId = (dt.Tables[1].Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ServicePriceChartId"]);
-                //            service.PlanType = (dt.Tables[1].Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["PlanType"].ToString());
-                //            service.Price = (dt.Tables[1].Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Tables[1].Rows[i]["Price"]);
-                //            service.VehicleId = (dt.Tables[1].Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["VehicleId"]);
-                //            service.UserId = (dt.Tables[1].Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["UserId"]);
-                //            //service.RemainderMinutes = (dt.Tables[1].Rows[i]["RemainderMinutes"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["RemainderMinutes"]);
-                //            //service.LocationID = (dt.Tables[1].Rows[i]["LocationID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["LocationID"]);
-                //            //service.IsTeamsandConditionsAccepted = (dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsTeamsandConditionsAccepted"]);
-                //            service.PromoCodeApplied = (dt.Tables[1].Rows[i]["PromoCodeApplied"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["PromoCodeApplied"]);
-                //            service.Status = (dt.Tables[1].Rows[i]["Status"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Status"].ToString());
-                //            service.ScheduleID = (dt.Tables[1].Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Tables[1].Rows[i]["ScheduleID"]);
-                //            service.RequestedServiceDate = (dt.Tables[1].Rows[i]["RequestedServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["RequestedServiceDate"].ToString());
-                //            service.ActualServiceDate = (dt.Tables[1].Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ActualServiceDate"].ToString());
-                //            service.ServiceOutDate = (dt.Tables[1].Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceOutDate"].ToString());
-                //            service.ServiceName = (dt.Tables[1].Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["ServiceName"].ToString());
-                //            service.Description = (dt.Tables[1].Rows[i]["Description"] == DBNull.Value ? "-" : dt.Tables[1].Rows[i]["Description"].ToString());
-                //            service.IsAvailable = (dt.Tables[1].Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Tables[1].Rows[i]["IsAvailable"]);
-
-                //            serviceDetail.Add(service);
-                //        }
-
-                //        if(dt.Tables[2].Rows.Count > 0)
-                //        {
-                //            amt.TotalAmount = (dt.Tables[2].Rows[0]["TotalAmount"] == DBNull.Value ? 0 : (decimal)dt.Tables[2].Rows[0]["TotalAmount"]);
-                //        }
-                //    }
-
-                //    return StatusCode((int)HttpStatusCode.OK, new { serviceDetail, amt});
-
-                //}
-
-                //else
-                //{
-                //    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
-                //}
-                //}
-
-                //if (row > 0)
+                if(vehiclelocation.VehicleId <= 0 || vehiclelocation.VehicleId == null)
                 {
-                    //if (Action == "Add")
-                    //{
-                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
-                    //}
-                    //else
-                    //{
-                    //    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
-                    //}
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a VehicleId" } });
+                }
+                //else if (vehiclelocation.LocationLatitude == "" || vehiclelocation.LocationLatitude == "string" || vehiclelocation.LocationLatitude == null)
+                //{
+                //    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a Latitude value" } });
+                //}
+                //else if (vehiclelocation.LocationLongitude == "" || vehiclelocation.LocationLongitude == "string" || vehiclelocation.LocationLongitude == null)
+                //{
+                //    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a Longitude value" } });
+                //}
+                else if (vehiclelocation.CityName == "" || vehiclelocation.CityName == "string" || vehiclelocation.CityName == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a CityName" } });
                 }
                 else
-                {
-                    //return "Invalid";
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
+                { 
+                    DataSet dt = Data.Vehicles.SaveLocation(vehiclelocation, Action);
+                    string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    if (row == "Success")
+                
+                    {                   
+                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");                    
+                    }
+                    else
+                    {
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
+                    }
                 }
             }
 
@@ -503,17 +470,40 @@ namespace PopTheHood.Controllers
             string Action = "Update";
             try
             {
-                DataSet dt = Data.Vehicles.SaveLocation(vehiclelocation, Action);
-                string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
-
-                if (row == "Success")
+                if (vehiclelocation.LocationID <= 0 || vehiclelocation.LocationID == null)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a LocationID" } });
+                }
+                else if (vehiclelocation.VehicleId <= 0 || vehiclelocation.VehicleId == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a VehicleId" } });
+                }
+                //else if (vehiclelocation.LocationLatitude == "" || vehiclelocation.LocationLatitude == "string" || vehiclelocation.LocationLatitude == null)
+                //{
+                //    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a Latitude value" } });
+                //}
+                //else if (vehiclelocation.LocationLongitude == "" || vehiclelocation.LocationLongitude == "string" || vehiclelocation.LocationLongitude == null)
+                //{
+                //    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a Longitude value" } });
+                //}
+                else if (vehiclelocation.CityName == "" || vehiclelocation.CityName == "string" || vehiclelocation.CityName == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter a CityName" } });
                 }
                 else
                 {
-                    //return "Invalid";
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
+                    DataSet dt = Data.Vehicles.SaveLocation(vehiclelocation, Action);
+                    string row = dt.Tables[0].Rows[0]["ErrorMessage"].ToString();
+
+                    if (row == "Success")
+                    {
+                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    }
+                    else
+                    {
+                        //return "Invalid";
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { error = new { message = row } });
+                    }
                 }
 
                 //if (row == "Success")
@@ -604,10 +594,11 @@ namespace PopTheHood.Controllers
                 UserInfo userInfo = new UserInfo();
 
                 VehiclesModel vehicleInfo = new VehiclesModel();
+                
 
                 // DataTable dt = Data.Vehicles.GetVehicleDetailedList(VehicleId);
-                if (ds.Tables.Count > 0)
-                {
+                //if (ds.Tables.Count > 0)
+                //{
                     dt = ds.Tables[0];
                     dt1 = ds.Tables[1];
                     dt2 = ds.Tables[2];
@@ -620,8 +611,8 @@ namespace PopTheHood.Controllers
                         userInfo.Name = (dt.Rows[0]["Name"] == DBNull.Value ? "" : dt.Rows[0]["Name"].ToString());
                         userInfo.PhoneNumber = (dt.Rows[0]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[0]["PhoneNumber"].ToString());
                         userInfo.LocationID = (dt.Rows[0]["LocationID"] == DBNull.Value ? 0 : (int)dt.Rows[0]["LocationID"]);
-                        userInfo.LocationLatitude = (dt.Rows[0]["LocationLatitude"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["LocationLatitude"]);
-                        userInfo.LocationLongitude = (dt.Rows[0]["LocationLongitude"] == DBNull.Value ? 00 : (decimal)dt.Rows[0]["LocationLongitude"]);
+                        userInfo.LocationLatitude = (dt.Rows[0]["LocationLatitude"] == DBNull.Value ? "-" : dt.Rows[0]["LocationLatitude"].ToString());
+                        userInfo.LocationLongitude = (dt.Rows[0]["LocationLongitude"] == DBNull.Value ? "-" : dt.Rows[0]["LocationLongitude"].ToString());
                         userInfo.LocationFullAddress = (dt.Rows[0]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[0]["LocationFullAddress"].ToString());
 
                         vehicleInfo.VehicleId = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]);
@@ -716,19 +707,18 @@ namespace PopTheHood.Controllers
                             paymentinfo.PaymentDate = (dt.Rows[0]["PaymentDate"] == DBNull.Value ? "" : dt.Rows[0]["PaymentDate"].ToString());
                             paymentinfo.PaymentStatus = (dt.Rows[0]["PaymentStatus"] == DBNull.Value ? "" : dt.Rows[0]["PaymentStatus"].ToString());
                         }
-                        
-                    }
-                    return StatusCode((int)HttpStatusCode.OK, new { userInfo, vehicleInfo, planInfoList, ServiceList, paymentinfo });
 
-                    //else
-                    //{
-                    //    return StatusCode((int)HttpStatusCode.OK, new { });
-                    //}
-                }
-                else
-                {
-                    return StatusCode((int)HttpStatusCode.OK, new { });
-                }
+                        return StatusCode((int)HttpStatusCode.OK, new { userInfo, vehicleInfo, planInfoList, ServiceList, paymentinfo });
+                    }
+
+                    else
+                    {
+                        string[] data = new string[0];
+                        return StatusCode((int)HttpStatusCode.OK, data);
+                        // return StatusCode((int)HttpStatusCode.OK, new { });
+                    }
+                //}
+                
             }
 
             catch (Exception e)

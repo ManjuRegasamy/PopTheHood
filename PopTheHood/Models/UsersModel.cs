@@ -61,8 +61,8 @@ namespace PopTheHood.Models
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public int LocationID { get; set; }
-        public decimal LocationLatitude { get; set; }
-        public decimal LocationLongitude { get; set; }
+        public string LocationLatitude { get; set; }
+        public string LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }
     }
 }

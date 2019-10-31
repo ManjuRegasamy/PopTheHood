@@ -34,6 +34,7 @@ namespace PopTheHood.Models
 
     public class ServiceLocation
     {
+        public int ScheduleID { get; set; }
         public int UserId { get; set; }
        // public int ServicePlanID { get; set; }
         public string Name { get; set; }
@@ -44,8 +45,8 @@ namespace PopTheHood.Models
         public string Model { get; set; }
         public string Color { get; set; }
         public string LicensePlate { get; set; }
-        public decimal LocationLatitude { get; set; }
-        public decimal LocationLongitude { get; set; }
+        public string LocationLatitude { get; set; }
+        public string LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }
         public string ServiceName { get; set; }
         public string ServiceDescription { get; set; }

@@ -57,21 +57,29 @@ namespace PopTheHood.Controllers
             string Action = "Add";
             try
             {
-                int row = GetSaveServicePriceChart(servicePriceChart, Action); //Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action);
-
-                if (row > 0)
+                if(servicePriceChart.ServicePlanID == 0 || servicePriceChart.AvailableServiceID == 0 || servicePriceChart.ServiceName == "" || servicePriceChart.PlanType == ""
+                   || servicePriceChart.ServiceName == "string" || servicePriceChart.PlanType == "string" || servicePriceChart.ServiceName == null || servicePriceChart.PlanType == null)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
-                    //}
-                    //else
-                    //{
-                    //    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
-                    //}
-
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter ServicePlanID / AvailableServiceID / ServiceName / PlanType" } });
                 }
                 else
+                { 
+                    int row = GetSaveServicePriceChart(servicePriceChart, Action); //Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action);
+
+                    if (row > 0)
+                    {
+                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                        //}
+                        //else
+                        //{
+                        //    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                        //}
+
+                    }
+                    else
                 {
                     return StatusCode((int)HttpStatusCode.Forbidden, new { Error = "Error Saving the Service Price Chart" }); 
+                }
                 }
 
             }
@@ -92,15 +100,23 @@ namespace PopTheHood.Controllers
             string Action = "Update";
             try
             {
-                int row = GetSaveServicePriceChart(servicePriceChart, Action); //Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action);
-
-                if (row > 0)
+                if (servicePriceChart.ServicePriceChartId == 0 || servicePriceChart.ServicePlanID == 0 || servicePriceChart.AvailableServiceID == 0 || servicePriceChart.ServiceName == "" || servicePriceChart.PlanType == ""
+                   || servicePriceChart.ServiceName == "string" || servicePriceChart.PlanType == "string" || servicePriceChart.ServiceName == null || servicePriceChart.PlanType == null)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");                   
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter ServicePriceChartId / ServicePlanID / AvailableServiceID / ServiceName / PlanType" } });
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.Forbidden, new { Error = "Error Updating the Service Price Chart" });
+                    int row = GetSaveServicePriceChart(servicePriceChart, Action); //Data.ServicePriceChart.SaveServicePriceChart(servicePriceChart, Action);
+
+                    if (row > 0)
+                    {
+                        return StatusCode((int)HttpStatusCode.OK, "Updated Successfully");
+                    }
+                    else
+                    {
+                        return StatusCode((int)HttpStatusCode.Forbidden, new { Error = "Error Updating the Service Price Chart" });
+                    }
                 }
 
             }
