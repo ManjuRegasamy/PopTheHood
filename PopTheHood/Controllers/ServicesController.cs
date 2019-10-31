@@ -64,7 +64,7 @@ namespace PopTheHood.Controllers
                     //        serviceDetail.Add(service);
                     //    }
                     //}
-                        return StatusCode((int)HttpStatusCode.OK, "Saved Successfully");
+                        return StatusCode((int)HttpStatusCode.OK, new { Message = new { message ="Saved successfully", ServiceId= (int)dt.Tables[0].Rows[0]["ServiceId"] } });
                 }
 
                 else
@@ -117,8 +117,8 @@ namespace PopTheHood.Controllers
                             service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
                             service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
                             service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
-                            service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
-                            service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+                           // service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
+                           // service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
 
                             serviceDetails.Add(service);
                         }
@@ -127,7 +127,8 @@ namespace PopTheHood.Controllers
                     }
                     else
                     {
-                        return StatusCode((int)HttpStatusCode.OK, new { });
+                    String[] data = new String[0];
+                    return StatusCode((int)HttpStatusCode.OK, data);
                     }
                 }
 
@@ -159,7 +160,7 @@ namespace PopTheHood.Controllers
                             ServiceDetails service = new ServiceDetails();
                             service.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
                             //service.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
-                            service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]); 
+                           // service.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]); 
                             service.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "-" : dt.Rows[i]["PlanType"].ToString());
                             service.Price = (dt.Rows[i]["Price"] == DBNull.Value ? 0 : (decimal)dt.Rows[i]["Price"]);
                             service.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);
@@ -175,8 +176,8 @@ namespace PopTheHood.Controllers
                             service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
                             service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
                             service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
-                            service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
-                            service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+                         //   service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
+                           // service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
 
                             serviceDetails.Add(service);
                         }
@@ -343,7 +344,7 @@ namespace PopTheHood.Controllers
 
         #region SetRemainder
         [HttpPost, Route("SetRemainder")]
-        public IActionResult SetRemainder(string[] ServicePriceChartId, int VehicleId, int RemainderTime)
+        public IActionResult SetRemainder( int ServiceId, int RemainderTime)
         {
             try
             {
@@ -352,15 +353,8 @@ namespace PopTheHood.Controllers
                 //{
                     if (RemainderTime != 0)
                     {
-                        if (ServicePriceChartId[0] != null)
-                        {
-                            idString = string.Join(",", ServicePriceChartId);
-                        }
-                        else
-                        {
-                            idString = "0";
-                        }
-                        int row = Data.Services.SetRemainder(idString, VehicleId, RemainderTime);
+                        
+                        int row = Data.Services.SetRemainder(ServiceId,RemainderTime);
 
                         if (row > 0)
                         {
@@ -396,22 +390,14 @@ namespace PopTheHood.Controllers
 
         #region SetTeamsandConditions
         [HttpPost, Route("SetTeamsandCondition")]
-        public IActionResult SetTeamsandCondition(int[] ServicePriceChartId, int VehicleId, bool Status)
+        public IActionResult SetTeamsandCondition(int ServiceId, bool Status)
         {
             try
             {
                 //if (ServicePriceChartId[0] != 0)
                 //{
-                    string idString = "";
-                    if (ServicePriceChartId[0] != null)
-                    {
-                        idString = string.Join(",", ServicePriceChartId);
-                    }
-                    else
-                    {
-                        idString = "0";
-                    }
-                    int row = Data.Services.SetTeamsandCondition(idString, VehicleId, Status);
+                   
+                    int row = Data.Services.SetTeamsandCondition(ServiceId, Status);
 
                     if (row > 0)
                     {
