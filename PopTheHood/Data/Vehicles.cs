@@ -88,7 +88,7 @@ namespace PopTheHood.Data
                 parameters.Add(new SqlParameter("@Model", vehiclemodel.Model));
                 parameters.Add(new SqlParameter("@Year", vehiclemodel.Year));
                 parameters.Add(new SqlParameter("@Color", vehiclemodel.Color));
-                parameters.Add(new SqlParameter("@LicensePlate", vehiclemodel.LicensePlate));
+                parameters.Add(new SqlParameter("@LicensePlate", vehiclemodel.LicencePlate));
                 parameters.Add(new SqlParameter("@SpecialNotes", vehiclemodel.SpecialNotes));
                 parameters.Add(new SqlParameter("@VehicleImageURL", vehiclemodel.VehicleImageURL));
                 parameters.Add(new SqlParameter("@ImageType", vehiclemodel.ImageType));

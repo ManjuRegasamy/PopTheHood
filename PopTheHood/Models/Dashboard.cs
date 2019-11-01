@@ -28,7 +28,7 @@ namespace PopTheHood.Models
 
         public class VehicleScheduledReport
         {
-            public string LicensePlate { get; set; }
+            public string LicencePlate { get; set; }
             public int vehicleId { get; set; }
             
             public string Make { get; set; }

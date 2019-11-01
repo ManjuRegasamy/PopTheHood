@@ -193,7 +193,7 @@ namespace PopTheHood.Controllers
                     }
                 }
 
-                if (vehiclemodel.LicensePlate == "")
+                if (vehiclemodel.LicencePlate == "")
                 {
                     return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter LicensePlate" } });
                 }
@@ -209,7 +209,7 @@ namespace PopTheHood.Controllers
                 if (Results != "Error Updating the Vehicle")
                 {
                     int VehicleId = Convert.ToInt32(Results);
-                    return StatusCode((int)HttpStatusCode.OK, new { VehicleId, message = vehiclemodel.LicensePlate + " is saved successfully"  });
+                    return StatusCode((int)HttpStatusCode.OK, new { VehicleId, message = vehiclemodel.LicencePlate + " is saved successfully"  });
                 }
                 else //if (Results == "Error Updating the Vehicle")
                 {
@@ -281,7 +281,7 @@ namespace PopTheHood.Controllers
                     }
                 }
 
-                if (vehiclemodel.LicensePlate == "")
+                if (vehiclemodel.LicencePlate == "")
                 {
                     return StatusCode((int)HttpStatusCode.BadRequest, new { error = new { message = "Please enter LicensePlate" } });
                 }
@@ -309,7 +309,7 @@ namespace PopTheHood.Controllers
                 if (Results != "Error Updating the Vehicle")
                 {
                     int VehicleId = Convert.ToInt32(Results);
-                    return StatusCode((int)HttpStatusCode.OK, new { VehicleId, message = vehiclemodel.LicensePlate + " is updated successfully" });
+                    return StatusCode((int)HttpStatusCode.OK, new { VehicleId, message = vehiclemodel.LicencePlate + " is updated successfully" });
                 }
                 else //if (Results == "Error Updating the Vehicle")
                 {
@@ -623,7 +623,7 @@ namespace PopTheHood.Controllers
                         vehicleInfo.Model = (dt.Rows[0]["Model"] == DBNull.Value ? "" : dt.Rows[0]["Model"].ToString());
                         vehicleInfo.Year = (dt.Rows[0]["Year"] == DBNull.Value ? 0 :(int) dt.Rows[0]["Year"]);
                         vehicleInfo.Color = (dt.Rows[0]["Color"] == DBNull.Value ? "" : dt.Rows[0]["Color"].ToString());
-                        vehicleInfo.LicensePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
+                        vehicleInfo.LicencePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
                         vehicleInfo.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
                     
 

@@ -80,7 +80,7 @@ namespace PopTheHood.Controllers
                         for (int i = 0; i < dt4.Rows.Count; i++)
                         {
                             VehicleScheduledReport vehicles = new VehicleScheduledReport();
-                            vehicles.LicensePlate = dt4.Rows[i]["LicensePlate"].ToString();
+                            vehicles.LicencePlate = dt4.Rows[i]["LicensePlate"].ToString();
                             vehicles.Make = dt4.Rows[i]["Make"].ToString();
                             vehicles.Model = dt4.Rows[i]["Model"].ToString();
                             vehicles.Name = dt4.Rows[i]["Name"].ToString();
@@ -98,7 +98,7 @@ namespace PopTheHood.Controllers
                         for (int i = 0; i < dt5.Rows.Count; i++)
                         {
                             VehicleScheduledReport vehicles = new VehicleScheduledReport();
-                            vehicles.LicensePlate = dt5.Rows[i]["LicensePlate"].ToString();
+                            vehicles.LicencePlate = dt5.Rows[i]["LicensePlate"].ToString();
                             vehicles.RequestServiceDate = dt5.Rows[i]["RequestServiceDate"].ToString();
                             vehicles.vehicleId = (int)dt5.Rows[i]["vehicleId"];
                             VehicleScheduledForAWeek.Add(vehicles);
