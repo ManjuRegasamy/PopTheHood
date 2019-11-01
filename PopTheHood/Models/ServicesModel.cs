@@ -44,7 +44,7 @@ namespace PopTheHood.Models
         public string Make { get; set; }
         public string Model { get; set; }
         public string Color { get; set; }
-        public string LicensePlate { get; set; }
+        public string LicencePlate { get; set; }
         public string LocationLatitude { get; set; }
         public string LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }

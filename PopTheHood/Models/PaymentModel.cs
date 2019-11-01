@@ -20,7 +20,7 @@ namespace PopTheHood.Models
         public string Make { get; set; }
         public string Model { get; set; }
         public string Color { get; set; }
-        public string LicensePlate { get; set; }
+        public string LicencePlate { get; set; }
         public string ServiceName { get; set; }
         public string ServiceDescription { get; set; }
         public string PlanType { get; set; }

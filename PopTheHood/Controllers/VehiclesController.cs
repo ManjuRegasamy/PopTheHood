@@ -51,7 +51,7 @@ namespace PopTheHood.Controllers
                             vechile.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
                             vechile.Year = (dt.Rows[i]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["Year"]);
                             vechile.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
-                            vechile.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
+                            vechile.LicencePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
                             vechile.SpecialNotes = (dt.Rows[i]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[i]["SpecialNotes"].ToString());
                             vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
                             vechile.VehicleImageURL = (dt.Rows[i]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[i]["VehicleImageURL"].ToString());
@@ -113,7 +113,7 @@ namespace PopTheHood.Controllers
                         vechile.Model = (dt.Rows[0]["Model"] == DBNull.Value ? "" : dt.Rows[0]["Model"].ToString());
                         vechile.Year = (dt.Rows[0]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[0]["Year"]);
                         vechile.Color = (dt.Rows[0]["Color"] == DBNull.Value ? "" : dt.Rows[0]["Color"].ToString());
-                        vechile.LicensePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
+                        vechile.LicencePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
                         vechile.SpecialNotes = (dt.Rows[0]["SpecialNotes"] == DBNull.Value ? "" : dt.Rows[0]["SpecialNotes"].ToString());
                         vechile.IsDeleted = (dt.Rows[0]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[0]["IsDeleted"]);
                         vechile.CreatedDate = (dt.Rows[0]["CreatedDate"] == DBNull.Value ? "" : dt.Rows[0]["CreatedDate"].ToString());
@@ -363,7 +363,7 @@ namespace PopTheHood.Controllers
                         vechiles.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
                         vechiles.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
                         vechiles.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
-                        vechiles.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
+                        vechiles.LicencePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
                         vechiles.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
                         vechiles.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
                         vechiles.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[i]["ServiceDescription"].ToString());

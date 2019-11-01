@@ -258,7 +258,7 @@ namespace PopTheHood.Controllers
                         service.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "-" : dt.Rows[i]["Make"].ToString());
                         service.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "-" : dt.Rows[i]["Model"].ToString());
                         service.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "-" : dt.Rows[i]["Color"].ToString());
-                        service.LicensePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "-" : dt.Rows[i]["LicensePlate"].ToString());
+                        service.LicencePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "-" : dt.Rows[i]["LicensePlate"].ToString());
                         service.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
                         //service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
                        // service.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceDescription"].ToString());
