@@ -82,6 +82,7 @@ namespace PopTheHood.Controllers
                             VehicleScheduledReport vehicles = new VehicleScheduledReport();
                             vehicles.LicensePlate = dt4.Rows[i]["LicensePlate"].ToString();
                             vehicles.Make = dt4.Rows[i]["Make"].ToString();
+                            vehicles.Model = dt4.Rows[i]["Model"].ToString();
                             vehicles.Name = dt4.Rows[i]["Name"].ToString();
                             vehicles.PhoneNumber = dt4.Rows[i]["PhoneNumber"].ToString();
                             vehicles.LocationFullAddress = dt4.Rows[i]["LocationFullAddress"].ToString();

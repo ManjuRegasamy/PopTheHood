@@ -621,12 +621,14 @@ namespace PopTheHood.Controllers
                         vehicleInfo.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
                         vehicleInfo.Make = (dt.Rows[0]["Make"] == DBNull.Value ? "" : dt.Rows[0]["Make"].ToString());
                         vehicleInfo.Model = (dt.Rows[0]["Model"] == DBNull.Value ? "" : dt.Rows[0]["Model"].ToString());
+                        vehicleInfo.Year = (dt.Rows[0]["Year"] == DBNull.Value ? 0 :(int) dt.Rows[0]["Year"]);
                         vehicleInfo.Color = (dt.Rows[0]["Color"] == DBNull.Value ? "" : dt.Rows[0]["Color"].ToString());
                         vehicleInfo.LicensePlate = (dt.Rows[0]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[0]["LicensePlate"].ToString());
                         vehicleInfo.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
-                                               
-                        
-                        if(dt2.Rows.Count > 0)
+                    
+
+
+                        if (dt2.Rows.Count > 0)
                         {
                            // planInfo.PlanType = (dt.Rows[0]["PlanType"] == DBNull.Value ? "" : dt.Rows[0]["PlanType"].ToString());
                             
