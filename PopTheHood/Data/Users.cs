@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.ApplicationBlocks.Data;
 using PopTheHood.Models;
 
@@ -217,5 +218,60 @@ namespace PopTheHood.Data
                 throw e;
             }
         }
+
+        public static DataSet ExternalLogin([FromBody]externalLogin userlogin)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@name", userlogin.Name));
+            parameters.Add(new SqlParameter("@email", userlogin.Email));
+            parameters.Add(new SqlParameter("@loginProvider", userlogin.LoginProvider));
+            parameters.Add(new SqlParameter("@providerKey", userlogin.ProviderKey));
+
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+
+                DataSet ds = new DataSet();
+                using (ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spAuthentication", parameters.ToArray()))
+                {
+                    return ds;
+                }
+                //int rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spAuthentication", parameters.ToArray());
+                //return rowsAffected;
+            }
+            catch (Exception e)
+            {
+                //loggerErr.Error(e.Message + " - " + e.StackTrace);
+                throw e;
+            }
+        }
+
+        public static string ExternalRegistration([FromBody]externalReg userReg)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@Name", userReg.Name));
+            parameters.Add(new SqlParameter("@PhoneNumber", userReg.PhoneNumber));
+            parameters.Add(new SqlParameter("@loginProvider", userReg.LoginProvider));
+            parameters.Add(new SqlParameter("@providerKey", userReg.ProviderKey));
+
+            try
+            {
+                string ConnectionString = Common.GetConnectionString();
+                using (DataTable dt = SqlHelper.ExecuteDataset(ConnectionString, CommandType.StoredProcedure, "spAuthRegistation", parameters.ToArray()).Tables[0])
+                {
+                    string rowsAffected = dt.Rows[0]["Status"].ToString();
+                    return rowsAffected;
+                }
+
+                //string rowsAffected = SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, "spAuthRegistation", parameters.ToArray()).ToString();
+                //return rowsAffected;
+            }
+            catch (Exception e)
+            {
+                //loggerErr.Error(e.Message + " - " + e.StackTrace);
+                throw e;
+            }
+        }
+
     }
 }

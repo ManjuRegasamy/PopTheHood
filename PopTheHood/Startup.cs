@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security.Facebook;
+using Microsoft.Owin.Security.Google;
 using PopTheHood.Models;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -24,11 +26,13 @@ namespace PopTheHood
     public class Startup
     {
 
-        
+       // public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
+        public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
+        public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
 
         //public Startup(IHostingEnvironment env)
         //{
-            
+
         //}
         public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
@@ -61,6 +65,17 @@ namespace PopTheHood
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //google auth
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "293027629796-c2b1ps0nhnmm4h2ugooruq21hdc4msng.apps.googleusercontent.com";
+                    options.ClientSecret = "xHM9gOigdt0CfXLDNgtbTnKY";
+                });
+
+
+
 
             services.AddCors(options =>
             {
@@ -114,7 +129,31 @@ namespace PopTheHood
 
 
             });
-            
+
+
+            //google auth
+            //services.AddAuthentication()
+            //.AddGoogle(options =>
+            //{
+            //    IConfigurationSection googleAuthNSection =
+            //        Configuration.GetSection("293027629796-c2b1ps0nhnmm4h2ugooruq21hdc4msng.apps.googleusercontent.com");
+            //    IConfigurationSection googleAuthNSectionSecret =
+            //        Configuration.GetSection("xHM9gOigdt0CfXLDNgtbTnKY");
+
+            //    options.ClientId = googleAuthNSection["ClientId"];
+            //    options.ClientSecret = googleAuthNSectionSecret["ClientSecret"];
+            //});
+
+            //.AddFacebook(facebookOptions => 
+            //{
+            //    IConfigurationSection googleAuthNSection =
+            //        Configuration.GetSection("293027629796-c2b1ps0nhnmm4h2ugooruq21hdc4msng.apps.googleusercontent.com");
+            //    IConfigurationSection googleAuthNSectionSecret =
+            //        Configuration.GetSection("xHM9gOigdt0CfXLDNgtbTnKY");
+
+            //    facebookOptions.ClientId = googleAuthNSection["ClientId"];
+            //    facebookOptions.ClientSecret = googleAuthNSectionSecret["ClientSecret"];
+            //});
 
         }
 
@@ -143,6 +182,15 @@ namespace PopTheHood
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PopTheHood");
             });
             app.UseAuthentication();
+
+
+            //Google Authentication
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    //ClientId = "",
+            //    //ClientSecret = ""
+            //});
+
         }
     }
 }

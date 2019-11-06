@@ -70,6 +70,21 @@ namespace PopTheHood.Models
         public string LocationLongitude { get; set; }
         public string LocationFullAddress { get; set; }
     }
+
+    public class externalLogin
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
+    }
+
+    public class externalReg : externalLogin
+    {
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
 }
 
 
