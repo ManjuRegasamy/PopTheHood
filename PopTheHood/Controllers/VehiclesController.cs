@@ -56,6 +56,7 @@ namespace PopTheHood.Controllers
                             vechile.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
                             vechile.VehicleImageURL = (dt.Rows[i]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[i]["VehicleImageURL"].ToString());
                             vechile.NextService = (dt.Rows[i]["NextService"] == DBNull.Value ? "" : dt.Rows[i]["NextService"].ToString());
+                            vechile.DueService = (dt.Rows[i]["DueService"] == DBNull.Value ? "" : dt.Rows[i]["DueService"].ToString()); 
                             vechile.IsServiceScheduled = (dt.Rows[i]["IsServiceScheduled"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsServiceScheduled"]);
 
 
@@ -364,23 +365,23 @@ namespace PopTheHood.Controllers
                         vechiles.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
                         vechiles.Color = (dt.Rows[i]["Color"] == DBNull.Value ? "" : dt.Rows[i]["Color"].ToString());
                         vechiles.LicencePlate = (dt.Rows[i]["LicensePlate"] == DBNull.Value ? "" : dt.Rows[i]["LicensePlate"].ToString());
-                        vechiles.ServicePlanID = (dt.Rows[i]["ServicePlanID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePlanID"]);
-                        vechiles.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
-                        vechiles.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[i]["ServiceDescription"].ToString());
-                        vechiles.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
-                        vechiles.ServiceAmount = (dt.Rows[i]["ServiceAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["ServiceAmount"]);
-                        //(dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
+                        vechiles.ServiceID = (dt.Rows[i]["ServiceID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServiceID"]);
+                        //vechiles.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "" : dt.Rows[i]["ServiceName"].ToString());
+                        //vechiles.ServiceDescription = (dt.Rows[i]["ServiceDescription"] == DBNull.Value ? "" : dt.Rows[i]["ServiceDescription"].ToString());
+                        //vechiles.PlanType = (dt.Rows[i]["PlanType"] == DBNull.Value ? "" : dt.Rows[i]["PlanType"].ToString());
+                        //vechiles.ServiceAmount = (dt.Rows[i]["ServiceAmount"] == DBNull.Value ? 00 : (decimal)dt.Rows[i]["ServiceAmount"]);
+                        ////(dt.Rows[i]["IsEmailVerified"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsEmailVerified"]);
                         vechiles.RequestedServiceDate = (dt.Rows[i]["RequestedServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["RequestedServiceDate"].ToString());
                         vechiles.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "" : dt.Rows[i]["ActualServiceDate"].ToString());
                         vechiles.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "" : dt.Rows[i]["ServiceOutDate"].ToString());
                         vechiles.Status = (dt.Rows[i]["Status"] == DBNull.Value ? "" : dt.Rows[i]["Status"].ToString());
 
-                        vechiles.LocationID = (dt.Rows[i]["LocationID"] == DBNull.Value ? "" : dt.Rows[i]["LocationID"].ToString());
-                        vechiles.LocationLatitude = (dt.Rows[i]["LocationLatitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLatitude"].ToString());
-                        vechiles.LocationLongitude = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLongitude"].ToString());
-                        vechiles.LocationFullAddress = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[i]["LocationFullAddress"].ToString());
+                        //vechiles.LocationID = (dt.Rows[i]["LocationID"] == DBNull.Value ? "" : dt.Rows[i]["LocationID"].ToString());
+                        //vechiles.LocationLatitude = (dt.Rows[i]["LocationLatitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLatitude"].ToString());
+                        //vechiles.LocationLongitude = (dt.Rows[i]["LocationLongitude"] == DBNull.Value ? "" : dt.Rows[i]["LocationLongitude"].ToString());
+                        //vechiles.LocationFullAddress = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[i]["LocationFullAddress"].ToString());
                         vechiles.IsDeleted = (dt.Rows[i]["IsDeleted"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsDeleted"]);
-                        vechiles.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
+                        //vechiles.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
                         vechiles.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
                         //vechiles.VehicleImage = ((byte[])dt.Rows[i]["VehicleImage"]);
                         vechiles.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());

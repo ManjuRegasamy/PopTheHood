@@ -17,21 +17,21 @@ namespace PopTheHood.Models
         public string Model { get; set; }
         public string Color { get; set; }
         public string LicencePlate { get; set; }
-        public string LocationID { get; set; }
-        public string LocationLatitude { get; set; }
-        public string LocationLongitude { get; set; }
-        public string LocationFullAddress { get; set; }
-        public int ServicePlanID { get; set; }
-        public string ServiceName { get; set; }
-        public string ServiceDescription { get; set; }
-        public string PlanType { get; set; }
-        public decimal ServiceAmount { get; set; }
+        //public string LocationID { get; set; }
+        //public string LocationLatitude { get; set; }
+        //public string LocationLongitude { get; set; }
+        //public string LocationFullAddress { get; set; }
+        public int ServiceID { get; set; }
+        //public string ServiceName { get; set; }
+        //public string ServiceDescription { get; set; }
+        //public string PlanType { get; set; }
+        //public decimal ServiceAmount { get; set; }
         public string RequestedServiceDate { get; set; }
         public string ActualServiceDate { get; set; }
         public string ServiceOutDate { get; set; }
         public string Status { get; set; }
         public bool IsDeleted { get; set; }
-        public int ServicePriceChartId { get; set; }
+       // public int ServicePriceChartId { get; set; }
         public int ScheduleID { get; set; }
         public string VehicleImageURL { get; set; }
        // public string ImageType { get; set; }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.ApplicationBlocks.Data;
+using Microsoft.AspNetCore.Mvc;
 using PopTheHood.Models;
 
 namespace PopTheHood.Data
