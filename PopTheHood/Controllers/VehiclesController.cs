@@ -384,7 +384,7 @@ namespace PopTheHood.Controllers
                         //vechiles.ServicePriceChartId = (dt.Rows[i]["ServicePriceChartId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ServicePriceChartId"]);
                         vechiles.ScheduleID = (dt.Rows[i]["ScheduleID"] == DBNull.Value ? 0 : (int)dt.Rows[i]["ScheduleID"]);
                         //vechiles.VehicleImage = ((byte[])dt.Rows[i]["VehicleImage"]);
-                        vechiles.VehicleImageURL = (dt.Rows[0]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[0]["VehicleImageURL"].ToString());
+                        vechiles.VehicleImageURL = (dt.Rows[i]["VehicleImageURL"] == DBNull.Value ? "" : dt.Rows[i]["VehicleImageURL"].ToString());
 
                        // vechiles.ImageType = (dt.Rows[i]["ImageType"] == DBNull.Value ? "" : dt.Rows[i]["ImageType"].ToString());
 

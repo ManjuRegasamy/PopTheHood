@@ -129,10 +129,15 @@ namespace PopTheHood.Controllers
                             service.ActualServiceDate = (dt.Rows[i]["ActualServiceDate"] == DBNull.Value ? "-" : dt.Rows[i]["ActualServiceDate"].ToString());
                             service.ServiceOutDate = (dt.Rows[i]["ServiceOutDate"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceOutDate"].ToString());
                             service.ServiceName = (dt.Rows[i]["ServiceName"] == DBNull.Value ? "-" : dt.Rows[i]["ServiceName"].ToString());
-                           // service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
-                           // service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+                            service.ServicePriceList = (dt.Rows[i]["ServicePriceList"] == DBNull.Value ? "-" : dt.Rows[i]["ServicePriceList"].ToString());
+                            service.LocationFullAddress = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "-" : dt.Rows[i]["LocationFullAddress"].ToString());
+                            service.CityName = (dt.Rows[i]["CityName"] == DBNull.Value ? "-" : dt.Rows[i]["CityName"].ToString());
+                            service.LandMark = (dt.Rows[i]["LandMark"] == DBNull.Value ? "-" : dt.Rows[i]["LandMark"].ToString());
 
-                            serviceDetails.Add(service);
+                        // service.Description = (dt.Rows[i]["Description"] == DBNull.Value ? "-" : dt.Rows[i]["Description"].ToString());
+                        // service.IsAvailable = (dt.Rows[i]["IsAvailable"] == DBNull.Value ? false : (bool)dt.Rows[i]["IsAvailable"]);
+
+                        serviceDetails.Add(service);
                         }
 
                         return StatusCode((int)HttpStatusCode.OK, serviceDetails);

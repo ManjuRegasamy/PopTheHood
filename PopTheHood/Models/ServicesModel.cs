@@ -27,6 +27,10 @@ namespace PopTheHood.Models
         public string ServiceOutDate { get; set; }
         public string ServiceName { get; set; }
         public string Description { get; set; }
+        public string LocationFullAddress { get; set; } 
+        public string LandMark { get; set; }
+        public string CityName { get; set; }
+        public string ServicePriceList { get; set; } 
         public bool IsAvailable { get; set; }
         public string PlanType { get; set; }
         public decimal Price { get; set; }
