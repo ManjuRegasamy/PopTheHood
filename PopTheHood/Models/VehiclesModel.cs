@@ -51,8 +51,9 @@ namespace PopTheHood.Models
     public class VehiclesDetails
     {
         public int VehicleId { get; set; }
-        public int UserId { get; set; }
+        public int UserId { get; set; } 
         public string Make { get; set; }
+        public int MakeId { get; set; }
         public string Model { get; set; }
         public int Year { get; set; }
         public string Color { get; set; }
@@ -85,6 +86,18 @@ namespace PopTheHood.Models
         public string LocationFullAddress { get; set; }
         public string LandMark { get; set; }
         public string CityName { get; set; }
+    }
+
+    public class Make
+    {
+        public int MakeId { get; set; }
+        public string Name { get; set; }
+     }
+
+    public class Model
+    {
+        public int ModelId { get; set; }
+        public string Name { get; set; }
     }
 }
 

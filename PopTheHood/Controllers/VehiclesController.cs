@@ -46,6 +46,7 @@ namespace PopTheHood.Controllers
                             vechile.PhoneNumber = (dt.Rows[i]["PhoneNumber"] == DBNull.Value ? "" : dt.Rows[i]["PhoneNumber"].ToString());
                             vechile.Address = (dt.Rows[i]["LocationFullAddress"] == DBNull.Value ? "" : dt.Rows[i]["LocationFullAddress"].ToString());
                             vechile.UserId = (dt.Rows[i]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["UserId"]);
+                            vechile.MakeId = (dt.Rows[i]["MakeId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["MakeId"]); 
                             vechile.VehicleId = (dt.Rows[i]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[i]["VehicleId"]);                        
                             vechile.Make = (dt.Rows[i]["Make"] == DBNull.Value ? "" : dt.Rows[i]["Make"].ToString());
                             vechile.Model = (dt.Rows[i]["Model"] == DBNull.Value ? "" : dt.Rows[i]["Model"].ToString());
@@ -110,6 +111,7 @@ namespace PopTheHood.Controllers
                     
                         vechile.VehicleId = (dt.Rows[0]["VehicleId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["VehicleId"]);
                         vechile.UserId = (dt.Rows[0]["UserId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["UserId"]);
+                        vechile.MakeId = (dt.Rows[0]["MakeId"] == DBNull.Value ? 0 : (int)dt.Rows[0]["MakeId"]); 
                         vechile.Make = (dt.Rows[0]["Make"] == DBNull.Value ? "" : dt.Rows[0]["Make"].ToString());
                         vechile.Model = (dt.Rows[0]["Model"] == DBNull.Value ? "" : dt.Rows[0]["Model"].ToString());
                         vechile.Year = (dt.Rows[0]["Year"] == DBNull.Value ? 0000 : (int)dt.Rows[0]["Year"]);
@@ -785,6 +787,95 @@ namespace PopTheHood.Controllers
                 throw e;               
             }
         }
+
+        #region GetMake
+        //GetMake
+        [HttpGet, Route("GetMake")]
+        public IActionResult GetMake()
+        {
+                        List<Make> MakeList = new List<Make>();
+
+            try
+            {
+
+                DataTable dt = Data.Vehicles.GetMake();
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    { 
+                            Make objmake = new Make();
+                            objmake.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString()); 
+                            objmake.MakeId = (dt.Rows[i]["MakeId"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["MakeId"]);  
+                            MakeList.Add(objmake); 
+                    }
+                    return StatusCode((int)HttpStatusCode.OK, MakeList);
+
+                }
+
+                else
+                {
+                    string[] data = new string[0];
+                    return StatusCode((int)HttpStatusCode.OK, data);
+                    // return StatusCode((int)HttpStatusCode.OK, new { });
+                }
+
+            }
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("GetMake", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
+            }
+        }
+        #endregion
+
+
+
+
+        #region GetModel
+        //GetMake
+        [HttpGet, Route("GetModel/{MakeId}")]
+        public IActionResult GetModel(int MakeId)
+        {
+            List<Model> ModelList = new List<Model>();
+
+            try
+            {
+
+                DataTable dt = Data.Vehicles.GetModel(MakeId);
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    { 
+                            Model objModel = new Model();
+                        objModel.Name = (dt.Rows[i]["Name"] == DBNull.Value ? "" : dt.Rows[i]["Name"].ToString());
+                        objModel.ModelId = (dt.Rows[i]["ModelId"] == DBNull.Value ? 0000 : (int)dt.Rows[i]["ModelId"]);
+
+
+                            ModelList.Add(objModel);
+                        
+                    }
+                    return StatusCode((int)HttpStatusCode.OK, ModelList);
+
+                }
+
+                else
+                {
+                    string[] data = new string[0];
+                    return StatusCode((int)HttpStatusCode.OK, data);
+                    // return StatusCode((int)HttpStatusCode.OK, new { });
+                }
+
+            }
+            catch (Exception e)
+            {
+                string SaveErrorLog = Data.Common.SaveErrorLog("GetModel", e.Message);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = new { message = e.Message } });
+            }
+        }
+        #endregion
+
 
     }
 }
